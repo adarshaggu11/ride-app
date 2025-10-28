@@ -19,7 +19,8 @@ import {
   Award,
   Info,
   Gift,
-  Shield
+  Shield,
+  Calendar
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -62,6 +63,11 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
       label: "Refer & Earn",
       route: "/referral",
       badge: "₹100"
+    },
+    {
+      icon: Calendar,
+      label: "Scheduled Rides",
+      route: "/scheduled-rides"
     },
     {
       icon: Shield,

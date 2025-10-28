@@ -28,6 +28,7 @@ import TermsScreen from "./components/TermsScreen";
 import PrivacyPolicyScreen from "./components/PrivacyPolicyScreen";
 import ReferralScreen from "./components/ReferralScreen";
 import { EmergencyScreen } from "./components/EmergencyScreen";
+import { ScheduledRidesScreen } from "./components/ScheduledRidesScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -278,6 +279,12 @@ const App = () => {
               path="/emergency"
               element={
                 user ? <EmergencyScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/scheduled-rides"
+              element={
+                user ? <ScheduledRidesScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route path="*" element={<NotFound />} />
