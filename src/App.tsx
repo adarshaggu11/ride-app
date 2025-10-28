@@ -30,6 +30,7 @@ import ReferralScreen from "./components/ReferralScreen";
 import { EmergencyScreen } from "./components/EmergencyScreen";
 import { ScheduledRidesScreen } from "./components/ScheduledRidesScreen";
 import { CarpoolScreen } from "./components/CarpoolScreen";
+import { DriverDashboardScreen } from "./components/DriverDashboardScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -292,6 +293,12 @@ const App = () => {
               path="/carpool"
               element={
                 user ? <CarpoolScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/driver-dashboard"
+              element={
+                user ? <DriverDashboardScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route path="*" element={<NotFound />} />

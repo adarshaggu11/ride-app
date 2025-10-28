@@ -21,7 +21,8 @@ import {
   Gift,
   Shield,
   Calendar,
-  Users
+  Users,
+  Car
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,6 +55,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
   };
 
   const menuItems = [
+    {
+      icon: Car,
+      label: "Driver Mode",
+      route: "/driver-dashboard",
+      badge: "EARN"
+    },
     {
       icon: Wallet,
       label: "Wallet & Earnings",
