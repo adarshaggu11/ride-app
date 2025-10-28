@@ -17,7 +17,8 @@ import {
   Wallet,
   Star,
   Award,
-  Info
+  Info,
+  Gift
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,6 +55,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
       icon: Wallet,
       label: "Wallet & Earnings",
       route: "/wallet"
+    },
+    {
+      icon: Gift,
+      label: "Refer & Earn",
+      route: "/referral",
+      badge: "₹100"
     },
     {
       icon: History,
@@ -154,6 +161,11 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
               <div className="flex-1">
                 <p className="font-semibold">{item.label}</p>
               </div>
+              {item.badge && (
+                <span className="px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">
+                  {item.badge}
+                </span>
+              )}
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
             </div>
           </Card>

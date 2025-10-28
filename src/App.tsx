@@ -26,6 +26,7 @@ import SavedAddressesScreen from "./components/SavedAddressesScreen";
 import AboutScreen from "./components/AboutScreen";
 import TermsScreen from "./components/TermsScreen";
 import PrivacyPolicyScreen from "./components/PrivacyPolicyScreen";
+import ReferralScreen from "./components/ReferralScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -264,6 +265,12 @@ const App = () => {
               path="/vehicle-selection"
               element={
                 user ? <VehicleSelectionScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/referral"
+              element={
+                user ? <ReferralScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route path="*" element={<NotFound />} />
