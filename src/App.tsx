@@ -24,6 +24,8 @@ import NotificationsScreen from "./components/NotificationsScreen";
 import SettingsScreen from "./components/SettingsScreen";
 import SavedAddressesScreen from "./components/SavedAddressesScreen";
 import AboutScreen from "./components/AboutScreen";
+import TermsScreen from "./components/TermsScreen";
+import PrivacyPolicyScreen from "./components/PrivacyPolicyScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -238,6 +240,18 @@ const App = () => {
               path="/about"
               element={
                 user ? <AboutScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                user ? <TermsScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/privacy"
+              element={
+                user ? <PrivacyPolicyScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route

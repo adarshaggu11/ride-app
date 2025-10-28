@@ -153,17 +153,23 @@ const HelpSupportScreen = () => {
         <Card className="p-4 space-y-3">
           <h3 className="font-semibold">Quick Links</h3>
           <div className="space-y-2">
-            <button className="w-full text-left text-sm text-primary hover:underline">
+            <button 
+              className="w-full text-left text-sm text-primary hover:underline"
+              onClick={() => navigate("/terms")}
+            >
               Terms & Conditions
             </button>
-            <button className="w-full text-left text-sm text-primary hover:underline">
+            <button 
+              className="w-full text-left text-sm text-primary hover:underline"
+              onClick={() => navigate("/privacy")}
+            >
               Privacy Policy
             </button>
-            <button className="w-full text-left text-sm text-primary hover:underline">
-              Refund Policy
-            </button>
-            <button className="w-full text-left text-sm text-primary hover:underline">
-              Community Guidelines
+            <button 
+              className="w-full text-left text-sm text-primary hover:underline"
+              onClick={() => navigate("/about")}
+            >
+              About Dropout
             </button>
           </div>
         </Card>
