@@ -9,39 +9,35 @@ interface OnboardingScreensProps {
 const slides = [
   {
     icon: Zap,
-    title: "Free Auto Booking",
-    titleTe: "ఉచిత ఆటో బుకింగ్",
-    description: "Book autos instantly without any booking charges. Zero commissions, pure savings!",
-    descriptionTe: "ఎటువంటి బుకింగ్ చార్జీలు లేకుండా తక్షణమే ఆటోలను బుక్ చేసుకోండి",
+    title: "Instant Booking",
+    description: "Book bikes, autos, or cars instantly with just a few taps. Zero booking fees!",
     color: "from-primary to-accent",
     bgPattern: "bg-gradient-to-br from-primary/10 to-accent/10",
+    stats: ["4.8★ Rating", "50K+ Rides", "100% Safe"]
   },
   {
     icon: Shield,
-    title: "Verified & Safe Drivers",
-    titleTe: "ధృవీకరించబడిన & సురక్షిత డ్రైవర్లు",
-    description: "All drivers are background verified for your safety and peace of mind",
-    descriptionTe: "అన్ని డ్రైవర్లు మీ భద్రత కోసం నేపథ్య ధృవీకరణ పొందారు",
+    title: "Verified Drivers",
+    description: "All drivers are thoroughly verified and trained for your safety and comfort",
     color: "from-green-500 to-emerald-500",
     bgPattern: "bg-gradient-to-br from-green-500/10 to-emerald-500/10",
+    stats: ["Background Checked", "Licensed", "Insured"]
   },
   {
     icon: MapPin,
-    title: "Live Ride Tracking",
-    titleTe: "లైవ్ రైడ్ ట్రాకింగ్",
-    description: "Track your ride in real-time with accurate GPS location updates",
-    descriptionTe: "ఖచ్చితమైన GPS లొకేషన్ అప్‌డేట్‌లతో రియల్ టైమ్‌లో మీ రైడ్‌ను ట్రాక్ చేయండి",
+    title: "Live Tracking",
+    description: "Track your ride in real-time with accurate GPS and share your location with loved ones",
     color: "from-blue-500 to-cyan-500",
     bgPattern: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10",
+    stats: ["Real-time GPS", "Route Optimization", "ETA Updates"]
   },
   {
-    icon: Clock,
-    title: "Quick & Reliable",
-    titleTe: "త్వరిత & విశ్వసనీయమైన",
-    description: "Get a ride within minutes. Your time matters to us!",
-    descriptionTe: "నిమిషాల్లో రైడ్ పొందండి. మీ సమయం మాకు ముఖ్యం!",
+    icon: Car,
+    title: "Multiple Ride Options",
+    description: "Choose from bikes, autos, and cars based on your comfort and budget",
     color: "from-purple-500 to-pink-500",
     bgPattern: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
+    stats: ["Bikes from ₹49", "Autos from ₹85", "Cars from ₹120"]
   },
 ];
 
@@ -156,15 +152,18 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
             <h2 className="text-4xl font-extrabold text-foreground leading-tight">
               {slide.title}
             </h2>
-            <p className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {slide.titleTe}
-            </p>
             <p className="text-lg text-muted-foreground leading-relaxed mt-6 max-w-sm mx-auto">
               {slide.description}
             </p>
-            <p className="text-base text-muted-foreground/80 leading-relaxed">
-              {slide.descriptionTe}
-            </p>
+            
+            {/* Feature Stats */}
+            <div className="flex items-center justify-center gap-4 pt-6">
+              {slide.stats.map((stat, idx) => (
+                <div key={idx} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 backdrop-blur-sm">
+                  <span className="text-xs font-semibold text-foreground">{stat}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Progress Indicators */}
@@ -217,20 +216,15 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
           {currentSlide === slides.length - 1 ? (
             <span className="flex items-center gap-2">
               <Zap className="w-5 h-5" />
-              Get Started | ప్రారంభించండి
+              Get Started Now
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              Next | తదుపరి 
+              Continue
               <ChevronRight className="w-5 h-5" />
             </span>
           )}
         </Button>
-
-        {/* Swipe Hint */}
-        <p className="text-center text-sm text-muted-foreground">
-          Swipe to navigate • స్వైప్ చేయండి
-        </p>
       </div>
     </div>
   );

@@ -270,7 +270,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
             ) : (
               <span className="flex items-center gap-2">
                 <MapPin className="w-5 h-5" />
-                Find Auto | ఆటో వెతకండి
+                Find Your Ride
               </span>
             )}
           </Button>
