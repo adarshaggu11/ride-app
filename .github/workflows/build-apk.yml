@@ -54,10 +54,14 @@ jobs:
     - name: Build Debug APK
       working-directory: android
       run: |
+        echo "=== Starting Gradle build ==="
         ./gradlew assembleDebug \
           --no-daemon \
           --stacktrace \
-          -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=768m -XX:+HeapDumpOnOutOfMemoryError"
+          --info \
+          --warning-mode=all \
+          -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=768m"
+        echo "=== Gradle build completed ===" || echo "=== Gradle build failed ==="
     
     - name: List APK output
       run: find android/app/build/outputs -name "*.apk"
