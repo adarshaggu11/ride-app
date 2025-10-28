@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.taxi.app',
-  appName: 'Taxi',
+  appId: 'com.ridesharing.app',
+  appName: 'RideShare',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

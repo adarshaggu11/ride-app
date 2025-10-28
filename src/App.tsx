@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import SplashScreen from "./components/SplashScreen";
 import OnboardingScreens from "./components/OnboardingScreens";
 import AuthScreen from "./components/AuthScreen";
+import { PermissionScreen } from "./components/PermissionScreen";
+import { RoleSelection } from "./components/RoleSelection";
 import LocationPermission from "./components/LocationPermission";
 import HomeScreen from "./components/HomeScreen";
 import ConfirmRideScreen from "./components/ConfirmRideScreen";
@@ -32,7 +34,6 @@ import { ScheduledRidesScreen } from "./components/ScheduledRidesScreen";
 import { CarpoolScreen } from "./components/CarpoolScreen";
 import { DriverDashboardScreen } from "./components/DriverDashboardScreen";
 import NotFound from "./pages/NotFound";
-import { offlineService } from "./services/offlineService";
 
 const queryClient = new QueryClient();
 
@@ -41,59 +42,79 @@ interface User {
   name: string;
   phone: string;
   avatar: string;
+  role?: 'customer' | 'driver';
 }
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showPermissions, setShowPermissions] = useState(false);
+  const [showRoleSelection, setShowRoleSelection] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [appInitialized, setAppInitialized] = useState(false);
+  const [userRole, setUserRole] = useState<'customer' | 'driver'>('customer');
 
   useEffect(() => {
     initializeApp();
   }, []);
 
   const initializeApp = async () => {
-    // Show splash for 2 seconds
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Check if user has seen onboarding
     const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
+    const permissionsRequested = localStorage.getItem("permissions_requested");
+    const savedRole = localStorage.getItem("user_role");
+    
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
       setIsLoading(false);
       return;
     }
 
-    // Check if user is logged in
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
+    if (!permissionsRequested) {
+      setShowPermissions(true);
+      setIsLoading(false);
+      return;
     }
 
-    // Initialize offline service for PWA
-    // Commented out for now - will add when PWA is fully configured
-    /* try {
-      if ('serviceWorker' in navigator) {
-        await offlineService.register();
-      }
-    } catch (error) {
-      console.error("Failed to initialize offline service:", error);
-    } */
-
-    setAppInitialized(true);
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setUserRole(parsedUser.role || savedRole || 'customer');
+    } else if (savedRole) {
+      setUserRole(savedRole as 'customer' | 'driver');
+    }
     setIsLoading(false);
   };
 
   const handleOnboardingComplete = () => {
     localStorage.setItem("hasSeenOnboarding", "true");
     setShowOnboarding(false);
-    setAppInitialized(true);
+    setShowPermissions(true);
+  };
+
+  const handlePermissionsComplete = () => {
+    setShowPermissions(false);
+    
+    const userData = localStorage.getItem("user");
+    if (!userData) {
+      setShowRoleSelection(true);
+    } else {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setUserRole(parsedUser.role || 'customer');
+    }
+  };
+
+  const handleRoleSelect = (role: 'customer' | 'driver') => {
+    setUserRole(role);
+    setShowRoleSelection(false);
   };
 
   const handleLogin = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+    const userWithRole = { ...userData, role: userRole };
+    setUser(userWithRole);
+    localStorage.setItem("user", JSON.stringify(userWithRole));
   };
 
   const handleLogout = () => {
@@ -107,6 +128,14 @@ const App = () => {
 
   if (showOnboarding) {
     return <OnboardingScreens onComplete={handleOnboardingComplete} />;
+  }
+
+  if (showPermissions) {
+    return <PermissionScreen onComplete={handlePermissionsComplete} />;
+  }
+
+  if (showRoleSelection) {
+    return <RoleSelection onRoleSelect={handleRoleSelect} />;
   }
 
   return (
@@ -124,12 +153,10 @@ const App = () => {
             <Route
               path="/"
               element={
-                appInitialized && user ? (
-                  <Navigate to="/home" replace />
-                ) : appInitialized && !user ? (
-                  <Navigate to="/auth" replace />
+                user ? (
+                  <Navigate to={userRole === 'driver' ? "/driver-dashboard" : "/home"} replace />
                 ) : (
-                  <SplashScreen />
+                  <Navigate to="/auth" replace />
                 )
               }
             />
@@ -137,7 +164,7 @@ const App = () => {
               path="/auth"
               element={
                 user ? (
-                  <Navigate to="/home" replace />
+                  <Navigate to={userRole === 'driver' ? "/driver-dashboard" : "/home"} replace />
                 ) : (
                   <AuthScreen onLogin={handleLogin} />
                 )
@@ -147,16 +174,66 @@ const App = () => {
               path="/location-permission"
               element={<LocationPermission />}
             />
-            <Route
-              path="/home"
-              element={
-                user ? (
-                  <HomeScreen user={user} onLogout={handleLogout} />
-                ) : (
-                  <Navigate to="/auth" replace />
-                )
-              }
-            />
+            
+            {/* Customer Routes */}
+            {userRole === 'customer' && (
+              <>
+                <Route
+                  path="/home"
+                  element={
+                    user ? (
+                      <HomeScreen user={user} onLogout={handleLogout} />
+                    ) : (
+                      <Navigate to="/auth" replace />
+                    )
+                  }
+                />
+                <Route
+                  path="/confirm-ride"
+                  element={
+                    user ? <ConfirmRideScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+                <Route
+                  path="/searching"
+                  element={
+                    user ? <SearchingScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+                <Route
+                  path="/scheduled-rides"
+                  element={
+                    user ? <ScheduledRidesScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+                <Route
+                  path="/carpool"
+                  element={
+                    user ? <CarpoolScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+                <Route
+                  path="/emergency"
+                  element={
+                    user ? <EmergencyScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+              </>
+            )}
+
+            {/* Driver Routes */}
+            {userRole === 'driver' && (
+              <>
+                <Route
+                  path="/driver-dashboard"
+                  element={
+                    user ? <DriverDashboardScreen /> : <Navigate to="/auth" replace />
+                  }
+                />
+              </>
+            )}
+
+            {/* Shared Routes (Both Customer & Driver) */}
             <Route
               path="/confirm-ride"
               element={
