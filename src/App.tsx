@@ -33,6 +33,8 @@ import { EmergencyScreen } from "./components/EmergencyScreen";
 import { ScheduledRidesScreen } from "./components/ScheduledRidesScreen";
 import { CarpoolScreen } from "./components/CarpoolScreen";
 import { DriverDashboardScreen } from "./components/DriverDashboardScreen";
+import RideEstimatorDemo from "./components/RideEstimatorDemo";
+import RideValidationDemo from "./components/RideValidationDemo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -378,6 +380,11 @@ const App = () => {
                 user ? <DriverDashboardScreen /> : <Navigate to="/auth" replace />
               }
             />
+
+            {/* Demo/Testing Routes - Accessible without auth for testing */}
+            <Route path="/demo/estimator" element={<RideEstimatorDemo />} />
+            <Route path="/demo/validator" element={<RideValidationDemo />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
