@@ -24,10 +24,9 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-        cache: 'gradle'
     
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
+      uses: android-actions/setup-android@v3
     
     - name: Install dependencies
       run: npm ci
@@ -38,55 +37,45 @@ jobs:
     - name: Verify build output
       run: |
         echo "Checking if dist folder exists..."
-        ls -la
         if [ -d "dist" ]; then
           echo "✓ dist folder found"
-          ls -la dist
+          ls -la dist | head -20
         else
           echo "✗ ERROR: dist folder not found!"
           exit 1
         fi
     
-    - name: Copy Capacitor config
-      run: |
-        echo "Copying capacitor config to dist..."
-        cp capacitor.config.ts dist/ || true
-    
     - name: Sync Capacitor
-      run: |
-        echo "Syncing Capacitor with Android..."
-        npx cap sync android
+      run: npx cap sync android
     
     - name: Grant execute permission for gradlew
       run: chmod +x android/gradlew
     
-    - name: Accept Android SDK licenses
-      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-    
-    - name: Build APK
+    - name: Build Debug APK
       working-directory: android
       run: |
-        ./gradlew clean assembleDebug \
+        ./gradlew assembleDebug \
           --no-daemon \
           --stacktrace \
-          --warning-mode=all \
-          -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m" \
-          -Dkotlin.daemon.jvm.options="-Xmx1024m"
+          -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=768m -XX:+HeapDumpOnOutOfMemoryError"
+    
+    - name: List APK output
+      run: find android/app/build/outputs -name "*.apk"
     
     - name: Upload APK
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: app-debug
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+        name: app-debug-apk
+        path: android/app/build/outputs/apk/debug/*.apk
         retention-days: 30
     
     - name: Upload build logs on failure
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: build-logs
+        name: build-failure-logs
         path: |
-          android/build/reports/
-          android/app/build/reports/
+          android/build/reports/**/*
+          android/app/build/reports/**/*
         retention-days: 7
