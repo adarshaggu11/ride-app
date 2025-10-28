@@ -256,7 +256,7 @@ const DriverRegistrationScreen = ({ phone, onComplete }: DriverRegistrationScree
                     <RadioGroupItem value="auto" id="auto" />
                     <Label htmlFor="auto" className="flex-1 cursor-pointer">
                       <div className="flex items-center gap-3">
-                        <div className="text-2xl">🛺</div>
+                        <Car className="w-8 h-8 text-primary" />
                         <div>
                           <p className="font-semibold">Auto Rickshaw</p>
                           <p className="text-xs text-muted-foreground">3-wheeler auto</p>
@@ -268,7 +268,7 @@ const DriverRegistrationScreen = ({ phone, onComplete }: DriverRegistrationScree
                     <RadioGroupItem value="bike" id="bike" />
                     <Label htmlFor="bike" className="flex-1 cursor-pointer">
                       <div className="flex items-center gap-3">
-                        <div className="text-2xl">🏍️</div>
+                        <Bike className="w-8 h-8 text-primary" />
                         <div>
                           <p className="font-semibold">Bike</p>
                           <p className="text-xs text-muted-foreground">2-wheeler motorcycle</p>

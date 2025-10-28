@@ -51,7 +51,7 @@ export const EmergencyScreen: React.FC = () => {
 
   const handleSOS = () => {
     toast({
-      title: "🚨 Emergency Alert Sent!",
+      title: "Emergency Alert Sent",
       description: "Your location and ride details have been shared with emergency contacts and local authorities.",
     });
     
@@ -59,7 +59,7 @@ export const EmergencyScreen: React.FC = () => {
   };
 
   const handleShareLocation = () => {
-    const message = `🚨 EMERGENCY - I need help!\n\nRide Details:\nDriver: ${currentRide.driverName}\nVehicle: ${currentRide.vehicleNumber}\nLocation: ${currentRide.currentLocation}\nDestination: ${currentRide.destination}\nETA: ${currentRide.eta}\n\nTrack my live location: https://maps.google.com/share/location`;
+    const message = `EMERGENCY - I need help!\n\nRide Details:\nDriver: ${currentRide.driverName}\nVehicle: ${currentRide.vehicleNumber}\nLocation: ${currentRide.currentLocation}\nDestination: ${currentRide.destination}\nETA: ${currentRide.eta}\n\nTrack my live location: https://maps.google.com/share/location`;
     
     // Share via WhatsApp
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
@@ -94,7 +94,7 @@ export const EmergencyScreen: React.FC = () => {
     setIsAddingContact(false);
     
     toast({
-      title: "✅ Contact Added",
+      title: "Contact Added",
       description: `${contact.name} has been added to your emergency contacts`,
     });
   };

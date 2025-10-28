@@ -216,7 +216,7 @@ const PaymentMethodsScreen = () => {
         {/* Info */}
         <Card className="p-4 bg-muted/50">
           <p className="text-xs text-center text-muted-foreground">
-            💡 Currently, cash payment is recommended. UPI and card payments will be enabled soon.
+            Currently, cash payment is recommended. UPI and card payments will be enabled soon.
           </p>
           <p className="text-xs text-center text-muted-foreground mt-2">
             ప్రస్తుతం, నగదు చెల్లింపు సిఫార్సు చేయబడింది. UPI మరియు కార్డ్ చెల్లింపులు త్వరలో ప్రారంభించబడతాయి.

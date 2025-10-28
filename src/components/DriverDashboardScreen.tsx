@@ -114,7 +114,7 @@ export const DriverDashboardScreen: React.FC = () => {
   const handleToggleOnline = () => {
     setIsOnline(!isOnline);
     toast({
-      title: !isOnline ? "🟢 You're Online!" : "🔴 You're Offline",
+      title: !isOnline ? "You're Online" : "You're Offline",
       description: !isOnline ? "You'll start receiving ride requests" : "You won't receive new requests",
     });
   };
@@ -124,7 +124,7 @@ export const DriverDashboardScreen: React.FC = () => {
     setRideRequests(rideRequests.filter(r => r.id !== rideId));
     
     toast({
-      title: "✅ Ride Accepted!",
+      title: "Ride Accepted",
       description: `Navigating to pickup location: ${ride?.pickup}`,
     });
   };

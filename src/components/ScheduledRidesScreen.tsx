@@ -140,7 +140,7 @@ export const ScheduledRidesScreen: React.FC = () => {
     });
 
     toast({
-      title: "🎉 Ride Scheduled!",
+      title: "Ride Scheduled",
       description: `Your ride is booked for ${formatDate(newRide.date)} at ${newRide.time}`,
     });
   };

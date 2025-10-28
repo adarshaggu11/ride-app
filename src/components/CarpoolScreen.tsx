@@ -183,7 +183,7 @@ export const CarpoolScreen: React.FC = () => {
     const ride = availableRides.find(r => r.id === rideId);
     if (ride) {
       toast({
-        title: "🎉 Request Sent!",
+        title: "Request Sent",
         description: `Your carpool request has been sent to ${ride.driver.name}. You'll be notified once confirmed.`,
       });
     }
@@ -348,7 +348,7 @@ export const CarpoolScreen: React.FC = () => {
                       )}
                       {ride.preferences.noSmoking && (
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold">
-                          🚭 No Smoking
+                          No Smoking
                         </span>
                       )}
                     </div>

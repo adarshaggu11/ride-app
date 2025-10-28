@@ -178,7 +178,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
             {user.name.charAt(0).toUpperCase()}
           </button>
           <div>
-            <p className="font-bold text-foreground">Hello, {user.name}! 👋</p>
+            <p className="font-bold text-foreground">Hello, {user.name}</p>
             <p className="text-xs text-muted-foreground">Where would you like to go?</p>
           </div>
         </div>

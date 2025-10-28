@@ -69,10 +69,10 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
       if (data.success) {
         // In development, show the OTP in toast
         if (data.otp) {
-          console.log(`📱 OTP for ${phone}: ${data.otp}`);
+          console.log(`OTP for ${phone}: ${data.otp}`);
           setLastOtp(data.otp); // Store OTP for display
           toast({
-            title: "OTP Sent Successfully! 🎉",
+            title: "OTP Sent Successfully",
             description: `Your OTP is: ${data.otp} (Development Mode)`,
             duration: 10000, // Show for 10 seconds
           });
@@ -175,7 +175,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                   id: driverData.driver.id,
                   name: driverData.driver.name,
                   phone: driverData.driver.phone,
-                  avatar: "🚗",
+                  avatar: "",
                 });
                 
                 toast({
@@ -308,7 +308,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
       id: driverData.id,
       name: driverData.name,
       phone: driverData.phone,
-      avatar: "🚗",
+      avatar: "",
     };
 
     toast({
@@ -415,7 +415,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 )}
                 <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold">
-                    💡 Development Mode: Check the notification above or the backend terminal
+                    Development Mode: Check the notification above or the backend terminal
                   </p>
                 </div>
               </div>

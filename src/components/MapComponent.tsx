@@ -283,22 +283,20 @@ const MapComponent = ({
     // Clear existing markers
     nearbyMarkers.forEach(marker => marker.setMap(null));
 
-    // Create new markers for each driver
+    // Create new markers for each driver (using simple circle markers)
     const newMarkers = nearbyDrivers.map(driver => {
-      const icon = driver.type === 'auto' ? '🛺' : '🏍️';
+      const color = driver.type === 'auto' ? '#FFC107' : '#3b82f6';
       
       const marker = new google.maps.Marker({
         position: { lat: driver.lat, lng: driver.lng },
         map,
-        label: {
-          text: icon,
-          fontSize: "24px",
-        },
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 0.1,
-          fillOpacity: 0,
-          strokeOpacity: 0,
+          scale: 8,
+          fillColor: color,
+          fillOpacity: 1,
+          strokeColor: '#fff',
+          strokeWeight: 2,
         },
         title: `${driver.type === 'auto' ? 'Auto' : 'Bike'} Driver`,
         optimized: false,

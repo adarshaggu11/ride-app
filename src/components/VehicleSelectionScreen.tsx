@@ -248,7 +248,7 @@ const VehicleSelectionScreen = () => {
 
           {/* Payment Info */}
           <p className="text-center text-xs text-muted-foreground">
-            💳 Cash, UPI & Cards accepted • No hidden charges
+            Cash, UPI & Cards accepted - No hidden charges
           </p>
         </div>
       </div>
