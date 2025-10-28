@@ -145,7 +145,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
     if (!pickup || !drop) {
       return;
     }
-    navigate("/confirm-ride", { 
+    navigate("/vehicle-selection", { 
       state: { 
         pickup, 
         drop,

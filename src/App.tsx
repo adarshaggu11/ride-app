@@ -14,6 +14,8 @@ import SearchingScreen from "./components/SearchingScreen";
 import DriverAssignedScreen from "./components/DriverAssignedScreen";
 import TripOngoingScreen from "./components/TripOngoingScreen";
 import TripCompletedScreen from "./components/TripCompletedScreen";
+import VehicleSelectionScreen from "./components/VehicleSelectionScreen";
+import WalletScreen from "./components/WalletScreen";
 import ProfileScreen from "./components/ProfileScreen";
 import RideHistoryScreen from "./components/RideHistoryScreen";
 import PaymentMethodsScreen from "./components/PaymentMethodsScreen";
@@ -208,6 +210,18 @@ const App = () => {
               path="/help-support"
               element={
                 user ? <HelpSupportScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/wallet"
+              element={
+                user ? <WalletScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/vehicle-selection"
+              element={
+                user ? <VehicleSelectionScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route path="*" element={<NotFound />} />

@@ -14,6 +14,7 @@ import {
   Settings, 
   LogOut,
   ChevronRight,
+  Wallet,
   Star,
   Award
 } from "lucide-react";
@@ -48,6 +49,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
   };
 
   const menuItems = [
+    {
+      icon: Wallet,
+      label: "Wallet & Earnings",
+      labelTe: "వాలెట్ మరియు ఆదాయం",
+      route: "/wallet"
+    },
     {
       icon: History,
       label: "Ride History",
