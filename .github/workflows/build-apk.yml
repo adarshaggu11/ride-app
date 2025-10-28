@@ -28,10 +28,16 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Install Android SDK components (platform 35, build-tools)
+    - name: Verify Android SDK and install components
       run: |
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+        ls -la $ANDROID_HOME || echo "Android SDK not found"
         echo "Installing Android SDK components: platforms;android-35 and build-tools;35.0.0"
-        yes | sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list | head -20
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" || echo "Warning: sdkmanager failed"
+        echo "Verifying installation..."
+        ls -la $ANDROID_HOME/platforms/ || echo "No platforms installed"
 
     - name: Install dependencies
       run: npm ci
