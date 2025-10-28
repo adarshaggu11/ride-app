@@ -20,7 +20,8 @@ import {
   Info,
   Gift,
   Shield,
-  Calendar
+  Calendar,
+  Users
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -68,6 +69,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
       icon: Calendar,
       label: "Scheduled Rides",
       route: "/scheduled-rides"
+    },
+    {
+      icon: Users,
+      label: "Ride Sharing",
+      route: "/carpool",
+      badge: "50% OFF"
     },
     {
       icon: Shield,
