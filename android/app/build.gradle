@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.dropout.app"
+    namespace "com.ridesharing.app"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.dropout.app"
+        applicationId "com.ridesharing.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -18,10 +18,28 @@ android {
     }
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // TODO: Configure signing for release builds
+            // signingConfig signingConfigs.release
+        }
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
         }
     }
+    
+    // TODO: Uncomment and configure for release signing
+    // signingConfigs {
+    //     release {
+    //         storeFile file(KEYSTORE_FILE)
+    //         storePassword KEYSTORE_PASSWORD
+    //         keyAlias KEY_ALIAS
+    //         keyPassword KEY_PASSWORD
+    //     }
+    // }
+}
 }
 
 repositories {

@@ -1,11 +1,36 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.dropout.app',
-  appName: 'Dropout',
+  appId: 'com.ridesharing.app',
+  appName: 'RideShare',
   webDir: 'dist',
+  server: {
+    androidScheme: 'https'
+  },
   android: {
-    allowMixedContent: true
+    allowMixedContent: false,
+    buildOptions: {
+      keystorePath: undefined,
+      keystorePassword: undefined,
+      keystoreAlias: undefined,
+      keystoreAliasPassword: undefined,
+      releaseType: 'APK'
+    }
+  },
+  ios: {
+    contentInset: 'automatic'
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      backgroundColor: "#2563EB",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+      splashFullScreen: true,
+      splashImmersive: true
+    }
   }
 };
 

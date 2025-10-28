@@ -16,14 +16,32 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Optimize for production
+    minify: mode === 'production' ? 'terser' : 'esbuild',
+    terserOptions: mode === 'production' ? {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true,
+      },
+    } : undefined,
+    sourcemap: mode === 'development', // Only generate sourcemaps in dev
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': ['lucide-react', '@radix-ui/react-avatar', '@radix-ui/react-dialog', '@radix-ui/react-toast'],
+          'map-vendor': ['@googlemaps/js-api-loader'],
+          'utils': ['date-fns', 'clsx', 'tailwind-merge'],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
+    // Optimize assets
+    assetsInlineLimit: 4096, // 4kb
+    cssCodeSplit: true,
+  },
+  // Enable compression for production
+  esbuild: {
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
   },
 }));
