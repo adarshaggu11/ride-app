@@ -33,8 +33,8 @@ const SearchingScreen = () => {
       <Card className="rounded-t-3xl shadow-2xl border-t">
         <div className="p-6 space-y-6 text-center">
           <div>
-            <h2 className="text-2xl font-bold mb-1">Finding Auto...</h2>
-            <p className="text-lg font-semibold text-primary">ఆటో వెతుకుతోంది...</p>
+            <h2 className="text-2xl font-bold mb-1">Finding Your Ride...</h2>
+            <p className="text-lg font-semibold text-primary">Searching for drivers nearby</p>
           </div>
 
           <div className="py-6">
@@ -46,10 +46,7 @@ const SearchingScreen = () => {
           </div>
 
           <p className="text-muted-foreground">
-            Please wait while we find the nearest auto for you
-          </p>
-          <p className="text-sm text-muted-foreground">
-            మీ కోసం సమీప ఆటోను కనుగొనే వరకు దయచేసి వేచి ఉండండి
+            Please wait while we find the nearest driver for you
           </p>
 
           <Button
@@ -57,7 +54,7 @@ const SearchingScreen = () => {
             variant="outline"
             className="w-full h-12"
           >
-            Cancel | రద్దు చేయండి
+            Cancel
           </Button>
         </div>
       </Card>

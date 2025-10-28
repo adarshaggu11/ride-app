@@ -52,37 +52,31 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
     {
       icon: Wallet,
       label: "Wallet & Earnings",
-      labelTe: "వాలెట్ మరియు ఆదాయం",
       route: "/wallet"
     },
     {
       icon: History,
       label: "Ride History",
-      labelTe: "రైడ్ చరిత్ర",
       route: "/ride-history"
     },
     {
       icon: CreditCard,
       label: "Payment Methods",
-      labelTe: "చెల్లింపు పద్ధతులు",
       route: "/payment-methods"
     },
     {
       icon: MapPin,
       label: "Saved Addresses",
-      labelTe: "సేవ్ చేసిన చిరునామాలు",
       route: "/saved-addresses"
     },
     {
       icon: HelpCircle,
       label: "Help & Support",
-      labelTe: "సహాయం & మద్దతు",
       route: "/help-support"
     },
     {
       icon: Settings,
       label: "Settings",
-      labelTe: "సెట్టింగ్‌లు",
       route: "/settings"
     }
   ];
@@ -100,7 +94,7 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
           >
             <ChevronRight className="w-6 h-6 rotate-180" />
           </Button>
-          <h1 className="text-xl font-bold">Profile | ప్రొఫైల్</h1>
+          <h1 className="text-xl font-bold">Profile</h1>
           <div className="w-10" />
         </div>
 
@@ -153,7 +147,6 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
               </div>
               <div className="flex-1">
                 <p className="font-semibold">{item.label}</p>
-                <p className="text-sm text-muted-foreground">{item.labelTe}</p>
               </div>
               <ChevronRight className="w-5 h-5 text-muted-foreground" />
             </div>
@@ -165,13 +158,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
           className="p-4 cursor-pointer hover:bg-destructive/10 transition-colors border-destructive/20"
           onClick={handleLogout}
         >
-          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-destructive/10 rounded-full flex items-center justify-center">
               <LogOut className="w-5 h-5 text-destructive" />
             </div>
             <div className="flex-1">
               <p className="font-semibold text-destructive">Logout</p>
-              <p className="text-sm text-destructive/70">లాగ్ అవుట్</p>
             </div>
           </div>
         </Card>

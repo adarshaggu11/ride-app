@@ -107,7 +107,7 @@ const DriverAssignedScreen = () => {
               variant="outline"
               className="w-full h-12"
             >
-              Cancel Ride | రైడ్ రద్దు చేయండి
+              Cancel Ride
             </Button>
           </div>
         </div>

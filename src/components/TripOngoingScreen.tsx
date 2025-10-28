@@ -114,7 +114,7 @@ const TripOngoingScreen = () => {
               Your ride is being tracked. Use SOS button in emergency.
             </p>
             <p className="text-xs text-muted-foreground">
-              మీ రైడ్ ట్రాక్ చేయబడుతోంది. అత్యవసర పరిస్థితుల్లో SOS బటన్‌ను ఉపయోగించండి.
+              Your ride is being tracked. Use SOS button in case of emergency.
             </p>
           </div>
         </div>

@@ -357,12 +357,12 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                   {userType === "customer" ? "Book Your Ride" : "Partner with Us"}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  {userType === "customer" ? "మీ రైడ్‌ను బుక్ చేయండి" : "మాతో భాగస్వామి అవ్వండి"}
+                  Enter your mobile number to continue
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Mobile Number | మొబైల్ నంబర్</Label>
+                <Label htmlFor="phone">Mobile Number</Label>
                 <div className="flex gap-2">
                   <div className="w-16 h-12 bg-muted rounded-md flex items-center justify-center font-semibold">
                     +91
@@ -387,7 +387,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 className="w-full h-12 text-lg font-semibold"
                 disabled={loading || phone.length !== 10}
               >
-                {loading ? "Sending OTP..." : "Send OTP | OTP పంపండి"}
+                {loading ? "Sending OTP..." : "Send OTP"}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
@@ -440,7 +440,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                     onClick={handleResendOTP}
                     className="text-sm text-primary hover:underline font-semibold"
                   >
-                    Resend OTP | OTP మళ్లీ పంపండి
+                    Resend OTP
                   </button>
                 ) : (
                   <p className="text-sm text-muted-foreground">

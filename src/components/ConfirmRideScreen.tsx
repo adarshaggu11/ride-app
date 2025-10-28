@@ -81,7 +81,7 @@ const ConfirmRideScreen = () => {
         <div className="p-6 space-y-6">
           <div>
             <h2 className="text-2xl font-bold mb-1">Confirm Your Ride</h2>
-            <p className="text-lg font-semibold text-primary">మీ రైడ్‌ను నిర్ధారించండి</p>
+            <p className="text-lg font-semibold text-primary">Confirm Your Ride</p>
           </div>
 
           <div className="space-y-4">
