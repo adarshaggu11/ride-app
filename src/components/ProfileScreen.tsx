@@ -16,7 +16,8 @@ import {
   ChevronRight,
   Wallet,
   Star,
-  Award
+  Award,
+  Info
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -42,7 +43,7 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
   const handleLogout = () => {
     toast({
       title: "Logged out successfully",
-      description: "విజయవంతంగా లాగ్ అవుట్ అయ్యారు",
+      description: "You have been logged out from your account",
     });
     onLogout();
     navigate("/auth");
@@ -78,6 +79,11 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
       icon: Settings,
       label: "Settings",
       route: "/settings"
+    },
+    {
+      icon: Info,
+      label: "About",
+      route: "/about"
     }
   ];
 

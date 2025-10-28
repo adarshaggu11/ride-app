@@ -16,9 +16,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 interface FAQ {
   question: string;
-  questionTe: string;
   answer: string;
-  answerTe: string;
 }
 
 const HelpSupportScreen = () => {
@@ -27,51 +25,35 @@ const HelpSupportScreen = () => {
   const faqs: FAQ[] = [
     {
       question: "How do I book a ride?",
-      questionTe: "నేను రైడ్‌ను ఎలా బుక్ చేయాలి?",
-      answer: "Enter your pickup and drop locations, confirm the fare, and we'll find a nearby auto for you within seconds!",
-      answerTe: "మీ పికప్ మరియు డ్రాప్ లొకేషన్‌లను నమోదు చేయండి, ధరను నిర్ధారించండి, మరియు మేము సెకన్లలో మీకు సమీప ఆటోను కనుగొంటాము!"
+      answer: "Enter your pickup and drop locations, confirm the fare, and we'll find a nearby auto for you within seconds!"
     },
     {
       question: "How is the fare calculated?",
-      questionTe: "ధర ఎలా లెక్కించబడుతుంది?",
-      answer: "Fare is calculated based on distance: ₹20 base fare + ₹12 per kilometer. The exact fare is shown before booking.",
-      answerTe: "దూరం ఆధారంగా ధర లెక్కించబడుతుంది: ₹20 బేస్ ఛార్జ్ + కిలోమీటరుకు ₹12. ఖచ్చితమైన ధర బుకింగ్‌కు ముందు చూపబడుతుంది."
+      answer: "Fare is calculated based on distance: ₹20 base fare + ₹12 per kilometer. The exact fare is shown before booking."
     },
     {
       question: "Can I cancel my ride?",
-      questionTe: "నేను నా రైడ్‌ను రద్దు చేయవచ్చా?",
-      answer: "Yes, you can cancel before the driver arrives. No cancellation charges if cancelled within 2 minutes of booking.",
-      answerTe: "అవును, డ్రైవర్ వచ్చేలోపు మీరు రద్దు చేయవచ్చు. బుకింగ్ తర్వాత 2 నిమిషాలలోపు రద్దు చేస్తే రద్దు ఛార్జీలు లేవు."
+      answer: "Yes, you can cancel before the driver arrives. No cancellation charges if cancelled within 2 minutes of booking."
     },
     {
       question: "What payment methods are accepted?",
-      questionTe: "ఏ చెల్లింపు పద్ధతులు అంగీకరించబడతాయి?",
-      answer: "Currently, we accept Cash and UPI payments (Google Pay, PhonePe, Paytm). Card payment coming soon!",
-      answerTe: "ప్రస్తుతం, మేము నగదు మరియు UPI చెల్లింపులను అంగీకరిస్తాము (Google Pay, PhonePe, Paytm). కార్డ్ చెల్లింపు త్వరలో!"
+      answer: "Currently, we accept Cash and UPI payments (Google Pay, PhonePe, Paytm). Card payment coming soon!"
     },
     {
       question: "How do I contact my driver?",
-      questionTe: "నేను నా డ్రైవర్‌ను ఎలా సంప్రదించాలి?",
-      answer: "Once a driver is assigned, you'll see a call button on the ride screen to contact them directly.",
-      answerTe: "డ్రైవర్ కేటాయించబడిన తర్వాత, వారిని నేరుగా సంప్రదించడానికి రైడ్ స్క్రీన్‌పై కాల్ బటన్ కనిపిస్తుంది."
+      answer: "Once a driver is assigned, you'll see a call button on the ride screen to contact them directly."
     },
     {
       question: "Is my ride safe and tracked?",
-      questionTe: "నా రైడ్ సురక్షితమా మరియు ట్రాక్ చేయబడుతుందా?",
-      answer: "Yes! All rides are tracked in real-time. You can share your ride with family/friends for added safety. SOS button available in emergencies.",
-      answerTe: "అవును! అన్ని రైడ్‌లు రియల్-టైమ్‌లో ట్రాక్ చేయబడతాయి. అదనపు భద్రత కోసం మీ రైడ్‌ను కుటుంబం/స్నేహితులతో పంచుకోవచ్చు. అత్యవసర పరిస్థితుల్లో SOS బటన్ అందుబాటులో ఉంది."
+      answer: "Yes! All rides are tracked in real-time. You can share your ride with family/friends for added safety. SOS button available in emergencies."
     },
     {
       question: "How do I rate my driver?",
-      questionTe: "నేను నా డ్రైవర్‌ను ఎలా రేట్ చేయాలి?",
-      answer: "After completing your ride, you'll be asked to rate your experience from 1-5 stars and optionally leave a review.",
-      answerTe: "మీ రైడ్ పూర్తి చేసిన తర్వాత, 1-5 నక్షత్రాల నుండి మీ అనుభవాన్ని రేట్ చేయమని మరియు ఐచ్ఛికంగా సమీక్షను వదిలివేయమని అడగబడుతుంది."
+      answer: "After completing your ride, you'll be asked to rate your experience from 1-5 stars and optionally leave a review."
     },
     {
       question: "What if I left something in the auto?",
-      questionTe: "నేను ఆటోలో ఏదైనా మర్చిపోతే?",
-      answer: "Contact our support team immediately with your ride details. We'll help you connect with the driver to retrieve your item.",
-      answerTe: "మీ రైడ్ వివరాలతో వెంటనే మా సపోర్ట్ టీమ్‌ను సంప్రదించండి. మీ వస్తువును తిరిగి పొందడానికి డ్రైవర్‌తో కనెక్ట్ అవ్వడానికి మేము మీకు సహాయం చేస్తాము."
+      answer: "Contact our support team immediately with your ride details. We'll help you connect with the driver to retrieve your item."
     }
   ];
 
@@ -157,12 +139,10 @@ const HelpSupportScreen = () => {
                 <AccordionTrigger className="hover:no-underline">
                   <div className="text-left">
                     <p className="font-semibold">{faq.question}</p>
-                    <p className="text-sm text-muted-foreground">{faq.questionTe}</p>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pt-2 pb-4">
-                  <p className="text-sm mb-2">{faq.answer}</p>
-                  <p className="text-sm text-muted-foreground">{faq.answerTe}</p>
+                  <p className="text-sm">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -191,9 +171,6 @@ const HelpSupportScreen = () => {
         {/* Support Hours */}
         <Card className="p-4 bg-primary/5 border-primary/20">
           <p className="text-sm text-center font-semibold">24/7 Support Available</p>
-          <p className="text-xs text-center text-muted-foreground mt-1">
-            24/7 మద్దతు అందుబాటులో ఉంది
-          </p>
           <p className="text-xs text-center text-muted-foreground mt-2">
             We're here to help you anytime, anywhere!
           </p>

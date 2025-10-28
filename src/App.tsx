@@ -22,6 +22,8 @@ import PaymentMethodsScreen from "./components/PaymentMethodsScreen";
 import HelpSupportScreen from "./components/HelpSupportScreen";
 import NotificationsScreen from "./components/NotificationsScreen";
 import SettingsScreen from "./components/SettingsScreen";
+import SavedAddressesScreen from "./components/SavedAddressesScreen";
+import AboutScreen from "./components/AboutScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -224,6 +226,18 @@ const App = () => {
               path="/settings"
               element={
                 user ? <SettingsScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/saved-addresses"
+              element={
+                user ? <SavedAddressesScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                user ? <AboutScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route
