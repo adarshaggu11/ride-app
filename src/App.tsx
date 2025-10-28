@@ -35,6 +35,7 @@ import { CarpoolScreen } from "./components/CarpoolScreen";
 import { DriverDashboardScreen } from "./components/DriverDashboardScreen";
 import RideEstimatorDemo from "./components/RideEstimatorDemo";
 import RideValidationDemo from "./components/RideValidationDemo";
+import SetupStatusScreen from "./components/SetupStatusScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -381,7 +382,8 @@ const App = () => {
               }
             />
 
-            {/* Demo/Testing Routes - Accessible without auth for testing */}
+            {/* Setup & Testing Routes - Accessible without auth */}
+            <Route path="/setup-status" element={<SetupStatusScreen />} />
             <Route path="/demo/estimator" element={<RideEstimatorDemo />} />
             <Route path="/demo/validator" element={<RideValidationDemo />} />
 
