@@ -172,7 +172,7 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
 
       {/* Version Info */}
       <p className="text-center text-xs text-muted-foreground mt-8 mb-6">
-        Mana Auto Oka Ride v1.0.0
+        © 2025 Dropout • v1.0.0
       </p>
     </div>
   );

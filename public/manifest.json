@@ -1,7 +1,7 @@
 {
-  "name": "Mana Auto Oka Ride",
-  "short_name": "ManaAuto",
-  "description": "Book auto-rickshaws in Telugu regions with ease",
+  "name": "Dropout",
+  "short_name": "Dropout",
+  "description": "Fast & free ride booking app",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

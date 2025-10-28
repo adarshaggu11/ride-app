@@ -120,7 +120,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Mana Auto', options)
+    self.registration.showNotification(data.title || 'Dropout', options)
   );
 });
 

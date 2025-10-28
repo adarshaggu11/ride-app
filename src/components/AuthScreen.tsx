@@ -270,7 +270,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
 
         toast({
           title: "Registration Successful!",
-          description: "Welcome to Mana Auto Oka Ride!",
+          description: "Welcome to Dropout!",
         });
 
         onLogin(userData);
@@ -324,14 +324,14 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-6 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-primary via-accent to-yellow-400 flex flex-col px-6 py-8">
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto bg-primary rounded-2xl flex items-center justify-center mb-4">
-            <span className="text-4xl font-bold text-white">🚗</span>
+          <div className="w-20 h-20 mx-auto bg-white rounded-2xl shadow-lg flex items-center justify-center mb-4">
+            <span className="text-4xl font-bold text-primary">D</span>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Mana Auto Oka Ride</h1>
-          <p className="text-muted-foreground">మన ఆటో ఒక రైడ్</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Dropout</h1>
+          <p className="text-muted-foreground">Your Ride, Your Way</p>
         </div>
 
         {step === "phone" && (

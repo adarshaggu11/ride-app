@@ -32,11 +32,11 @@ const SplashScreen = () => {
         {/* App Name with Gradient Text */}
         <div className="space-y-3">
           <h1 className="text-6xl font-extrabold text-secondary tracking-tight">
-            Mana<span className="text-white">Auto</span>
+            Drop<span className="text-white">out</span>
           </h1>
           <div className="flex items-center justify-center gap-2">
             <div className="h-1 w-12 bg-white/40 rounded-full"></div>
-            <p className="text-2xl font-semibold text-white/90">మన పయణ. మన రైడ్.</p>
+            <p className="text-2xl font-semibold text-white/90">Your Ride, Your Way</p>
             <div className="h-1 w-12 bg-white/40 rounded-full"></div>
           </div>
         </div>
