@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Vehicle } from "@/services/vehicleTrackingService";
 
 interface Driver {
   id: number;
@@ -16,6 +17,8 @@ interface MapComponentProps {
   driverLocation?: { lat: number; lng: number };
   showDriverMarker?: boolean;
   nearbyDrivers?: Driver[];
+  nearbyVehicles?: Vehicle[]; // New prop for real-time tracking
+  vehicleType?: 'bike' | 'auto' | 'car'; // Filter by vehicle type
   showUserLocation?: boolean;
   onMapLoad?: (map: google.maps.Map) => void;
   className?: string;
@@ -30,6 +33,8 @@ const MapComponent = ({
   driverLocation,
   showDriverMarker = false,
   nearbyDrivers = [],
+  nearbyVehicles = [], // New vehicles with real-time tracking
+  vehicleType, // Filter by vehicle type
   showUserLocation = true,
   onMapLoad,
   className = "w-full h-full",
@@ -38,6 +43,7 @@ const MapComponent = ({
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [driverMarker, setDriverMarker] = useState<google.maps.Marker | null>(null);
   const [nearbyMarkers, setNearbyMarkers] = useState<google.maps.Marker[]>([]);
+  const [vehicleMarkers, setVehicleMarkers] = useState<Map<string, google.maps.Marker>>(new Map());
   const [userMarker, setUserMarker] = useState<google.maps.Marker | null>(null);
   const [routePolyline, setRoutePolyline] = useState<google.maps.Polyline | null>(null);
   const [loading, setLoading] = useState(true);
@@ -90,9 +96,6 @@ const MapComponent = ({
         }
         
         if (!window.google?.maps) {
-          throw new Error('Google Maps API not available after loading');
-        }
-
         console.log('Creating map instance...');
         const mapInstance = new google.maps.Map(mapRef.current, {
           center,
@@ -109,6 +112,8 @@ const MapComponent = ({
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
+          tilt: 45, // Enable 3D tilt
+          heading: 0, // Initial heading
         });
 
         console.log('Map instance created:', mapInstance);
@@ -271,9 +276,7 @@ const MapComponent = ({
     } else {
       userMarker.setPosition(center);
     }
-  }, [map, center, showUserLocation]);
-
-  // Show nearby drivers (autos/bikes)
+  // Show nearby drivers (autos/bikes) - Legacy support
   useEffect(() => {
     if (!map || nearbyDrivers.length === 0) return;
 
@@ -311,8 +314,135 @@ const MapComponent = ({
     };
   }, [map, nearbyDrivers]);
 
-  // Smooth marker animation
-  const animateMarker = (marker: google.maps.Marker, newPosition: { lat: number; lng: number }) => {
+  // Show nearby vehicles with real-time tracking and 3D markers
+  useEffect(() => {
+    if (!map || !window.google?.maps) return;
+
+    // Filter vehicles by type if specified
+    const filteredVehicles = vehicleType 
+      ? nearbyVehicles.filter(v => v.type === vehicleType)
+      : nearbyVehicles;
+
+    // Get current markers
+    const currentMarkers = new Map(vehicleMarkers);
+    const vehicleIds = new Set(filteredVehicles.map(v => v.id));
+
+    // Remove markers for vehicles that no longer exist
+    currentMarkers.forEach((marker, id) => {
+      if (!vehicleIds.has(id)) {
+        marker.setMap(null);
+        currentMarkers.delete(id);
+      }
+    });
+
+    // Update or create markers for each vehicle
+    filteredVehicles.forEach(vehicle => {
+      const existingMarker = currentMarkers.get(vehicle.id);
+
+      // Get vehicle icon based on type
+      const vehicleIcon = getVehicleIcon(vehicle.type, vehicle.bearing);
+
+      if (existingMarker) {
+        // Update existing marker with smooth animation
+        animateMarkerToPosition(existingMarker, {
+          lat: vehicle.lat,
+          lng: vehicle.lng
+        }, vehicle.bearing);
+        
+        // Update icon with new bearing
+        existingMarker.setIcon(vehicleIcon);
+      } else {
+        // Create new marker with 3D effect
+        const marker = new google.maps.Marker({
+          position: { lat: vehicle.lat, lng: vehicle.lng },
+          map,
+          icon: vehicleIcon,
+          title: `${vehicle.type.charAt(0).toUpperCase() + vehicle.type.slice(1)} - ${vehicle.driver.name}`,
+          optimized: false,
+          zIndex: 1000,
+        });
+
+        // Add click listener to show vehicle info
+        marker.addListener('click', () => {
+          const infoWindow = new google.maps.InfoWindow({
+            content: `
+              <div style="padding: 8px; font-family: system-ui;">
+                <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">
+                  ${vehicle.type.charAt(0).toUpperCase() + vehicle.type.slice(1)}
+                </h3>
+                <p style="margin: 4px 0; font-size: 12px;">
+                  <strong>Driver:</strong> ${vehicle.driver.name}
+                </p>
+                <p style="margin: 4px 0; font-size: 12px;">
+                  <strong>Rating:</strong> ⭐ ${vehicle.driver.rating.toFixed(1)}
+                </p>
+                <p style="margin: 4px 0; font-size: 12px;">
+                  <strong>Vehicle:</strong> ${vehicle.driver.vehicleNumber}
+                </p>
+                <p style="margin: 4px 0; font-size: 12px; color: ${vehicle.status === 'available' ? '#22c55e' : '#ef4444'};">
+                  <strong>Status:</strong> ${vehicle.status === 'available' ? '✓ Available' : '✕ Busy'}
+                </p>
+              </div>
+            `,
+          });
+          infoWindow.open(map, marker);
+        });
+
+        currentMarkers.set(vehicle.id, marker);
+      }
+    });
+
+    setVehicleMarkers(currentMarkers);
+
+    // Cleanup on unmount
+    return () => {
+      currentMarkers.forEach(marker => marker.setMap(null));
+    };
+  }, [map, nearbyVehicles, vehicleType]);
+
+  // Get 3D vehicle icon with rotation based on bearing
+  const getVehicleIcon = (type: 'bike' | 'auto' | 'car', bearing: number) => {
+    const colors = {
+      bike: '#3b82f6', // Blue
+      auto: '#FFC107', // Yellow
+      car: '#8b5cf6', // Purple
+    };
+
+    // SVG path for vehicle marker with arrow pointing direction
+    const svgPath = `
+      <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.3"/>
+          </filter>
+        </defs>
+        <g transform="translate(20, 20) rotate(${bearing})">
+          <!-- Vehicle body -->
+          <circle cx="0" cy="0" r="12" fill="${colors[type]}" filter="url(#shadow)"/>
+          <circle cx="0" cy="0" r="10" fill="white" opacity="0.3"/>
+          
+          <!-- Direction arrow -->
+          <path d="M 0,-8 L 4,0 L 0,-4 L -4,0 Z" fill="white"/>
+        </g>
+        
+        <!-- Availability indicator -->
+        <circle cx="32" cy="8" r="4" fill="#22c55e" stroke="white" stroke-width="2"/>
+      </svg>
+    `;
+
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgPath),
+      scaledSize: new google.maps.Size(40, 40),
+      anchor: new google.maps.Point(20, 20),
+    };
+  };
+
+  // Animate marker to new position with bearing rotation
+  const animateMarkerToPosition = (
+    marker: google.maps.Marker,
+    newPosition: { lat: number; lng: number },
+    bearing: number
+  ) => {
     const currentPos = marker.getPosition();
     if (!currentPos) return;
 
@@ -322,12 +452,12 @@ const MapComponent = ({
     const endLng = newPosition.lng;
 
     let step = 0;
-    const steps = 60; // 60 frames for smooth animation
-    const interval = 1000 / 60; // 60 FPS
+    const steps = 30; // Smoother animation with more steps
+    const interval = 2000 / steps; // Complete in 2 seconds
 
     const animate = () => {
       step++;
-      const progress = step / steps;
+      const progress = easeInOutQuad(step / steps);
 
       const lat = startLat + (endLat - startLat) * progress;
       const lng = startLng + (endLng - startLng) * progress;
@@ -340,6 +470,11 @@ const MapComponent = ({
     };
 
     animate();
+  };
+
+  // Easing function for smooth animation
+  const easeInOutQuad = (t: number): number => {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
   };
 
   if (error) {

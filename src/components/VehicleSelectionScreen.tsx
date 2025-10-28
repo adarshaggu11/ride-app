@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Bike, Car, Users, Clock, MapPin } from "lucide-react";
 import MapComponent from "./MapComponent";
+import { vehicleTrackingService, Vehicle } from "@/services/vehicleTrackingService";
 
 interface VehicleOption {
   id: string;
@@ -22,8 +23,8 @@ const VehicleSelectionScreen = () => {
   const location = useLocation();
   const { pickup, drop, pickupCoords, dropCoords } = location.state || {};
   
-  const [selectedVehicle, setSelectedVehicle] = useState<string>("bike");
-
+  const [selectedVehicle, setSelectedVehicle] = useState<string>("auto");
+  const [nearbyVehicles, setNearbyVehicles] = useState<Vehicle[]>([]);
   const vehicles: VehicleOption[] = [
     {
       id: "bike",
@@ -60,6 +61,26 @@ const VehicleSelectionScreen = () => {
     }
   ];
 
+  // Track vehicles on map based on selected type
+  useEffect(() => {
+    if (!pickupCoords) return;
+
+    // Subscribe to vehicle updates
+    const unsubscribe = vehicleTrackingService.subscribe((vehicles) => {
+      const vehicleType = selectedVehicle as 'bike' | 'auto' | 'car';
+      const nearby = vehicleTrackingService.getNearbyVehicles(
+        pickupCoords.lat,
+        pickupCoords.lng,
+        5,
+        vehicleType
+      );
+      setNearbyVehicles(nearby);
+    });
+
+    return () => unsubscribe();
+  }, [pickupCoords, selectedVehicle]);}
+  ];
+
   const handleContinue = () => {
     const vehicle = vehicles.find(v => v.id === selectedVehicle);
     navigate("/confirm-ride", {
@@ -76,17 +97,20 @@ const VehicleSelectionScreen = () => {
       }
     });
   };
+      {/* Map Section */}
+      <div className="flex-1 relative overflow-hidden">
+        <MapComponent
+          center={pickupCoords || { lat: 17.385, lng: 78.486 }}
+          zoom={14}
+          showRoute={false}
+          showDriverMarker={false}
+          nearbyVehicles={nearbyVehicles}
+          vehicleType={selectedVehicle as 'bike' | 'auto' | 'car'}
+          showUserLocation={true}
+          className="absolute inset-0 w-full h-full"
+        />
 
-  return (
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="glass shadow-lg p-4 flex items-center gap-3 flex-shrink-0 border-b z-20">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-          className="rounded-full hover:bg-primary/10"
-        >
+        {/* Route Info Overlay */}
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div className="flex-1">
@@ -100,10 +124,18 @@ const VehicleSelectionScreen = () => {
         <MapComponent
           center={pickupCoords || { lat: 17.385, lng: 78.486 }}
           zoom={13}
-          showRoute={false}
-          showDriverMarker={false}
-          className="absolute inset-0 w-full h-full"
-        />
+            </div>
+          </div>
+        </div>
+
+        {/* Nearby Vehicles Count */}
+        <div className="absolute bottom-4 left-4 glass-dark px-4 py-2 rounded-full shadow-lg">
+          <p className="text-white text-sm font-semibold flex items-center gap-2">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            {nearbyVehicles.length} nearby
+          </p>
+        </div>
+      </div>
 
         {/* Route Info Overlay */}
         <div className="absolute top-4 left-4 right-4 glass-dark p-3 rounded-xl">

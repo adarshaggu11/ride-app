@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { MapPin, Navigation, Menu, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import MapComponent from "./MapComponent";
+import { vehicleTrackingService, Vehicle } from "@/services/vehicleTrackingService";
 
 interface HomeScreenProps {
   user: { id: string; name: string; phone: string; avatar: string };
@@ -21,13 +22,8 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
   const dropInputRef = useRef<HTMLInputElement>(null);
   const [pickupAutocomplete, setPickupAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [dropAutocomplete, setDropAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-  const [nearbyDrivers, setNearbyDrivers] = useState<Array<{id: number; lat: number; lng: number; type: 'auto' | 'bike'}>>([
-    { id: 1, lat: 17.390, lng: 78.490, type: 'auto' as const },
-    { id: 2, lat: 17.380, lng: 78.480, type: 'auto' as const },
-    { id: 3, lat: 17.388, lng: 78.495, type: 'bike' as const },
-    { id: 4, lat: 17.382, lng: 78.488, type: 'auto' as const },
-    { id: 5, lat: 17.392, lng: 78.485, type: 'bike' as const },
-  ]);
+  const [nearbyVehicles, setNearbyVehicles] = useState<Vehicle[]>([]);
+  const [selectedVehicleType, setSelectedVehicleType] = useState<'bike' | 'auto' | 'car' | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,16 +31,31 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
     getCurrentLocation();
     
     // Simulate nearby drivers moving
-    const interval = setInterval(() => {
-      setNearbyDrivers(prev => prev.map(driver => ({
-        ...driver,
-        lat: driver.lat + (Math.random() - 0.5) * 0.001,
-        lng: driver.lng + (Math.random() - 0.5) * 0.001,
-      })));
-    }, 3000); // Update every 3 seconds
+  useEffect(() => {
+    // Get current location on mount
+    getCurrentLocation();
+    
+    // Initialize vehicle tracking service
+    vehicleTrackingService.initializeMockVehicles(currentLocation, 20);
+    vehicleTrackingService.startTracking();
 
-    return () => clearInterval(interval);
-  }, []);
+    // Subscribe to vehicle updates
+    const unsubscribe = vehicleTrackingService.subscribe((vehicles) => {
+      // Get vehicles within 5km radius
+      const nearby = vehicleTrackingService.getNearbyVehicles(
+        currentLocation.lat,
+        currentLocation.lng,
+        5,
+        selectedVehicleType
+      );
+      setNearbyVehicles(nearby);
+    });
+
+    return () => {
+      unsubscribe();
+      vehicleTrackingService.stopTracking();
+    };
+  }, [currentLocation, selectedVehicleType]);
 
   // Initialize Google Places Autocomplete
   useEffect(() => {
@@ -176,11 +187,6 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
           size="icon"
           onClick={() => navigate("/profile")}
           className="hover:bg-primary/10 rounded-full"
-        >
-          <User className="w-5 h-5 text-primary" />
-        </Button>
-      </header>
-
       {/* Map Area with Current Location */}
       <div className="flex-1 relative overflow-hidden">
         <MapComponent
@@ -188,7 +194,8 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
           zoom={15}
           showDriverMarker={false}
           showRoute={false}
-          nearbyDrivers={nearbyDrivers}
+          nearbyVehicles={nearbyVehicles}
+          vehicleType={selectedVehicleType}
           showUserLocation={true}
           className="absolute inset-0 w-full h-full"
         />
@@ -201,9 +208,50 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
           <Navigation className="w-6 h-6 text-primary" />
         </button>
 
-        {/* Nearby Drivers Count Badge */}
-        <div className="absolute top-6 left-6 glass-dark px-4 py-2 rounded-full shadow-lg z-10">
+        {/* Vehicle Type Filter */}
+        <div className="absolute top-6 left-6 flex gap-2 z-10">
+          <button
+            onClick={() => setSelectedVehicleType(undefined)}
+            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
+              !selectedVehicleType ? 'ring-2 ring-white' : 'opacity-70'
+            }`}
+          >
+            All ({nearbyVehicles.length})
+          </button>
+          <button
+            onClick={() => setSelectedVehicleType('bike')}
+            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
+              selectedVehicleType === 'bike' ? 'ring-2 ring-white' : 'opacity-70'
+            }`}
+          >
+            Bikes ({vehicleTrackingService.getVehiclesByType('bike').length})
+          </button>
+          <button
+            onClick={() => setSelectedVehicleType('auto')}
+            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
+              selectedVehicleType === 'auto' ? 'ring-2 ring-white' : 'opacity-70'
+            }`}
+          >
+            Autos ({vehicleTrackingService.getVehiclesByType('auto').length})
+          </button>
+          <button
+            onClick={() => setSelectedVehicleType('car')}
+            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
+              selectedVehicleType === 'car' ? 'ring-2 ring-white' : 'opacity-70'
+            }`}
+          >
+            Cars ({vehicleTrackingService.getVehiclesByType('car').length})
+          </button>
+        </div>
+
+        {/* Live Status Indicator */}
+        <div className="absolute bottom-6 left-6 glass-dark px-4 py-2 rounded-full shadow-lg z-10">
           <p className="text-white text-sm font-semibold flex items-center gap-2">
+            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            Live Tracking
+          </p>
+        </div>
+      </div> className="text-white text-sm font-semibold flex items-center gap-2">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
             {nearbyDrivers.length} autos nearby
           </p>
