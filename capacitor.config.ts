@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.ridesharing.app',
-  appName: 'RideShare',
+  appId: 'com.taxi.app',
+  appName: 'Taxi',
   webDir: 'dist',
   server: {
     androidScheme: 'https'
@@ -24,7 +24,7 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: true,
-      backgroundColor: "#2563EB",
+      backgroundColor: "#FFC107",
       androidSplashResourceName: "splash",
       androidScaleType: "CENTER_CROP",
       showSpinner: false,

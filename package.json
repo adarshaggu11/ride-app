@@ -1,8 +1,8 @@
 {
-  "name": "ride-sharing-app",
+  "name": "taxi-booking-app",
   "private": true,
   "version": "1.0.0",
-  "description": "Modern ride-sharing application with real-time tracking, safety features, and driver mode",
+  "description": "Modern taxi booking application with real-time tracking, safety features, and driver mode",
   "type": "module",
   "scripts": {
     "dev": "vite",
