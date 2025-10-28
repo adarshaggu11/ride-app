@@ -18,7 +18,8 @@ import {
   Star,
   Award,
   Info,
-  Gift
+  Gift,
+  Shield
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -61,6 +62,12 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
       label: "Refer & Earn",
       route: "/referral",
       badge: "₹100"
+    },
+    {
+      icon: Shield,
+      label: "Emergency & Safety",
+      route: "/emergency",
+      badge: "SOS"
     },
     {
       icon: History,

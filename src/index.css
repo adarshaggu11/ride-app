@@ -240,25 +240,6 @@ All colors MUST be HSL.
     background: hsl(var(--accent));
   }
 
-  /* Playful Card Styles */
-  .card-playful {
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .card-playful:active {
-    transform: translateY(4px);
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  /* Playful Button Styles */
-  .btn-playful {
-    border-radius: 2rem;
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent));
-  }
-
   /* Professional shadows */
   .shadow-soft {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
