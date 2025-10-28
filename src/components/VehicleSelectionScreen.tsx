@@ -9,6 +9,7 @@ interface VehicleOption {
   id: string;
   name: string;
   icon: typeof Bike;
+  image: string;
   price: number;
   duration: string;
   capacity: string;
@@ -28,6 +29,7 @@ const VehicleSelectionScreen = () => {
       id: "bike",
       name: "Bike",
       icon: Bike,
+      image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&h=300&fit=crop",
       price: 49,
       duration: "8-11 min",
       capacity: "1 person",
@@ -38,6 +40,7 @@ const VehicleSelectionScreen = () => {
       id: "auto",
       name: "Auto",
       icon: Users,
+      image: "https://images.unsplash.com/photo-1590642916589-592bca10dfbf?w=400&h=300&fit=crop",
       price: 85,
       duration: "10-15 min",
       capacity: "3 persons",
@@ -48,6 +51,7 @@ const VehicleSelectionScreen = () => {
       id: "car",
       name: "Car",
       icon: Car,
+      image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=300&fit=crop",
       price: 120,
       duration: "12-18 min",
       capacity: "4 persons",
@@ -152,9 +156,14 @@ const VehicleSelectionScreen = () => {
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    {/* Vehicle Icon */}
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${vehicle.color} flex items-center justify-center flex-shrink-0 shadow-md`}>
-                      <Icon className="w-8 h-8 text-white" />
+                    {/* Vehicle Image */}
+                    <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                      <img 
+                        src={vehicle.image} 
+                        alt={vehicle.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
 
                     {/* Vehicle Info */}

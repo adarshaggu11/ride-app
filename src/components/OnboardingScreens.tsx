@@ -13,6 +13,7 @@ const slides = [
     description: "Book bikes, autos, or cars instantly with just a few taps. Zero booking fees!",
     color: "from-primary to-accent",
     bgPattern: "bg-gradient-to-br from-primary/10 to-accent/10",
+    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&h=600&fit=crop",
     stats: ["4.8★ Rating", "50K+ Rides", "100% Safe"]
   },
   {
@@ -21,6 +22,7 @@ const slides = [
     description: "All drivers are thoroughly verified and trained for your safety and comfort",
     color: "from-green-500 to-emerald-500",
     bgPattern: "bg-gradient-to-br from-green-500/10 to-emerald-500/10",
+    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=600&fit=crop",
     stats: ["Background Checked", "Licensed", "Insured"]
   },
   {
@@ -29,6 +31,7 @@ const slides = [
     description: "Track your ride in real-time with accurate GPS and share your location with loved ones",
     color: "from-blue-500 to-cyan-500",
     bgPattern: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10",
+    image: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=800&h=600&fit=crop",
     stats: ["Real-time GPS", "Route Optimization", "ETA Updates"]
   },
   {
@@ -37,6 +40,7 @@ const slides = [
     description: "Choose from bikes, autos, and cars based on your comfort and budget",
     color: "from-purple-500 to-pink-500",
     bgPattern: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
+    image: "https://images.unsplash.com/photo-1590642916589-592bca10dfbf?w=800&h=600&fit=crop",
     stats: ["Bikes from ₹49", "Autos from ₹85", "Cars from ₹120"]
   },
 ];
@@ -139,16 +143,24 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
           }`}
           key={currentSlide}
         >
-          {/* Icon Container with Gradient */}
-          <div className="relative mx-auto w-fit">
-            <div className={`absolute inset-0 bg-gradient-to-br ${slide.color} rounded-full blur-2xl opacity-40 animate-pulse-glow`}></div>
-            <div className={`relative bg-gradient-to-br ${slide.color} w-40 h-40 mx-auto rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300`}>
-              <Icon className="w-20 h-20 text-white drop-shadow-lg" />
+          {/* Hero Image */}
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+              <img 
+                src={slide.image} 
+                alt={slide.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            {/* Floating Icon Badge */}
+            <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gradient-to-br ${slide.color} w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300`}>
+              <Icon className="w-10 h-10 text-white drop-shadow-lg" />
             </div>
           </div>
 
           {/* Text Content */}
-          <div className="text-center space-y-5">
+          <div className="text-center space-y-5 pt-8">
             <h2 className="text-4xl font-extrabold text-foreground leading-tight">
               {slide.title}
             </h2>
