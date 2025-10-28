@@ -20,6 +20,8 @@ import ProfileScreen from "./components/ProfileScreen";
 import RideHistoryScreen from "./components/RideHistoryScreen";
 import PaymentMethodsScreen from "./components/PaymentMethodsScreen";
 import HelpSupportScreen from "./components/HelpSupportScreen";
+import NotificationsScreen from "./components/NotificationsScreen";
+import SettingsScreen from "./components/SettingsScreen";
 import NotFound from "./pages/NotFound";
 import { offlineService } from "./services/offlineService";
 
@@ -210,6 +212,18 @@ const App = () => {
               path="/help-support"
               element={
                 user ? <HelpSupportScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                user ? <NotificationsScreen /> : <Navigate to="/auth" replace />
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                user ? <SettingsScreen /> : <Navigate to="/auth" replace />
               }
             />
             <Route
