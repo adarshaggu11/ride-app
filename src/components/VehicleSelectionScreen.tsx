@@ -67,7 +67,9 @@ const VehicleSelectionScreen = () => {
       setNearbyVehicles(nearby);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
   }, [pickupCoords, selectedVehicle]);
 
   const vehicles: VehicleOption[] = [

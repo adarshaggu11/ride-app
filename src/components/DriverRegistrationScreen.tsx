@@ -12,7 +12,8 @@ import {
   Camera,
   CheckCircle2,
   ChevronLeft,
-  Upload
+  Upload,
+  Bike
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

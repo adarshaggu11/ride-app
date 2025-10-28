@@ -66,11 +66,9 @@ const MapComponent = ({
 
         // Load Google Maps script if not already loaded
         if (!window.google?.maps) {
-        console.log('Loading Google Maps script...');
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry&loading=async`;
-        script.async = true;
-        script.defer = true;
+          console.log('Loading Google Maps script...');
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry&loading=async`;
           script.async = true;
           script.defer = true;
           
@@ -95,7 +93,6 @@ const MapComponent = ({
           return;
         }
         
-        if (!window.google?.maps) {
         console.log('Creating map instance...');
         const mapInstance = new google.maps.Map(mapRef.current, {
           center,
@@ -236,7 +233,7 @@ const MapComponent = ({
       setDriverMarker(marker);
     } else {
       // Animate driver marker to new position
-      animateMarker(driverMarker, driverLocation);
+      animateMarkerToPosition(driverMarker, driverLocation, 0);
     }
   }, [map, showDriverMarker, driverLocation]);
 
@@ -276,6 +273,8 @@ const MapComponent = ({
     } else {
       userMarker.setPosition(center);
     }
+  }, [map, showUserLocation, center]);
+
   // Show nearby drivers (autos/bikes) - Legacy support
   useEffect(() => {
     if (!map || nearbyDrivers.length === 0) return;

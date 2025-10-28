@@ -26,11 +26,43 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
   const [selectedVehicleType, setSelectedVehicleType] = useState<'bike' | 'auto' | 'car' | undefined>(undefined);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Get current location on mount
-    getCurrentLocation();
-    
-    // Simulate nearby drivers moving
+  const getCurrentLocation = async () => {
+    try {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const location = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            setCurrentLocation(location);
+            setPickupCoords(location);
+            
+            // Reverse geocode to get address
+            if (window.google?.maps) {
+              const geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ location }, (results, status) => {
+                if (status === 'OK' && results && results[0]) {
+                  setPickup(results[0].formatted_address);
+                } else {
+                  setPickup(`Current Location (${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)})`);
+                }
+              });
+            } else {
+              setPickup(`Current Location (${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)})`);
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            setPickup("Enable location for better experience");
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Geolocation error:", error);
+    }
+  };
+
   useEffect(() => {
     // Get current location on mount
     getCurrentLocation();
@@ -115,43 +147,6 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
     initAutocomplete();
   }, []);
 
-  const getCurrentLocation = async () => {
-    try {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const location = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            setCurrentLocation(location);
-            setPickupCoords(location);
-            
-            // Reverse geocode to get address
-            if (window.google?.maps) {
-              const geocoder = new google.maps.Geocoder();
-              geocoder.geocode({ location }, (results, status) => {
-                if (status === 'OK' && results && results[0]) {
-                  setPickup(results[0].formatted_address);
-                } else {
-                  setPickup(`Current Location (${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)})`);
-                }
-              });
-            } else {
-              setPickup(`Current Location (${position.coords.latitude.toFixed(2)}, ${position.coords.longitude.toFixed(2)})`);
-            }
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-            setPickup("Enable location for better experience");
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Geolocation error:", error);
-    }
-  };
-
   const handleFindAuto = () => {
     if (!pickup || !drop) {
       return;
@@ -187,6 +182,11 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
           size="icon"
           onClick={() => navigate("/profile")}
           className="hover:bg-primary/10 rounded-full"
+        >
+          <User className="w-5 h-5" />
+        </Button>
+      </header>
+
       {/* Map Area with Current Location */}
       <div className="flex-1 relative overflow-hidden">
         <MapComponent
@@ -248,12 +248,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
         <div className="absolute bottom-6 left-6 glass-dark px-4 py-2 rounded-full shadow-lg z-10">
           <p className="text-white text-sm font-semibold flex items-center gap-2">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-            Live Tracking
-          </p>
-        </div>
-      </div> className="text-white text-sm font-semibold flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-            {nearbyDrivers.length} autos nearby
+            {nearbyVehicles.length} vehicles nearby
           </p>
         </div>
       </div>
