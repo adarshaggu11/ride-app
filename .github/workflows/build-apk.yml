@@ -28,16 +28,17 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Verify Android SDK and install components
+    - name: Accept Android SDK licenses
+      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+    - name: Install Android SDK components
       run: |
         echo "ANDROID_HOME: $ANDROID_HOME"
-        echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-        ls -la $ANDROID_HOME || echo "Android SDK not found"
-        echo "Installing Android SDK components: platforms;android-35 and build-tools;35.0.0"
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list | head -20
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" || echo "Warning: sdkmanager failed"
-        echo "Verifying installation..."
-        ls -la $ANDROID_HOME/platforms/ || echo "No platforms installed"
+        echo "Installing platforms;android-35 and build-tools;35.0.0..."
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+        echo "Verifying installation:"
+        ls -la $ANDROID_HOME/platforms/ 2>/dev/null || echo "Warning: platforms directory not found"
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list_installed | grep -E "android-35|35.0.0" || echo "Warning: SDK components not listed"
 
     - name: Install dependencies
       run: npm ci
@@ -69,13 +70,22 @@ jobs:
         ./gradlew assembleDebug \
           --no-daemon \
           --stacktrace \
-          --info \
-          --warning-mode=all \
-          -Dorg.gradle.jvmargs="-Xmx3072m -XX:MaxMetaspaceSize=768m"
-        echo "=== Gradle build completed ===" || echo "=== Gradle build failed ==="
+          --warning-mode=all 2>&1 | tee ../build-output.log
+        BUILD_STATUS=${PIPESTATUS[0]}
+        echo "=== Build exit code: $BUILD_STATUS ==="
+        if [ $BUILD_STATUS -ne 0 ]; then
+          echo "=== Build failed! Capturing logs ==="
+          exit $BUILD_STATUS
+        fi
+        echo "=== Build succeeded ==="
     
     - name: List APK output
-      run: find android/app/build/outputs -name "*.apk"
+      if: always()
+      run: |
+        echo "Searching for APK files..."
+        find android -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+        echo "Build output directory contents:"
+        ls -R android/app/build/outputs 2>/dev/null || echo "No outputs directory"
     
     - name: Upload APK
       uses: actions/upload-artifact@v4
@@ -91,6 +101,8 @@ jobs:
       with:
         name: build-failure-logs
         path: |
+          build-output.log
           android/build/reports/**/*
           android/app/build/reports/**/*
+        if-no-files-found: warn
         retention-days: 7
