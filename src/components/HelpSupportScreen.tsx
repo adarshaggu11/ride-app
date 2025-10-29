@@ -13,6 +13,8 @@ import {
   HelpCircle
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { callSupport } from "@/services/phoneService";
+import { useToast } from "@/hooks/use-toast";
 
 interface FAQ {
   question: string;
@@ -21,6 +23,23 @@ interface FAQ {
 
 const HelpSupportScreen = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleCallSupport = async () => {
+    try {
+      await callSupport();
+      toast({
+        title: "Calling Support",
+        description: "Connecting you to customer support...",
+      });
+    } catch (error) {
+      toast({
+        title: "Call Failed",
+        description: "Unable to call support. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
   
   const faqs: FAQ[] = [
     {
@@ -63,7 +82,7 @@ const HelpSupportScreen = () => {
       title: "Call Support",
       titleTe: "సపోర్ట్‌కు కాల్ చేయండి",
       details: "+91 1800-123-4567",
-      action: () => window.open("tel:+911800123456")
+      action: handleCallSupport
     },
     {
       icon: Mail,

@@ -2,16 +2,24 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Phone, MapPin, User, Car } from "lucide-react";
+import { Phone, MapPin, User, Car, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { callDriver, shareRideViaSMS } from "@/services/phoneService";
+import { useToast } from "@/hooks/use-toast";
 import MapComponent from "./MapComponent";
 
 const DriverAssignedScreen = () => {
   const navigate = useNavigate();
   const { rideId } = useParams();
+  const { toast } = useToast();
   const [pickupLocation] = useState({ lat: 17.385, lng: 78.486 });
   const [driverLocation, setDriverLocation] = useState({ lat: 17.375, lng: 78.476 });
   const [eta, setEta] = useState(2);
+  
+  // Driver details
+  const driverPhone = "+919876543210";
+  const driverName = "Ravi Kumar";
+  const vehicleNumber = "AP 39 AB 1234";
 
   // Simulate driver approaching
   useEffect(() => {
@@ -28,6 +36,44 @@ const DriverAssignedScreen = () => {
 
   const handleStartTrip = () => {
     navigate(`/trip-ongoing/${rideId}`);
+  };
+
+  const handleCallDriver = async () => {
+    try {
+      await callDriver(driverPhone);
+      toast({
+        title: "Calling Driver",
+        description: `Calling ${driverName}...`,
+      });
+    } catch (error) {
+      toast({
+        title: "Call Failed",
+        description: "Unable to make call. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShareRide = async () => {
+    try {
+      await shareRideViaSMS("", {
+        driverName,
+        vehicleNumber,
+        pickupLocation: "Banjara Hills",
+        dropLocation: "HITEC City",
+        estimatedTime: `${Math.ceil(eta)} minutes`,
+      });
+      toast({
+        title: "Share Ride",
+        description: "SMS app opened with ride details",
+      });
+    } catch (error) {
+      toast({
+        title: "Share Failed",
+        description: "Unable to share ride details.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -83,13 +129,26 @@ const DriverAssignedScreen = () => {
                 </div>
               </div>
 
-              <Button
-                size="icon"
-                className="w-12 h-12 rounded-full"
-                onClick={() => window.open("tel:+919876543210")}
-              >
-                <Phone className="w-5 h-5" />
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  size="icon"
+                  className="w-12 h-12 rounded-full bg-green-500 hover:bg-green-600"
+                  onClick={handleCallDriver}
+                  title="Call Driver"
+                >
+                  <Phone className="w-5 h-5" />
+                </Button>
+                
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="w-12 h-12 rounded-full"
+                  onClick={handleShareRide}
+                  title="Share Ride"
+                >
+                  <MessageSquare className="w-5 h-5" />
+                </Button>
+              </div>
             </div>
           </Card>
 

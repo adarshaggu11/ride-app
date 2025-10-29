@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Navigation, Menu, User } from "lucide-react";
+import { MapPin, Navigation, Menu, User, Bell } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import MapComponent from "./MapComponent";
 import { vehicleTrackingService, Vehicle } from "@/services/vehicleTrackingService";
+import { getUnreadNotificationCount } from "@/services/pushNotifications";
 
 interface HomeScreenProps {
   user: { id: string; name: string; phone: string; avatar: string };
@@ -24,6 +25,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
   const [dropAutocomplete, setDropAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [nearbyVehicles, setNearbyVehicles] = useState<Vehicle[]>([]);
   const [selectedVehicleType, setSelectedVehicleType] = useState<'bike' | 'auto' | 'car' | undefined>(undefined);
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
 
   const getCurrentLocation = async () => {
@@ -66,6 +68,10 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
   useEffect(() => {
     // Get current location on mount
     getCurrentLocation();
+    
+    // Get unread notification count
+    const count = getUnreadNotificationCount();
+    setUnreadCount(count);
     
     // Initialize vehicle tracking service only in development
     // In production, vehicles will be fetched from backend API
@@ -180,14 +186,29 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
             <p className="text-xs text-muted-foreground">Where would you like to go?</p>
           </div>
         </div>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          onClick={() => navigate("/profile")}
-          className="hover:bg-primary/10 rounded-full"
-        >
-          <User className="w-5 h-5" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => navigate("/notifications")}
+            className="hover:bg-primary/10 rounded-full relative"
+          >
+            <Bell className="w-5 h-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={() => navigate("/profile")}
+            className="hover:bg-primary/10 rounded-full"
+          >
+            <User className="w-5 h-5" />
+          </Button>
+        </div>
       </header>
 
       {/* Map Area with Current Location */}

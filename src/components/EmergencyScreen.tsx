@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
+import { callEmergency, shareRideViaSMS } from '@/services/phoneService';
 
 interface EmergencyContact {
   id: string;
@@ -49,7 +50,22 @@ export const EmergencyScreen: React.FC = () => {
     eta: '12 min'
   };
 
-  const handleSOS = () => {
+  const handleSOS = async () => {
+    // Alert all emergency contacts
+    for (const contact of contacts) {
+      try {
+        await shareRideViaSMS(contact.phone, {
+          driverName: currentRide.driverName,
+          vehicleNumber: currentRide.vehicleNumber,
+          pickupLocation: currentRide.currentLocation,
+          dropLocation: currentRide.destination,
+          estimatedTime: currentRide.eta
+        });
+      } catch (error) {
+        console.error(`Failed to alert ${contact.name}:`, error);
+      }
+    }
+    
     toast({
       title: "Emergency Alert Sent",
       description: "Your location and ride details have been shared with emergency contacts and local authorities.",
@@ -70,8 +86,20 @@ export const EmergencyScreen: React.FC = () => {
     });
   };
 
-  const handleCallPolice = () => {
-    window.location.href = 'tel:100'; // Indian police emergency number
+  const handleCallPolice = async () => {
+    try {
+      await callEmergency('100'); // Indian police emergency number
+      toast({
+        title: "Calling Police",
+        description: "Connecting to emergency services...",
+      });
+    } catch (error) {
+      toast({
+        title: "Call Failed",
+        description: "Unable to connect to emergency services.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAddContact = () => {
