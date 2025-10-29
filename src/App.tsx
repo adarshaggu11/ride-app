@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { initializePushNotifications } from "./services/pushNotifications";
+import { safeGetItem, safeSetItem, safeGetJSON, safeSetJSON, safeRemoveItem } from "./utils/safeStorage";
 import SplashScreen from "./components/SplashScreen";
 import OnboardingScreens from "./components/OnboardingScreens";
 import AuthScreen from "./components/AuthScreen";
@@ -70,9 +71,9 @@ const App = () => {
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
-      const permissionsRequested = localStorage.getItem("permissions_requested");
-      const savedRole = localStorage.getItem("user_role");
+      const hasSeenOnboarding = safeGetItem("hasSeenOnboarding");
+      const permissionsRequested = safeGetItem("permissions_requested");
+      const savedRole = safeGetItem("user_role");
       
       if (!hasSeenOnboarding) {
         setShowOnboarding(true);
@@ -86,15 +87,17 @@ const App = () => {
         return;
       }
 
-      const userData = localStorage.getItem("user");
+      const userData = safeGetItem("user");
       if (userData) {
         try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          setUserRole(parsedUser.role || savedRole || 'customer');
+          const parsedUser = safeGetJSON<User>("user", null as any);
+          if (parsedUser) {
+            setUser(parsedUser);
+            setUserRole(parsedUser.role || savedRole as 'customer' | 'driver' || 'customer');
+          }
         } catch (parseError) {
           console.error('Error parsing user data:', parseError);
-          localStorage.removeItem("user");
+          safeRemoveItem("user");
         }
       } else if (savedRole) {
         setUserRole(savedRole as 'customer' | 'driver');
@@ -108,7 +111,7 @@ const App = () => {
   };
 
   const handleOnboardingComplete = () => {
-    localStorage.setItem("hasSeenOnboarding", "true");
+    safeSetItem("hasSeenOnboarding", "true");
     setShowOnboarding(false);
     setShowPermissions(true);
   };
@@ -116,13 +119,15 @@ const App = () => {
   const handlePermissionsComplete = () => {
     setShowPermissions(false);
     
-    const userData = localStorage.getItem("user");
+    const userData = safeGetItem("user");
     if (!userData) {
       setShowRoleSelection(true);
     } else {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      setUserRole(parsedUser.role || 'customer');
+      const parsedUser = safeGetJSON<User>("user", null as any);
+      if (parsedUser) {
+        setUser(parsedUser);
+        setUserRole(parsedUser.role || 'customer');
+      }
     }
   };
 
@@ -134,12 +139,12 @@ const App = () => {
   const handleLogin = (userData: User) => {
     const userWithRole = { ...userData, role: userRole };
     setUser(userWithRole);
-    localStorage.setItem("user", JSON.stringify(userWithRole));
+    safeSetJSON("user", userWithRole);
   };
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    safeRemoveItem("user");
   };
 
   if (isLoading) {

@@ -1,28 +1,101 @@
-<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-  <!-- Motorcycle icon based on the provided image -->
-  <g transform="translate(24, 24)">
-    <!-- Body -->
-    <ellipse cx="0" cy="0" rx="8" ry="12" fill="#5a6c7d" opacity="0.9"/>
-    <ellipse cx="0" cy="-2" rx="6" ry="10" fill="#7a8c9d"/>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Gradient Definitions -->  <!-- Motorcycle icon based on the provided image -->
+
+  <defs>  <g transform="translate(24, 24)">
+
+    <linearGradient id="bikeGradient" x1="0%" y1="0%" x2="100%" y2="100%">    <!-- Body -->
+
+      <stop offset="0%" style="stop-color:#FFC107;stop-opacity:1" />    <ellipse cx="0" cy="0" rx="8" ry="12" fill="#5a6c7d" opacity="0.9"/>
+
+      <stop offset="100%" style="stop-color:#FFA000;stop-opacity:1" />    <ellipse cx="0" cy="-2" rx="6" ry="10" fill="#7a8c9d"/>
+
+    </linearGradient>    
+
+    <linearGradient id="bikeAccent" x1="0%" y1="0%" x2="100%" y2="100%">    <!-- Seat -->
+
+      <stop offset="0%" style="stop-color:#212121;stop-opacity:1" />    <ellipse cx="0" cy="2" rx="7" ry="4" fill="#d4763c"/>
+
+      <stop offset="100%" style="stop-color:#424242;stop-opacity:1" />    
+
+    </linearGradient>    <!-- Front wheel -->
+
+    <radialGradient id="bikeWheelGradient">    <circle cx="-2" cy="10" r="4" fill="#2c3e50"/>
+
+      <stop offset="0%" style="stop-color:#424242;stop-opacity:1" />    <circle cx="-2" cy="10" r="2.5" fill="#34495e"/>
+
+      <stop offset="100%" style="stop-color:#212121;stop-opacity:1" />    <circle cx="-2" cy="10" r="1" fill="#95a5a6"/>
+
+    </radialGradient>    
+
+  </defs>    <!-- Rear wheel -->
+
+      <circle cx="2" cy="10" r="4" fill="#2c3e50"/>
+
+  <!-- Bike/Scooter Icon -->    <circle cx="2" cy="10" r="2.5" fill="#34495e"/>
+
+  <g transform="translate(32, 32)">    <circle cx="2" cy="10" r="1" fill="#95a5a6"/>
+
+    <!-- Seat -->    
+
+    <ellipse cx="-4" cy="-8" rx="5" ry="3"     <!-- Handlebars -->
+
+             fill="url(#bikeAccent)"     <rect x="-8" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
+
+             stroke="#FFC107"     <rect x="6" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
+
+             stroke-width="1"/>    
+
+        <!-- Headlight -->
+
+    <!-- Body Frame -->    <circle cx="0" cy="-10" r="2" fill="#fff9c4"/>
+
+    <path d="M -8,-6 Q -6,-2 -4,2 L 4,2 Q 6,-2 8,-6"   </g>
+
+          fill="url(#bikeGradient)" </svg>
+
+          stroke="#FFA000" 
+          stroke-width="1.5"/>
     
-    <!-- Seat -->
-    <ellipse cx="0" cy="2" rx="7" ry="4" fill="#d4763c"/>
+    <!-- Handlebar -->
+    <line x1="-8" y1="-6" x2="-12" y2="-10" 
+          stroke="url(#bikeAccent)" 
+          stroke-width="2" 
+          stroke-linecap="round"/>
+    <circle cx="-12" cy="-10" r="2" fill="#FFC107"/>
     
-    <!-- Front wheel -->
-    <circle cx="-2" cy="10" r="4" fill="#2c3e50"/>
-    <circle cx="-2" cy="10" r="2.5" fill="#34495e"/>
-    <circle cx="-2" cy="10" r="1" fill="#95a5a6"/>
+    <!-- Front Fork -->
+    <line x1="-8" y1="-6" x2="-10" y2="6" 
+          stroke="url(#bikeAccent)" 
+          stroke-width="2"/>
     
-    <!-- Rear wheel -->
-    <circle cx="2" cy="10" r="4" fill="#2c3e50"/>
-    <circle cx="2" cy="10" r="2.5" fill="#34495e"/>
-    <circle cx="2" cy="10" r="1" fill="#95a5a6"/>
+    <!-- Rear Fork -->
+    <line x1="8" y1="-6" x2="10" y2="6" 
+          stroke="url(#bikeAccent)" 
+          stroke-width="2"/>
     
-    <!-- Handlebars -->
-    <rect x="-8" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
-    <rect x="6" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
+    <!-- Front Wheel -->
+    <circle cx="-10" cy="8" r="7" 
+            fill="url(#bikeWheelGradient)" 
+            stroke="#FFC107" 
+            stroke-width="1.5"/>
+    <circle cx="-10" cy="8" r="3" fill="#FFC107"/>
+    <line x1="-10" y1="1" x2="-10" y2="15" stroke="#FFC107" stroke-width="1"/>
+    <line x1="-17" y1="8" x2="-3" y2="8" stroke="#FFC107" stroke-width="1"/>
+    
+    <!-- Rear Wheel -->
+    <circle cx="10" cy="8" r="7" 
+            fill="url(#bikeWheelGradient)" 
+            stroke="#FFC107" 
+            stroke-width="1.5"/>
+    <circle cx="10" cy="8" r="3" fill="#FFC107"/>
+    <line x1="10" y1="1" x2="10" y2="15" stroke="#FFC107" stroke-width="1"/>
+    <line x1="3" y1="8" x2="17" y2="8" stroke="#FFC107" stroke-width="1"/>
     
     <!-- Headlight -->
-    <circle cx="0" cy="-10" r="2" fill="#fff9c4"/>
+    <circle cx="-12" cy="-6" r="2" fill="#FFC107" opacity="0.8"/>
+    
+    <!-- Exhaust -->
+    <rect x="8" y="2" width="4" height="2" rx="1" fill="url(#bikeAccent)"/>
   </g>
 </svg>

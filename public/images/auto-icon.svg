@@ -1,31 +1,63 @@
-<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-  <!-- Auto-rickshaw icon based on the provided image -->
-  <g transform="translate(24, 24)">
-    <!-- Main body -->
-    <path d="M -10,-8 L -10,6 L -8,10 L 8,10 L 10,6 L 10,-8 Z" 
-          fill="#4caf50" 
-          stroke="#2e7d32" 
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="autoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFC107;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="autoAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#212121;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#424242;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="wheelGradient">
+      <stop offset="0%" style="stop-color:#424242;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#212121;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Auto-rickshaw Icon -->
+  <g transform="translate(32, 32)">
+    <!-- Canopy/Roof -->
+    <path d="M -14,-12 Q -16,-16 -12,-18 L 12,-18 Q 16,-16 14,-12 Z" 
+          fill="url(#autoGradient)" 
+          stroke="#FFA000" 
+          stroke-width="0.5"/>
+    
+    <!-- Main Body -->
+    <rect x="-12" y="-12" width="24" height="16" rx="2" 
+          fill="url(#autoGradient)" 
+          stroke="#FFA000" 
           stroke-width="1"/>
     
-    <!-- Canopy (yellow roof) -->
-    <ellipse cx="0" cy="-10" rx="12" ry="4" fill="#ffc107"/>
-    <rect x="-12" y="-10" width="24" height="3" fill="#ffc107" rx="2"/>
-    
     <!-- Windshield -->
-    <rect x="-7" y="-6" width="14" height="4" fill="#b3e5fc" opacity="0.7" stroke="#2e7d32" stroke-width="0.5"/>
+    <rect x="-10" y="-10" width="20" height="6" rx="1" 
+          fill="#212121" 
+          opacity="0.3"/>
     
-    <!-- Side panels -->
-    <rect x="-8" y="0" width="6" height="6" fill="#66bb6a" opacity="0.8"/>
-    <rect x="2" y="0" width="6" height="6" fill="#66bb6a" opacity="0.8"/>
+    <!-- Side Windows -->
+    <rect x="-10" y="-2" width="8" height="4" rx="1" 
+          fill="url(#autoAccent)" 
+          opacity="0.6"/>
+    <rect x="2" y="-2" width="8" height="4" rx="1" 
+          fill="url(#autoAccent)" 
+          opacity="0.6"/>
     
-    <!-- Front wheel -->
-    <circle cx="0" cy="11" r="3" fill="#424242"/>
-    <circle cx="0" cy="11" r="1.5" fill="#616161"/>
+    <!-- Black Base -->
+    <rect x="-12" y="4" width="24" height="4" rx="1" 
+          fill="url(#autoAccent)"/>
     
-    <!-- Rear wheels -->
-    <circle cx="-5" cy="11" r="3" fill="#424242"/>
-    <circle cx="-5" cy="11" r="1.5" fill="#616161"/>
-    <circle cx="5" cy="11" r="3" fill="#424242"/>
-    <circle cx="5" cy="11" r="1.5" fill="#616161"/>
+    <!-- Front Wheel -->
+    <circle cx="0" cy="10" r="5" fill="url(#wheelGradient)" stroke="#FFC107" stroke-width="1"/>
+    <circle cx="0" cy="10" r="2" fill="#FFC107"/>
+    
+    <!-- Rear Wheels -->
+    <circle cx="-8" cy="10" r="5" fill="url(#wheelGradient)" stroke="#FFC107" stroke-width="1"/>
+    <circle cx="-8" cy="10" r="2" fill="#FFC107"/>
+    <circle cx="8" cy="10" r="5" fill="url(#wheelGradient)" stroke="#FFC107" stroke-width="1"/>
+    <circle cx="8" cy="10" r="2" fill="#FFC107"/>
+    
+    <!-- Headlight -->
+    <circle cx="-10" cy="4" r="1.5" fill="#FFC107" opacity="0.8"/>
+    <circle cx="10" cy="4" r="1.5" fill="#FFC107" opacity="0.8"/>
   </g>
 </svg>

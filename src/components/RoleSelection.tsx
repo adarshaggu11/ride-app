@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { User, Car } from 'lucide-react';
+import { safeSetItem } from '../utils/safeStorage';
 
 interface RoleSelectionProps {
   onRoleSelect: (role: 'customer' | 'driver') => void;
@@ -10,7 +11,7 @@ export const RoleSelection = ({ onRoleSelect }: RoleSelectionProps) => {
 
   const handleContinue = () => {
     if (selected) {
-      localStorage.setItem('user_role', selected);
+      safeSetItem('user_role', selected);
       onRoleSelect(selected);
     }
   };
