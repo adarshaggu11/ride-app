@@ -1,4 +1,4 @@
-package com.manaride.app;
+package com.ridesharing.app;
 
 import com.getcapacitor.BridgeActivity;
 
