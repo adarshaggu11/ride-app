@@ -111,7 +111,12 @@ const MapComponent = ({
 
         // Check if google.maps is available
         if (!window.google || !window.google.maps) {
-          throw new Error('Google Maps failed to load');
+          console.error('Google Maps failed to load');
+          if (mounted) {
+            setError('Unable to load map. Please check your internet connection.');
+            setLoading(false);
+          }
+          return;
         }
         
         console.log('Creating map instance...');
