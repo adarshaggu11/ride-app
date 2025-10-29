@@ -54,9 +54,9 @@ class FareCalculator {
     const durationMinutes = durationInSeconds / 60;
 
     // Base calculations
-    let baseFare = this.config.baseFare;
-    let distanceFare = distanceKm * this.config.perKmRate;
-    let timeFare = durationMinutes * this.config.perMinuteRate;
+    const baseFare = this.config.baseFare;
+    const distanceFare = distanceKm * this.config.perKmRate;
+    const timeFare = durationMinutes * this.config.perMinuteRate;
 
     // Apply surge pricing
     let surgeMultiplier = 1;
