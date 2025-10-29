@@ -28,14 +28,8 @@ export const makePhoneCall = async (phoneNumber: string): Promise<void> => {
     // Use tel: URL scheme (works on both Android and iOS)
     const telUrl = `tel:${cleanNumber}`;
     
-    if (Capacitor.isNativePlatform()) {
-      // On native platform, use Capacitor App plugin
-      const { App } = await import('@capacitor/app');
-      await App.openUrl({ url: telUrl });
-    } else {
-      // On web, use window.location
-      window.location.href = telUrl;
-    }
+    // Open phone dialer using standard window.open
+    window.open(telUrl, '_system');
     
     console.log(`✅ Initiating call to ${phoneNumber}`);
   } catch (error) {
@@ -112,12 +106,8 @@ export const sendSMS = async (phoneNumber: string, message?: string): Promise<vo
       smsUrl += Capacitor.getPlatform() === 'android' ? `?body=${encodedMessage}` : `&body=${encodedMessage}`;
     }
     
-    if (Capacitor.isNativePlatform()) {
-      const { App } = await import('@capacitor/app');
-      await App.openUrl({ url: smsUrl });
-    } else {
-      window.location.href = smsUrl;
-    }
+    // Open SMS app using standard window.open
+    window.open(smsUrl, '_system');
     
     console.log(`✅ Opening SMS to ${phoneNumber}`);
   } catch (error) {
