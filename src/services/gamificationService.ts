@@ -1,10 +1,8 @@
-// Advanced Gamification Service for User Engagement
+﻿// Advanced Gamification Service for User Engagement
 interface Quest {
   id: string;
   title: string;
-  titleTe: string; // Telugu translation
   description: string;
-  descriptionTe: string;
   type: 'daily' | 'weekly' | 'monthly' | 'special';
   objective: {
     action: string; // 'complete_rides', 'share_rides', 'refer_friends', etc.
@@ -24,9 +22,7 @@ interface Quest {
 interface Badge {
   id: string;
   name: string;
-  nameTe: string;
   description: string;
-  descriptionTe: string;
   icon: string;
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   unlockedAt?: Date;
@@ -62,9 +58,7 @@ class GamificationService {
       {
         id: 'daily_commute',
         title: 'Daily Commuter',
-        titleTe: 'రోజువారీ ప్రయాణికుడు',
         description: 'Complete 2 rides today',
-        descriptionTe: 'ఈరోజు 2 రైడ్లు పూర్తి చేయండి',
         type: 'daily',
         objective: {
           action: 'complete_rides',
@@ -81,9 +75,7 @@ class GamificationService {
       {
         id: 'weekend_warrior',
         title: 'Weekend Warrior',
-        titleTe: 'వారాంతపు యోధుడు',
         description: 'Take 5 rides this weekend',
-        descriptionTe: 'ఈ వారాంతంలో 5 రైడ్లు తీసుకోండి',
         type: 'weekly',
         objective: {
           action: 'complete_rides',
@@ -101,9 +93,7 @@ class GamificationService {
       {
         id: 'social_butterfly',
         title: 'Social Butterfly',
-        titleTe: 'సామాజిక సీతాకోకచిలుక',
         description: 'Share 3 rides with friends',
-        descriptionTe: '3 రైడ్లు స్నేహితులతో పంచుకోండి',
         type: 'weekly',
         objective: {
           action: 'share_rides',
@@ -120,9 +110,7 @@ class GamificationService {
       {
         id: 'eco_warrior',
         title: 'Eco Warrior',
-        titleTe: 'పర్యావరణ యోధుడు',
         description: 'Save 500kg CO2 by sharing rides',
-        descriptionTe: 'రైడ్లు పంచుకోవడం ద్వారా 500kg CO2 ఆదా చేయండి',
         type: 'monthly',
         objective: {
           action: 'carbon_saved',
@@ -146,40 +134,32 @@ class GamificationService {
       {
         id: 'first_ride',
         name: 'First Ride',
-        nameTe: 'మొదటి రైడ్',
         description: 'Completed your first ride',
-        descriptionTe: 'మీ మొదటి రైడ్ పూర్తి చేసారు',
-        icon: '🚀',
+        icon: 'ðŸš€',
         rarity: 'common',
         unlockedAt: new Date('2024-10-01'),
       },
       {
         id: 'night_owl',
         name: 'Night Owl',
-        nameTe: 'రాత్రి గుడ్లగూబ',
         description: 'Took 10 rides after midnight',
-        descriptionTe: 'అర్ధరాత్రి తర్వాత 10 రైడ్లు తీసుకున్నారు',
-        icon: '🦉',
+        icon: 'ðŸ¦‰',
         rarity: 'rare',
         unlockedAt: new Date('2024-10-15'),
       },
       {
         id: 'explorer',
         name: 'City Explorer',
-        nameTe: 'నగర అన్వేషకుడు',
         description: 'Visited 50 unique locations',
-        descriptionTe: '50 ప్రత్యేక స్థలాలను సందర్శించారు',
-        icon: '🗺️',
+        icon: 'ðŸ—ºï¸',
         rarity: 'epic',
         unlockedAt: new Date('2024-10-20'),
       },
       {
         id: 'vip_legend',
         name: 'VIP Legend',
-        nameTe: 'VIP లెజెండ్',
         description: 'Completed 500 rides',
-        descriptionTe: '500 రైడ్లు పూర్తి చేసారు',
-        icon: '👑',
+        icon: 'ðŸ‘‘',
         rarity: 'legendary',
       },
     ];
@@ -192,11 +172,11 @@ class GamificationService {
       period,
       category: category as any,
       entries: [
-        { rank: 1, userId: 'user1', username: 'SpeedyRider', avatar: '👨', score: 1250, change: 0 },
-        { rank: 2, userId: 'user2', username: 'CityCommuter', avatar: '👩', score: 1180, change: 2 },
-        { rank: 3, userId: 'user3', username: 'DailyDriver', avatar: '🧑', score: 1050, change: -1 },
-        { rank: 4, userId: 'user4', username: 'NightRider', avatar: '👨', score: 980, change: 1 },
-        { rank: 5, userId: userId, username: 'You', avatar: '😊', score: 850, change: 3 },
+        { rank: 1, userId: 'user1', username: 'SpeedyRider', avatar: 'ðŸ‘¨', score: 1250, change: 0 },
+        { rank: 2, userId: 'user2', username: 'CityCommuter', avatar: 'ðŸ‘©', score: 1180, change: 2 },
+        { rank: 3, userId: 'user3', username: 'DailyDriver', avatar: 'ðŸ§‘', score: 1050, change: -1 },
+        { rank: 4, userId: 'user4', username: 'NightRider', avatar: 'ðŸ‘¨', score: 980, change: 1 },
+        { rank: 5, userId: userId, username: 'You', avatar: 'ðŸ˜Š', score: 850, change: 3 },
       ],
       userRank: 5,
     };
@@ -218,7 +198,7 @@ class GamificationService {
   // Spin the wheel / Lucky draw
   async spinWheel(userId: string): Promise<{
     canSpin: boolean;
-    prize?: { type: string; value: number; message: string; messageTe: string };
+    prize?: { type: string; value: number; message: string; };
     nextSpinAt?: Date;
   }> {
     // Check if user can spin (once per day after completing a ride)
@@ -233,12 +213,12 @@ class GamificationService {
 
     // Random prize selection
     const prizes = [
-      { type: 'points', value: 50, weight: 30, message: 'You won 50 points!', messageTe: 'మీరు 50 పాయింట్లు గెలుచుకున్నారు!' },
-      { type: 'cashback', value: 20, weight: 25, message: '₹20 Cashback!', messageTe: '₹20 క్యాష్బ్యాక్!' },
-      { type: 'discount', value: 15, weight: 20, message: '15% Discount on next ride!', messageTe: 'తదుపరి రైడ్‌పై 15% డిస్కౌంట్!' },
-      { type: 'points', value: 100, weight: 15, message: 'Jackpot! 100 points!', messageTe: 'జాక్పాట్! 100 పాయింట్లు!' },
-      { type: 'freeride', value: 100, weight: 5, message: 'Free ride up to ₹100!', messageTe: '₹100 వరకు ఉచిత రైడ్!' },
-      { type: 'nothing', value: 0, weight: 5, message: 'Better luck next time!', messageTe: 'తదుపరి సారి శుభం కలగాలి!' },
+      { type: 'points', value: 50, weight: 30, message: 'You won 50 points!' },
+      { type: 'cashback', value: 20, weight: 25, message: 'â‚¹20 Cashback!' },
+      { type: 'discount', value: 15, weight: 20, message: '15% Discount on next ride!' },
+      { type: 'points', value: 100, weight: 15, message: 'Jackpot! 100 points!' },
+      { type: 'freeride', value: 100, weight: 5, message: 'Free ride up to â‚¹100!' },
+      { type: 'nothing', value: 0, weight: 5, message: 'Better luck next time!' },
     ];
 
     const totalWeight = prizes.reduce((sum, p) => sum + p.weight, 0);
@@ -273,10 +253,8 @@ class GamificationService {
         newBadges.push({
           id: 'first_ride',
           name: 'First Ride',
-          nameTe: 'మొదటి రైడ్',
           description: 'Completed your first ride',
-          descriptionTe: 'మీ మొదటి రైడ్ పూర్తి చేసారు',
-          icon: '🚀',
+          icon: 'ðŸš€',
           rarity: 'common',
           unlockedAt: new Date(),
         });
@@ -284,10 +262,8 @@ class GamificationService {
         newBadges.push({
           id: 'half_century',
           name: 'Half Century',
-          nameTe: 'అర్ధ శతకం',
           description: '50 rides completed',
-          descriptionTe: '50 రైడ్లు పూర్తి చేసారు',
-          icon: '🎯',
+          icon: 'ðŸŽ¯',
           rarity: 'rare',
           unlockedAt: new Date(),
         });
@@ -323,7 +299,7 @@ class GamificationService {
     return [
       {
         date: new Date('2024-10-20'),
-        reward: '₹50 Off',
+        reward: 'â‚¹50 Off',
         points: 500,
         status: 'used',
       },
@@ -340,9 +316,7 @@ class GamificationService {
   async getSeasonalEvents(): Promise<Array<{
     id: string;
     name: string;
-    nameTe: string;
     description: string;
-    descriptionTe: string;
     startDate: Date;
     endDate: Date;
     bonusMultiplier: number;
@@ -352,13 +326,11 @@ class GamificationService {
       {
         id: 'diwali_bonanza',
         name: 'Diwali Bonanza',
-        nameTe: 'దీపావళి బొనాంజా',
         description: '3x points on all rides during Diwali week!',
-        descriptionTe: 'దీపావళి వారంలో అన్ని రైడ్లపై 3x పాయింట్లు!',
         startDate: new Date('2024-11-01'),
         endDate: new Date('2024-11-07'),
         bonusMultiplier: 3,
-        specialRewards: ['Diwali Special Badge', 'Lucky Draw Entry', '₹500 Cashback Lottery'],
+        specialRewards: ['Diwali Special Badge', 'Lucky Draw Entry', 'â‚¹500 Cashback Lottery'],
       },
     ];
   }
@@ -400,11 +372,11 @@ class GamificationService {
       active: true,
       endDate: new Date('2024-11-30'),
       prizes: [
-        { rank: '1st', prize: 'iPhone 15 Pro + ₹10,000' },
-        { rank: '2nd', prize: 'Samsung Galaxy S24 + ₹5,000' },
-        { rank: '3rd', prize: 'OnePlus 12 + ₹3,000' },
-        { rank: '4-10', prize: '₹1,000 Cashback' },
-        { rank: '11-50', prize: '₹500 Cashback' },
+        { rank: '1st', prize: 'iPhone 15 Pro + â‚¹10,000' },
+        { rank: '2nd', prize: 'Samsung Galaxy S24 + â‚¹5,000' },
+        { rank: '3rd', prize: 'OnePlus 12 + â‚¹3,000' },
+        { rank: '4-10', prize: 'â‚¹1,000 Cashback' },
+        { rank: '11-50', prize: 'â‚¹500 Cashback' },
       ],
       userReferrals: 8,
       userRank: 15,
@@ -414,3 +386,4 @@ class GamificationService {
 
 export const gamificationService = new GamificationService();
 export type { Quest, Badge, Leaderboard, StreakInfo };
+

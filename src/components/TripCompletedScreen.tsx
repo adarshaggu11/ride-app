@@ -14,15 +14,15 @@ const TripCompletedScreen = () => {
     if (rating === 0) {
       toast({
         title: "Please rate your experience",
-        description: "దయచేసి మీ అనుభవాన్ని రేట్ చేయండి",
+        description: "Your rating helps us improve our service",
         variant: "destructive",
       });
       return;
     }
 
     toast({
-      title: "Thank you! | ధన్యవాదాలు!",
-      description: "Your feedback has been submitted | మీ అభిప్రాయం సమర్పించబడింది",
+      title: "Thank you for your feedback!",
+      description: "Your rating has been submitted successfully",
     });
 
     setTimeout(() => {
@@ -34,11 +34,11 @@ const TripCompletedScreen = () => {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
       <div className="max-w-md w-full space-y-6">
         <div className="text-center">
-          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-12 h-12 text-primary" />
+          <div className="w-20 h-20 bg-gradient-to-br from-green-50 to-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+            <CheckCircle2 className="w-12 h-12 text-green-600" />
           </div>
           <h2 className="text-3xl font-bold mb-2">Trip Completed!</h2>
-          <p className="text-xl font-semibold text-primary">ప్రయాణం పూర్తయింది!</p>
+          <p className="text-muted-foreground">Thank you for riding with us</p>
         </div>
 
         <Card className="p-6 space-y-6">
@@ -49,10 +49,7 @@ const TripCompletedScreen = () => {
               <span className="text-5xl font-bold text-primary">80</span>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Please pay the driver directly in Cash
-            </p>
-            <p className="text-xs text-muted-foreground">
-              దయచేసి డ్రైవర్‌కు నగదుగా చెల్లించండి
+              Please pay the driver directly in cash
             </p>
           </div>
 
@@ -72,22 +69,20 @@ const TripCompletedScreen = () => {
           </div>
 
           <div className="pt-4">
-            <p className="text-center font-semibold mb-3">Rate Your Experience</p>
-            <p className="text-center text-sm text-muted-foreground mb-4">
-              మీ అనుభవాన్ని రేట్ చేయండి
-            </p>
+            <p className="text-center font-semibold mb-4">Rate Your Experience</p>
             <div className="flex justify-center gap-3">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   onClick={() => setRating(star)}
-                  className="transition-transform hover:scale-110"
+                  className="transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+                  aria-label={`Rate ${star} stars`}
                 >
                   <Star
                     className={`w-10 h-10 ${
                       star <= rating
                         ? "fill-secondary text-secondary"
-                        : "text-border"
+                        : "text-border hover:text-secondary/50"
                     }`}
                   />
                 </button>
@@ -100,7 +95,7 @@ const TripCompletedScreen = () => {
             className="w-full h-12 text-lg font-semibold"
             size="lg"
           >
-            Submit & Go Home | సమర్పించండి
+            Submit & Go Home
           </Button>
         </Card>
       </div>

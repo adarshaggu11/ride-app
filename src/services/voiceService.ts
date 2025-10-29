@@ -1,4 +1,4 @@
-// Voice Command Service - Bilingual (Telugu & English)
+// Voice Command Service
 interface VoiceCommand {
   command: string;
   action: string;
@@ -14,61 +14,52 @@ class VoiceService {
   private recognition: any = null;
   private synthesis: SpeechSynthesis | null = null;
   private isListening = false;
-  private currentLanguage: 'en-IN' | 'te-IN' = 'en-IN';
+  private currentLanguage: 'en-IN' = 'en-IN';
   
-  // Command patterns in both languages
+  // Command patterns
   private commands = {
     // Booking commands
     'book': {
-      en: ['book auto', 'book a ride', 'need auto', 'call auto', 'get auto'],
-      te: ['ఆటో బుక్ చేయండి', 'ఆటో పిలవండి', 'ఆటో కావాలి'],
+      patterns: ['book auto', 'book a ride', 'need auto', 'call auto', 'get auto', 'book ride'],
       action: 'START_BOOKING',
     },
     'cancel': {
-      en: ['cancel ride', 'cancel booking', 'cancel auto'],
-      te: ['రైడ్ రద్దు చేయండి', 'బుకింగ్ రద్దు'],
+      patterns: ['cancel ride', 'cancel booking', 'cancel auto'],
       action: 'CANCEL_RIDE',
     },
     // Location commands
     'current_location': {
-      en: ['current location', 'my location', 'where am i', 'use current location'],
-      te: ['ప్రస్తుత లొకేషన్', 'నా లొకేషన్', 'ఇక్కడ నుండి'],
+      patterns: ['current location', 'my location', 'where am i', 'use current location'],
       action: 'USE_CURRENT_LOCATION',
     },
     // Navigation
     'home': {
-      en: ['go home', 'take me home', 'home screen'],
-      te: ['ఇంటికి వెళ్ళు', 'హోమ్ స్క్రీన్'],
+      patterns: ['go home', 'take me home', 'home screen'],
       action: 'NAVIGATE_HOME',
     },
     // SOS
     'emergency': {
-      en: ['emergency', 'help', 'sos', 'danger', 'unsafe'],
-      te: ['ఎమర్జెన్సీ', 'సహాయం', 'ప్రమాదం'],
+      patterns: ['emergency', 'help', 'sos', 'danger', 'unsafe'],
       action: 'TRIGGER_SOS',
     },
     // Payment
     'payment': {
-      en: ['pay now', 'make payment', 'pay cash', 'pay online'],
-      te: ['చెల్లించండి', 'పేమెంట్ చేయండి', 'క్యాష్', 'ఆన్లైన్'],
+      patterns: ['pay now', 'make payment', 'pay cash', 'show payment'],
       action: 'OPEN_PAYMENT',
     },
     // Share trip
     'share': {
-      en: ['share trip', 'share location', 'share ride'],
-      te: ['ట్రిప్ షేర్ చేయండి', 'లొకేషన్ షేర్ చేయండి'],
+      patterns: ['share trip', 'share location', 'share ride'],
       action: 'SHARE_TRIP',
     },
     // Call driver
     'call_driver': {
-      en: ['call driver', 'phone driver', 'contact driver'],
-      te: ['డ్రైవర్ కు కాల్ చేయండి', 'డ్రైవర్ ను పిలవండి'],
+      patterns: ['call driver', 'phone driver', 'contact driver'],
       action: 'CALL_DRIVER',
     },
     // Fare
     'fare': {
-      en: ['how much', 'what is fare', 'show fare', 'price', 'cost'],
-      te: ['ఎంత', 'ఛార్జీ ఎంత', 'ధర చూపించు'],
+      patterns: ['how much', 'what is fare', 'show fare', 'price', 'cost'],
       action: 'SHOW_FARE',
     },
   };
@@ -102,12 +93,7 @@ class VoiceService {
     if (this.isListening) return;
 
     this.isListening = true;
-    this.speak(
-      this.currentLanguage === 'en-IN' 
-        ? 'Listening... Say your command'
-        : 'వినుతున్నాను... మీ ఆదేశం చెప్పండి',
-      this.currentLanguage
-    );
+    this.speak('Listening... Say your command', this.currentLanguage);
 
     this.recognition.start();
 
@@ -142,12 +128,9 @@ class VoiceService {
       this.isListening = false;
       
       if (event.error === 'no-speech') {
-        this.speak(
-          this.currentLanguage === 'en-IN'
-            ? "I didn't hear anything"
-            : 'ఏమీ వినపడలేదు',
-          this.currentLanguage
-        );
+        this.speak("I didn't hear anything. Please try again.", this.currentLanguage);
+      } else if (event.error === 'audio-capture') {
+        this.speak("Microphone not accessible. Please check permissions.", this.currentLanguage);
       }
     };
 
@@ -168,7 +151,7 @@ class VoiceService {
     transcript = transcript.toLowerCase().trim();
 
     for (const [key, cmd] of Object.entries(this.commands)) {
-      const patterns = [...cmd.en, ...cmd.te];
+      const patterns = cmd.patterns;
       
       for (const pattern of patterns) {
         if (transcript.includes(pattern.toLowerCase())) {
@@ -206,7 +189,7 @@ class VoiceService {
   }
 
   // Text-to-speech
-  speak(text: string, language: 'en-IN' | 'te-IN' = 'en-IN'): void {
+  speak(text: string, language: 'en-IN' = 'en-IN'): void {
     if (!this.synthesis) {
       console.warn('Speech synthesis not supported');
       return;
@@ -232,77 +215,47 @@ class VoiceService {
   }
 
   // Switch language
-  setLanguage(language: 'en-IN' | 'te-IN'): void {
+  setLanguage(language: 'en-IN'): void {
     this.currentLanguage = language;
     if (this.recognition) {
       this.recognition.lang = language;
     }
   }
 
-  getLanguage(): 'en-IN' | 'te-IN' {
+  getLanguage(): 'en-IN' {
     return this.currentLanguage;
   }
 
   // Pre-defined voice responses
   getVoiceResponse(action: string): VoiceResponse {
-    const responses: Record<string, { en: string; te: string }> = {
-      RIDE_CONFIRMED: {
-        en: 'Your ride has been confirmed. Driver is on the way.',
-        te: 'మీ రైడ్ కన్ఫర్మ్ అయింది. డ్రైవర్ మీ దగ్గరకు వస్తున్నారు.',
-      },
-      DRIVER_ARRIVED: {
-        en: 'Your driver has arrived',
-        te: 'మీ డ్రైవర్ వచ్చారు',
-      },
-      TRIP_STARTED: {
-        en: 'Trip started. Have a safe journey!',
-        te: 'ట్రిప్ ప్రారంభమైంది. సురక్షిత ప్రయాణం!',
-      },
-      TRIP_COMPLETED: {
-        en: 'Trip completed. Thank you for riding with us!',
-        te: 'ట్రిప్ పూర్తయింది. ధన్యవాదాలు!',
-      },
-      PAYMENT_SUCCESSFUL: {
-        en: 'Payment successful',
-        te: 'చెల్లింపు విజయవంతమైంది',
-      },
-      SOS_ACTIVATED: {
-        en: 'Emergency alert activated. Contacting your emergency contacts.',
-        te: 'ఎమర్జెన్సీ అలర్ట్ యాక్టివ్ అయింది. మీ ఎమర్జెన్సీ కాంటాక్ట్‌లను సంప్రదిస్తోంది.',
-      },
+    const responses: Record<string, string> = {
+      RIDE_CONFIRMED: 'Your ride has been confirmed. Driver is on the way.',
+      DRIVER_ARRIVED: 'Your driver has arrived',
+      TRIP_STARTED: 'Trip started. Have a safe journey!',
+      TRIP_COMPLETED: 'Trip completed. Thank you for riding with us!',
+      PAYMENT_SUCCESSFUL: 'Payment successful',
+      SOS_ACTIVATED: 'Emergency alert activated. Contacting your emergency contacts.',
     };
 
-    const response = responses[action];
-    if (!response) return { text: '' };
-
-    const text = this.currentLanguage === 'en-IN' ? response.en : response.te;
+    const text = responses[action] || '';
     return { text };
   }
 
   // Announce driver details
   announceDriverDetails(driverName: string, vehicleNumber: string, rating: number): void {
-    const text = this.currentLanguage === 'en-IN'
-      ? `Your driver ${driverName} is coming in vehicle number ${vehicleNumber}. Driver rating is ${rating} stars.`
-      : `మీ డ్రైవర్ ${driverName} వాహనం నంబర్ ${vehicleNumber}లో వస్తున్నారు. డ్రైవర్ రేటింగ్ ${rating} స్టార్స్.`;
-    
+    const text = `Your driver ${driverName} is coming in vehicle number ${vehicleNumber}. Driver rating is ${rating} stars.`;
     this.speak(text, this.currentLanguage);
   }
 
   // Announce fare
   announceFare(amount: number): void {
-    const text = this.currentLanguage === 'en-IN'
-      ? `Your total fare is ${amount} rupees`
-      : `మీ మొత్తం ఛార్జీ ${amount} రూపాయలు`;
-    
+    const text = `Your total fare is ${amount} rupees`;
     this.speak(text, this.currentLanguage);
   }
 
   // Announce ETA
   announceETA(minutes: number): void {
-    const text = this.currentLanguage === 'en-IN'
-      ? `Driver will arrive in approximately ${minutes} minutes`
-      : `డ్రైవర్ సుమారు ${minutes} నిమిషాల్లో చేరుకుంటారు`;
-    
+    const text = `Driver will arrive in approximately ${minutes} minutes`;
     this.speak(text, this.currentLanguage);
   }
 
