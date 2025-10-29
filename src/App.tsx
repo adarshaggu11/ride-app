@@ -63,50 +63,68 @@ const App = () => {
   }, []);
 
   const initializeApp = async () => {
+    console.log('🔄 Starting app initialization...');
+    
     try {
       // Initialize push notifications first (async, doesn't block UI)
-      initializePushNotifications().catch(error => {
-        console.error('Failed to initialize push notifications:', error);
-      });
+      try {
+        initializePushNotifications().catch(error => {
+          console.warn('Push notifications initialization failed (non-critical):', error);
+        });
+      } catch (pushError) {
+        console.warn('Push notifications setup failed (non-critical):', pushError);
+      }
 
+      console.log('⏳ Showing splash screen for 2 seconds...');
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
+      console.log('📱 Checking app state...');
       const hasSeenOnboarding = safeGetItem("hasSeenOnboarding");
       const permissionsRequested = safeGetItem("permissions_requested");
       const savedRole = safeGetItem("user_role");
       
+      console.log('App state:', { hasSeenOnboarding, permissionsRequested, savedRole });
+      
       if (!hasSeenOnboarding) {
+        console.log('➡️  Showing onboarding');
         setShowOnboarding(true);
         setIsLoading(false);
         return;
       }
 
       if (!permissionsRequested) {
+        console.log('➡️  Showing permissions screen');
         setShowPermissions(true);
         setIsLoading(false);
         return;
       }
 
+      console.log('👤 Checking for user data...');
       const userData = safeGetItem("user");
       if (userData) {
         try {
           const parsedUser = safeGetJSON<User>("user", null as any);
           if (parsedUser) {
+            console.log('✅ User data found:', parsedUser.name);
             setUser(parsedUser);
             setUserRole(parsedUser.role || savedRole as 'customer' | 'driver' || 'customer');
           }
         } catch (parseError) {
-          console.error('Error parsing user data:', parseError);
+          console.error('⚠️  Error parsing user data, clearing:', parseError);
           safeRemoveItem("user");
         }
       } else if (savedRole) {
+        console.log('✅ Saved role found:', savedRole);
         setUserRole(savedRole as 'customer' | 'driver');
       }
+      
+      console.log('✅ Initialization complete');
       setIsLoading(false);
     } catch (error) {
-      console.error('Critical error during app initialization:', error);
+      console.error('❌ Critical error during app initialization:', error);
+      console.error('Stack:', error instanceof Error ? error.stack : 'No stack trace');
+      // Always set loading to false, even on error
       setIsLoading(false);
-      // App will still render, just without full initialization
     }
   };
 
