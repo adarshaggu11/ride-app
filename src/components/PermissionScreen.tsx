@@ -18,42 +18,62 @@ interface PermissionScreenProps {
 }
 
 export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
-  const [permissions, setPermissions] = useState<Permission[]>([
-    {
-      id: 'location',
-      title: 'Location Access',
-      description: 'Required to show nearby drivers and navigate to your destination',
-      icon: MapPin,
-      required: true,
-      granted: false,
-    },
-    {
-      id: 'notifications',
-      title: 'Notifications',
-      description: 'Get updates about your rides and driver arrivals',
-      icon: Bell,
-      required: true,
-      granted: false,
-    },
-    {
-      id: 'camera',
-      title: 'Camera Access',
-      description: 'Upload profile photo and documents',
-      icon: Camera,
-      required: false,
-      granted: false,
-    },
-    {
-      id: 'phone',
-      title: 'Phone Access',
-      description: 'Call driver or support directly from the app',
-      icon: Phone,
-      required: false,
-      granted: false,
-    },
-  ]);
+  // Load saved permission state from localStorage
+  const loadSavedPermissions = (): Permission[] => {
+    const saved = localStorage.getItem('permission_state');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error('Error loading saved permissions:', error);
+      }
+    }
+    
+    return [
+      {
+        id: 'location',
+        title: 'Location Access',
+        description: 'Required to show nearby drivers and navigate to your destination',
+        icon: MapPin,
+        required: true,
+        granted: false,
+      },
+      {
+        id: 'notifications',
+        title: 'Notifications',
+        description: 'Get updates about your rides and driver arrivals',
+        icon: Bell,
+        required: true,
+        granted: false,
+      },
+      {
+        id: 'camera',
+        title: 'Camera Access',
+        description: 'Upload profile photo and documents',
+        icon: Camera,
+        required: false,
+        granted: false,
+      },
+      {
+        id: 'phone',
+        title: 'Phone Access',
+        description: 'Call driver or support directly from the app',
+        icon: Phone,
+        required: false,
+        granted: false,
+      },
+    ];
+  };
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [permissions, setPermissions] = useState<Permission[]>(loadSavedPermissions());
+
+  // Load saved current step
+  const loadCurrentStep = (): number => {
+    const saved = localStorage.getItem('permission_step');
+    return saved ? parseInt(saved, 10) : 0;
+  };
+
+  const [currentStep, setCurrentStep] = useState(loadCurrentStep());
 
   const handleGrantPermission = async (permissionId: string) => {
     try {
@@ -73,30 +93,41 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
         granted = true;
       }
 
-      setPermissions(prev =>
-        prev.map(p =>
-          p.id === permissionId ? { ...p, granted } : p
-        )
+      // Update permissions state
+      const updatedPermissions = permissions.map(p =>
+        p.id === permissionId ? { ...p, granted } : p
       );
+      
+      setPermissions(updatedPermissions);
+      
+      // CRITICAL: Save to localStorage immediately (before Android restarts app)
+      localStorage.setItem('permission_state', JSON.stringify(updatedPermissions));
 
       // Move to next permission
       if (currentStep < permissions.length - 1) {
-        setTimeout(() => setCurrentStep(currentStep + 1), 300);
+        const nextStep = currentStep + 1;
+        localStorage.setItem('permission_step', nextStep.toString());
+        setTimeout(() => setCurrentStep(nextStep), 300);
+      } else {
+        // All permissions done
+        localStorage.setItem('permission_step', '0');
       }
     } catch (error) {
       console.error('Permission error:', error);
       // Mark as not granted on error
-      setPermissions(prev =>
-        prev.map(p =>
-          p.id === permissionId ? { ...p, granted: false } : p
-        )
+      const updatedPermissions = permissions.map(p =>
+        p.id === permissionId ? { ...p, granted: false } : p
       );
+      setPermissions(updatedPermissions);
+      localStorage.setItem('permission_state', JSON.stringify(updatedPermissions));
     }
   };
 
   const handleSkip = () => {
     if (currentStep < permissions.length - 1) {
-      setCurrentStep(currentStep + 1);
+      const nextStep = currentStep + 1;
+      localStorage.setItem('permission_step', nextStep.toString());
+      setCurrentStep(nextStep);
     } else {
       handleContinue();
     }
@@ -108,6 +139,9 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
       .every(p => p.granted);
 
     if (requiredGranted) {
+      // Clear permission state (no longer needed)
+      localStorage.removeItem('permission_state');
+      localStorage.removeItem('permission_step');
       localStorage.setItem('permissions_requested', 'true');
       onComplete();
     } else {
