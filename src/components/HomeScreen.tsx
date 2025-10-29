@@ -67,9 +67,12 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
     // Get current location on mount
     getCurrentLocation();
     
-    // Initialize vehicle tracking service
-    vehicleTrackingService.initializeMockVehicles(currentLocation, 20);
-    vehicleTrackingService.startTracking();
+    // Initialize vehicle tracking service only in development
+    // In production, vehicles will be fetched from backend API
+    if (import.meta.env.DEV) {
+      vehicleTrackingService.initializeMockVehicles(currentLocation, 20);
+      vehicleTrackingService.startTracking();
+    }
 
     // Subscribe to vehicle updates
     const unsubscribe = vehicleTrackingService.subscribe((vehicles) => {

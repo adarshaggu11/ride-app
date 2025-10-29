@@ -96,17 +96,23 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
       }
     } catch (error) {
       console.error('Send OTP Error:', error);
+      
+      // Show error - don't fall back to mock in production
       toast({
         title: "Connection Error",
-        description: "Could not connect to server. Using mock OTP: 123456",
+        description: import.meta.env.DEV 
+          ? "Could not connect to server. Using mock OTP: 123456 (Development Only)"
+          : "Could not connect to server. Please check your internet connection and try again.",
         variant: "destructive"
       });
       
-      // Fallback to mock for development
-      setOtpSent(true);
-      setStep("otp");
-      setCountdown(30);
-      setCanResend(false);
+      // Only allow fallback to mock in development
+      if (import.meta.env.DEV) {
+        setOtpSent(true);
+        setStep("otp");
+        setCountdown(30);
+        setCanResend(false);
+      }
     } finally {
       setLoading(false);
     }
@@ -210,11 +216,11 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     } catch (error) {
       console.error('Verify OTP Error:', error);
       
-      // Fallback to mock for development
-      if (otp === "123456") {
+      // Development-only fallback
+      if (import.meta.env.DEV && otp === "123456") {
         toast({
-          title: "Mock Login",
-          description: "Using development mode (server offline)",
+          title: "Development Mode",
+          description: "Using mock login (server offline). This will not work in production.",
         });
         
         if (userType === "customer") {
@@ -225,7 +231,9 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
       } else {
         toast({
           title: "Connection Error",
-          description: "Could not connect to server. Use OTP: 123456",
+          description: import.meta.env.DEV
+            ? "Could not connect to server. Use OTP: 123456 in development mode."
+            : "Could not verify OTP. Please check your internet connection and try again.",
           variant: "destructive"
         });
       }
