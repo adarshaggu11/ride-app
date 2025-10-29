@@ -88,8 +88,8 @@ const HelpSupportScreen = () => {
       icon: Mail,
       title: "Email Us",
       titleTe: "మాకు ఇమెయిల్ చేయండి",
-      details: "support@manauto.com",
-      action: () => window.open("mailto:support@manauto.com")
+      details: "support@dropout.app",
+      action: () => window.open("mailto:support@dropout.app")
     },
     {
       icon: MessageCircle,

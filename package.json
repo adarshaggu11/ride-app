@@ -1,8 +1,8 @@
 {
-  "name": "rideshare-app",
+  "name": "dropout-app",
   "private": true,
   "version": "1.0.0",
-  "description": "Professional ride-sharing platform with customer and driver features",
+  "description": "Dropout - Professional ride-sharing platform with customer and driver features",
   "type": "module",
   "scripts": {
     "dev": "vite",

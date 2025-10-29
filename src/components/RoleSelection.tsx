@@ -19,7 +19,7 @@ export const RoleSelection = ({ onRoleSelect }: RoleSelectionProps) => {
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
       <div className="px-6 pt-12 pb-6">
-        <h1 className="text-2xl font-bold text-gray-900">RideShare</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dropout</h1>
       </div>
 
       {/* Content */}
@@ -29,7 +29,7 @@ export const RoleSelection = ({ onRoleSelect }: RoleSelectionProps) => {
             Choose Your Role
           </h2>
           <p className="text-gray-600">
-            Select how you want to use RideShare
+            Select how you want to use Dropout
           </p>
         </div>
 

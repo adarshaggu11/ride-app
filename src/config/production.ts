@@ -22,7 +22,7 @@ export const config = {
   MOCK_OTP: '123456', // Only used when ENABLE_MOCK_OTP is true
   
   // App Configuration
-  APP_NAME: PRODUCTION_MODE ? 'RideShare' : 'RideShare Dev',
+  APP_NAME: PRODUCTION_MODE ? 'Dropout' : 'Dropout Dev',
   APP_VERSION: '1.0.0',
   
   // Google Maps

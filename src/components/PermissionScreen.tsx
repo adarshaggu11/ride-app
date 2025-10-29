@@ -126,7 +126,7 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
       {/* Header */}
       <div className="px-6 pt-12 pb-6">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">RideShare</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Dropout</h1>
           <span className="text-sm text-gray-500">
             {currentStep + 1}/{permissions.length}
           </span>
