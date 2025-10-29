@@ -87,7 +87,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
       unsubscribe();
       vehicleTrackingService.stopTracking();
     };
-  }, [currentLocation, selectedVehicleType]);
+  }, [currentLocation.lat, currentLocation.lng, selectedVehicleType]);
 
   // Initialize Google Places Autocomplete
   useEffect(() => {
@@ -207,50 +207,6 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
         >
           <Navigation className="w-6 h-6 text-primary" />
         </button>
-
-        {/* Vehicle Type Filter */}
-        <div className="absolute top-6 left-6 flex gap-2 z-10">
-          <button
-            onClick={() => setSelectedVehicleType(undefined)}
-            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
-              !selectedVehicleType ? 'ring-2 ring-white' : 'opacity-70'
-            }`}
-          >
-            All ({nearbyVehicles.length})
-          </button>
-          <button
-            onClick={() => setSelectedVehicleType('bike')}
-            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
-              selectedVehicleType === 'bike' ? 'ring-2 ring-white' : 'opacity-70'
-            }`}
-          >
-            Bikes ({vehicleTrackingService.getVehiclesByType('bike').length})
-          </button>
-          <button
-            onClick={() => setSelectedVehicleType('auto')}
-            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
-              selectedVehicleType === 'auto' ? 'ring-2 ring-white' : 'opacity-70'
-            }`}
-          >
-            Autos ({vehicleTrackingService.getVehiclesByType('auto').length})
-          </button>
-          <button
-            onClick={() => setSelectedVehicleType('car')}
-            className={`glass-dark px-4 py-2 rounded-full shadow-lg text-white text-sm font-semibold transition-all ${
-              selectedVehicleType === 'car' ? 'ring-2 ring-white' : 'opacity-70'
-            }`}
-          >
-            Cars ({vehicleTrackingService.getVehiclesByType('car').length})
-          </button>
-        </div>
-
-        {/* Live Status Indicator */}
-        <div className="absolute bottom-6 left-6 glass-dark px-4 py-2 rounded-full shadow-lg z-10">
-          <p className="text-white text-sm font-semibold flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-            {nearbyVehicles.length} vehicles nearby
-          </p>
-        </div>
       </div>
 
       {/* Bottom Card - Modern Elevated Design */}

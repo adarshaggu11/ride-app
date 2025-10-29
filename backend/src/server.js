@@ -64,7 +64,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mana-auto
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
-    message: 'Mana Auto Oka Ride API is running',
+    message: 'Dropout API is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -104,7 +104,7 @@ httpServer.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════╗
 ║                                                       ║
-║   🚗 Mana Auto Oka Ride Backend API                  ║
+║   🚗 Dropout Backend API                  ║
 ║                                                       ║
 ║   Server running on: http://localhost:${PORT}         ║
 ║   Environment: ${process.env.NODE_ENV || 'development'}                      ║

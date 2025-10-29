@@ -1,7 +1,7 @@
 {
   "name": "mana-auto-backend",
   "version": "1.0.0",
-  "description": "Backend API for Mana Auto Oka Ride - Telugu Auto Booking App",
+  "description": "Backend API for Dropout - Ride Booking App",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

@@ -1,0 +1,28 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Motorcycle icon based on the provided image -->
+  <g transform="translate(24, 24)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="8" ry="12" fill="#5a6c7d" opacity="0.9"/>
+    <ellipse cx="0" cy="-2" rx="6" ry="10" fill="#7a8c9d"/>
+    
+    <!-- Seat -->
+    <ellipse cx="0" cy="2" rx="7" ry="4" fill="#d4763c"/>
+    
+    <!-- Front wheel -->
+    <circle cx="-2" cy="10" r="4" fill="#2c3e50"/>
+    <circle cx="-2" cy="10" r="2.5" fill="#34495e"/>
+    <circle cx="-2" cy="10" r="1" fill="#95a5a6"/>
+    
+    <!-- Rear wheel -->
+    <circle cx="2" cy="10" r="4" fill="#2c3e50"/>
+    <circle cx="2" cy="10" r="2.5" fill="#34495e"/>
+    <circle cx="2" cy="10" r="1" fill="#95a5a6"/>
+    
+    <!-- Handlebars -->
+    <rect x="-8" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
+    <rect x="6" y="-8" width="2" height="6" fill="#7a8c9d" rx="1"/>
+    
+    <!-- Headlight -->
+    <circle cx="0" cy="-10" r="2" fill="#fff9c4"/>
+  </g>
+</svg>
