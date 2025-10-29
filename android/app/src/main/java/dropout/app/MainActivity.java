@@ -1,4 +1,4 @@
-package com.ridesharing.app;
+package dropout.app;
 
 import com.getcapacitor.BridgeActivity;
 
