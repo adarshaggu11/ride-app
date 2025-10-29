@@ -112,10 +112,7 @@ class AnalyticsService {
       revenue: {
         total: 1768660,
         byPaymentMethod: {
-          upi: 945320,
-          cash: 523140,
-          card: 180200,
-          wallet: 120000,
+          cash: 1768660,
         },
         commission: 88433,
         subscriptions: 125000,

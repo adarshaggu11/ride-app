@@ -45,15 +45,6 @@ const SetupStatusScreen = () => {
       missingKeys: notificationStatus?.firebase?.missingKeys
     },
     {
-      name: "Payment Gateway",
-      icon: CreditCard,
-      status: import.meta.env.VITE_RAZORPAY_KEY_ID ? "configured" : "missing",
-      description: "Razorpay integration for online payments",
-      envKey: "VITE_RAZORPAY_KEY_ID",
-      setupUrl: "https://dashboard.razorpay.com/",
-      priority: "high"
-    },
-    {
       name: "SMS Gateway",
       icon: MessageSquare,
       status: import.meta.env.VITE_TWILIO_ACCOUNT_SID ? "configured" : "missing",

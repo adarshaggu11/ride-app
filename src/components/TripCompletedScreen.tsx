@@ -49,10 +49,10 @@ const TripCompletedScreen = () => {
               <span className="text-5xl font-bold text-primary">80</span>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Please pay the driver directly via Cash/UPI
+              Please pay the driver directly in Cash
             </p>
             <p className="text-xs text-muted-foreground">
-              దయచేసి నగదు/UPI ద్వారా డ్రైవర్‌కు నేరుగా చెల్లించండి
+              దయచేసి డ్రైవర్‌కు నగదుగా చెల్లించండి
             </p>
           </div>
 

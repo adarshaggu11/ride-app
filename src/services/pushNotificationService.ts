@@ -96,8 +96,7 @@ class PushNotificationService {
         badge: payload.badge || '/icon-192.png',
         tag: 'mana-auto-notification',
         requireInteraction: false,
-        data: payload.data,
-        actions: payload.actions
+        data: payload.data
       });
 
       return true;

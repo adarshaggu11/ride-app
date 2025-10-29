@@ -139,7 +139,7 @@ class AIService {
       frequentLocations: [],
       preferredTimes: [],
       averageRideDistance: 0,
-      preferredPaymentMethod: 'upi',
+      preferredPaymentMethod: 'cash',
       pricesensitivity: 'medium',
     };
 
