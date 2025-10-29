@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { initializePushNotifications } from "./services/pushNotifications";
 import SplashScreen from "./components/SplashScreen";
 import OnboardingScreens from "./components/OnboardingScreens";
 import AuthScreen from "./components/AuthScreen";
@@ -61,6 +62,11 @@ const App = () => {
   }, []);
 
   const initializeApp = async () => {
+    // Initialize push notifications first (async, doesn't block UI)
+    initializePushNotifications().catch(error => {
+      console.error('Failed to initialize push notifications:', error);
+    });
+
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
