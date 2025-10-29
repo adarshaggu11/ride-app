@@ -13,7 +13,6 @@ const slides = [
     description: "Book bikes, autos, or cars instantly with just a few taps. Zero booking fees!",
     color: "from-primary to-accent",
     bgPattern: "bg-gradient-to-br from-primary/10 to-accent/10",
-    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&h=600&fit=crop",
     stats: ["4.8★ Rating", "50K+ Rides", "100% Safe"]
   },
   {
@@ -22,7 +21,6 @@ const slides = [
     description: "All drivers are thoroughly verified and trained for your safety and comfort",
     color: "from-green-500 to-emerald-500",
     bgPattern: "bg-gradient-to-br from-green-500/10 to-emerald-500/10",
-    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=600&fit=crop",
     stats: ["Background Checked", "Licensed", "Insured"]
   },
   {
@@ -31,7 +29,6 @@ const slides = [
     description: "Track your ride in real-time with accurate GPS and share your location with loved ones",
     color: "from-blue-500 to-cyan-500",
     bgPattern: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10",
-    image: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=800&h=600&fit=crop",
     stats: ["Real-time GPS", "Route Optimization", "ETA Updates"]
   },
   {
@@ -40,7 +37,6 @@ const slides = [
     description: "Choose from bikes, autos, and cars based on your comfort and budget",
     color: "from-purple-500 to-pink-500",
     bgPattern: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
-    image: "https://images.unsplash.com/photo-1590642916589-592bca10dfbf?w=800&h=600&fit=crop",
     stats: ["Bikes from ₹49", "Autos from ₹85", "Cars from ₹120"]
   },
 ];
@@ -143,19 +139,10 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
           }`}
           key={currentSlide}
         >
-          {/* Hero Image */}
+          {/* Hero Icon - No Images */}
           <div className="relative mx-auto w-full max-w-sm">
-            <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-              <img 
-                src={slide.image} 
-                alt={slide.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            {/* Floating Icon Badge */}
-            <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gradient-to-br ${slide.color} w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300`}>
-              <Icon className="w-10 h-10 text-white drop-shadow-lg" />
+            <div className={`aspect-square rounded-3xl bg-gradient-to-br ${slide.color} p-12 shadow-2xl flex items-center justify-center`}>
+              <Icon className="w-32 h-32 text-white drop-shadow-2xl animate-float" />
             </div>
           </div>
 
