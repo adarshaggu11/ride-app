@@ -62,38 +62,49 @@ const App = () => {
   }, []);
 
   const initializeApp = async () => {
-    // Initialize push notifications first (async, doesn't block UI)
-    initializePushNotifications().catch(error => {
-      console.error('Failed to initialize push notifications:', error);
-    });
+    try {
+      // Initialize push notifications first (async, doesn't block UI)
+      initializePushNotifications().catch(error => {
+        console.error('Failed to initialize push notifications:', error);
+      });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
-    const permissionsRequested = localStorage.getItem("permissions_requested");
-    const savedRole = localStorage.getItem("user_role");
-    
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
+      const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
+      const permissionsRequested = localStorage.getItem("permissions_requested");
+      const savedRole = localStorage.getItem("user_role");
+      
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (!permissionsRequested) {
+        setShowPermissions(true);
+        setIsLoading(false);
+        return;
+      }
+
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        try {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+          setUserRole(parsedUser.role || savedRole || 'customer');
+        } catch (parseError) {
+          console.error('Error parsing user data:', parseError);
+          localStorage.removeItem("user");
+        }
+      } else if (savedRole) {
+        setUserRole(savedRole as 'customer' | 'driver');
+      }
       setIsLoading(false);
-      return;
-    }
-
-    if (!permissionsRequested) {
-      setShowPermissions(true);
+    } catch (error) {
+      console.error('Critical error during app initialization:', error);
       setIsLoading(false);
-      return;
+      // App will still render, just without full initialization
     }
-
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      setUserRole(parsedUser.role || savedRole || 'customer');
-    } else if (savedRole) {
-      setUserRole(savedRole as 'customer' | 'driver');
-    }
-    setIsLoading(false);
   };
 
   const handleOnboardingComplete = () => {
