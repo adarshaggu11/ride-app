@@ -2,21 +2,30 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { requestLocationPermission, getCurrentLocation } from "../services/locationService";
 
 const LocationPermission = () => {
   const navigate = useNavigate();
 
-  const handleAllow = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        () => {
-          navigate("/home");
-        },
-        () => {
-          navigate("/home");
+  const handleAllow = async () => {
+    try {
+      // Request location permission using Capacitor plugin
+      const granted = await requestLocationPermission();
+      
+      if (granted) {
+        // Try to get current location to verify permission works
+        try {
+          await getCurrentLocation();
+          console.log('✅ Location permission granted and working');
+        } catch (error) {
+          console.warn('Location permission granted but unable to get location:', error);
         }
-      );
-    } else {
+      }
+      
+      // Navigate to home regardless (app can function with or without location)
+      navigate("/home");
+    } catch (error) {
+      console.error('Error requesting location permission:', error);
       navigate("/home");
     }
   };

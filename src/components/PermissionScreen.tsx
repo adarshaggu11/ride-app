@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { MapPin, Bell, Camera, Phone } from 'lucide-react';
+import { requestLocationPermission } from '../services/locationService';
+import { requestCameraPermission } from '../services/cameraService';
+import { requestLocalNotificationPermission } from '../services/localNotificationService';
 
 interface Permission {
   id: string;
@@ -53,27 +56,20 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleGrantPermission = async (permissionId: string) => {
-    // Simulate permission request
     try {
       let granted = false;
 
       if (permissionId === 'location') {
-        if ('geolocation' in navigator) {
-          const result = await new Promise<boolean>((resolve) => {
-            navigator.geolocation.getCurrentPosition(
-              () => resolve(true),
-              () => resolve(false)
-            );
-          });
-          granted = result;
-        }
+        // Use Capacitor Geolocation plugin for proper permission handling
+        granted = await requestLocationPermission();
       } else if (permissionId === 'notifications') {
-        if ('Notification' in window) {
-          const result = await Notification.requestPermission();
-          granted = result === 'granted';
-        }
-      } else {
-        // For camera and phone, just mark as granted for now
+        // Use Capacitor LocalNotifications for Android 13+ permission handling
+        granted = await requestLocalNotificationPermission();
+      } else if (permissionId === 'camera') {
+        // Use Capacitor Camera plugin for proper permission handling
+        granted = await requestCameraPermission();
+      } else if (permissionId === 'phone') {
+        // Phone permission doesn't need explicit request - handled by tel: links
         granted = true;
       }
 
@@ -89,6 +85,12 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
       }
     } catch (error) {
       console.error('Permission error:', error);
+      // Mark as not granted on error
+      setPermissions(prev =>
+        prev.map(p =>
+          p.id === permissionId ? { ...p, granted: false } : p
+        )
+      );
     }
   };
 
