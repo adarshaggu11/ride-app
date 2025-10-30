@@ -14,7 +14,8 @@ import {
   Briefcase,
   Repeat,
   Check,
-  X
+  X,
+  Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
@@ -184,8 +185,12 @@ export const ScheduledRidesScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-orange-600 fill-orange-600" />
+          </div>
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
