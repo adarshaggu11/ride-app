@@ -203,7 +203,7 @@ const App = () => {
               element={<LocationPermission />}
             />
             
-            {/* Customer Routes */}
+            {/* Customer-specific Routes */}
             {userRole === 'customer' && (
               <>
                 <Route
@@ -216,40 +216,10 @@ const App = () => {
                     )
                   }
                 />
-                <Route
-                  path="/confirm-ride"
-                  element={
-                    user ? <ConfirmRideScreen /> : <Navigate to="/auth" replace />
-                  }
-                />
-                <Route
-                  path="/searching"
-                  element={
-                    user ? <SearchingScreen /> : <Navigate to="/auth" replace />
-                  }
-                />
-                <Route
-                  path="/scheduled-rides"
-                  element={
-                    user ? <ScheduledRidesScreen /> : <Navigate to="/auth" replace />
-                  }
-                />
-                <Route
-                  path="/carpool"
-                  element={
-                    user ? <CarpoolScreen /> : <Navigate to="/auth" replace />
-                  }
-                />
-                <Route
-                  path="/emergency"
-                  element={
-                    user ? <EmergencyScreen /> : <Navigate to="/auth" replace />
-                  }
-                />
               </>
             )}
 
-            {/* Driver Routes */}
+            {/* Driver-specific Routes */}
             {userRole === 'driver' && (
               <>
                 <Route
@@ -398,12 +368,6 @@ const App = () => {
               path="/carpool"
               element={
                 user ? <CarpoolScreen /> : <Navigate to="/auth" replace />
-              }
-            />
-            <Route
-              path="/driver-dashboard"
-              element={
-                user ? <DriverDashboardScreen /> : <Navigate to="/auth" replace />
               }
             />
 
