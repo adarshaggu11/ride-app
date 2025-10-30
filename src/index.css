@@ -240,6 +240,10 @@ All colors MUST be HSL.
     animation: spin-reverse 15s linear infinite;
   }
 
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
   /* Glass Morphism */
   .glass {
     background: rgba(255, 255, 255, 0.7);
