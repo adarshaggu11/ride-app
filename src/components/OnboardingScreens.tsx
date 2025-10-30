@@ -171,18 +171,54 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
         ))}
       </div>
 
-      {/* Skip Button */}
-      {currentSlide < slides.length - 1 && (
-        <div className="absolute top-4 right-4 z-20 animate-fade-in">
+      {/* Premium Header with Logo */}
+      <div className="absolute top-0 left-0 right-0 z-20 px-6 py-4 flex items-center justify-between">
+        {/* Animated Logo */}
+        <div className="flex items-center gap-3 animate-slide-down">
+          <div 
+            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-all duration-300"
+            style={{
+              background: `linear-gradient(135deg, ${slide.bgColor}, ${slide.secondaryColor})`,
+              boxShadow: `0 4px 20px ${slide.bgColor}50`
+            }}
+          >
+            <Zap className="w-7 h-7 text-white" strokeWidth={2.5} />
+          </div>
+          <div className="flex flex-col">
+            <h1 
+              className="text-xl font-black tracking-tight"
+              style={{
+                background: `linear-gradient(135deg, ${slide.bgColor}, ${slide.secondaryColor})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Dropout
+            </h1>
+            <div className="flex items-center gap-1.5">
+              <div 
+                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ background: slide.bgColor }}
+              ></div>
+              <span className="text-[10px] font-semibold text-muted-foreground">
+                {currentSlide + 1} of {slides.length}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Skip Button */}
+        {currentSlide < slides.length - 1 && (
           <Button
             onClick={handleSkip}
             variant="ghost"
-            className="text-muted-foreground hover:text-foreground font-semibold backdrop-blur-sm bg-background/30 rounded-full px-6"
+            className="text-muted-foreground hover:text-foreground font-semibold backdrop-blur-sm bg-background/30 rounded-full px-6 animate-fade-in"
           >
             Skip
           </Button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 relative z-10">
@@ -196,6 +232,17 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
         >
           {/* Illustration Container with Premium Animation */}
           <div className="relative mx-auto w-full max-w-xs">
+            {/* Animated Loading Ring - Premium Effect */}
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+              <div 
+                className="w-full h-full rounded-full animate-spin-slow"
+                style={{
+                  background: `conic-gradient(from 0deg, transparent 0deg, ${slide.bgColor} 90deg, transparent 180deg)`,
+                  opacity: 0.3
+                }}
+              ></div>
+            </div>
+            
             <div 
               className="relative aspect-square rounded-full flex items-center justify-center animate-float"
               style={{
@@ -214,27 +261,66 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
                 style={{ borderColor: slide.secondaryColor }}
               ></div>
               
-              {/* Icon Illustration */}
+              {/* Pulse Circles for Loading Effect */}
+              <div 
+                className="absolute inset-8 rounded-full animate-pulse"
+                style={{
+                  background: `radial-gradient(circle, ${slide.bgColor}10, transparent)`,
+                  animationDuration: '2s'
+                }}
+              ></div>
+              
+              {/* Icon Illustration with Loading Animation */}
               <img 
                 src={slide.illustration}
                 alt={slide.title}
                 className={`w-2/3 h-2/3 object-contain transition-all duration-500 ${
-                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                  isVisible ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-75 -rotate-12'
                 }`}
                 style={{
                   filter: `drop-shadow(0 10px 30px ${slide.bgColor}60)`
                 }}
               />
+              
+              {/* Sparkle Effects - Premium Touch */}
+              {isVisible && (
+                <>
+                  <div 
+                    className="absolute top-8 right-8 w-2 h-2 rounded-full animate-ping"
+                    style={{ background: slide.bgColor }}
+                  ></div>
+                  <div 
+                    className="absolute bottom-12 left-12 w-1.5 h-1.5 rounded-full animate-ping"
+                    style={{ 
+                      background: slide.secondaryColor,
+                      animationDelay: '0.5s'
+                    }}
+                  ></div>
+                  <div 
+                    className="absolute top-16 left-8 w-1 h-1 rounded-full animate-ping"
+                    style={{ 
+                      background: slide.bgColor,
+                      animationDelay: '1s'
+                    }}
+                  ></div>
+                </>
+              )}
             </div>
             
-            {/* Floating Icon Badge */}
+            {/* Floating Icon Badge with Pulse Effect */}
             <div 
               className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 animate-bounce-slow"
               style={{
-                background: `linear-gradient(135deg, ${slide.bgColor} 0%, ${slide.secondaryColor} 100%)`
+                background: `linear-gradient(135deg, ${slide.bgColor} 0%, ${slide.secondaryColor} 100%)`,
+                boxShadow: `0 10px 40px ${slide.bgColor}60, 0 0 0 3px ${slide.bgColor}20`
               }}
             >
-              <Icon className="w-10 h-10 text-white drop-shadow-lg" />
+              <Icon className="w-10 h-10 text-white drop-shadow-lg" strokeWidth={2.5} />
+              {/* Animated Border Ring */}
+              <div 
+                className="absolute inset-0 rounded-3xl border-2 border-white/40 animate-ping"
+                style={{ animationDuration: '3s' }}
+              ></div>
             </div>
           </div>
 
@@ -300,24 +386,51 @@ const OnboardingScreens = ({ onComplete }: OnboardingScreensProps) => {
             </div>
           </div>
 
-          {/* Premium Progress Indicators */}
-          <div className="flex justify-center items-center gap-2 pt-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`rounded-full transition-all duration-500 transform ${
-                  index === currentSlide
-                    ? "w-10 h-3 shadow-lg"
-                    : "w-3 h-3 hover:scale-125"
-                }`}
+          {/* Premium Progress Indicators with Loading Bar */}
+          <div className="flex flex-col items-center gap-4 pt-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            {/* Dot Indicators */}
+            <div className="flex justify-center items-center gap-2">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`rounded-full transition-all duration-500 transform relative overflow-hidden ${
+                    index === currentSlide
+                      ? "w-10 h-3 shadow-lg"
+                      : "w-3 h-3 hover:scale-125"
+                  }`}
+                  style={{
+                    background: index === currentSlide 
+                      ? `linear-gradient(90deg, ${slide.bgColor}, ${slide.secondaryColor})`
+                      : '#E5E7EB'
+                  }}
+                >
+                  {/* Shimmer effect on active indicator */}
+                  {index === currentSlide && (
+                    <div 
+                      className="absolute inset-0 opacity-50"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                        backgroundSize: '200% 100%',
+                        animation: 'shimmer 1.5s linear infinite'
+                      }}
+                    ></div>
+                  )}
+                </button>
+              ))}
+            </div>
+            
+            {/* Loading Progress Bar */}
+            <div className="w-32 h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div 
+                className="h-full rounded-full transition-all duration-300"
                 style={{
-                  background: index === currentSlide 
-                    ? `linear-gradient(90deg, ${slide.bgColor}, ${slide.secondaryColor})`
-                    : '#E5E7EB'
+                  width: `${((currentSlide + 1) / slides.length) * 100}%`,
+                  background: `linear-gradient(90deg, ${slide.bgColor}, ${slide.secondaryColor})`,
+                  boxShadow: `0 0 10px ${slide.bgColor}60`
                 }}
-              />
-            ))}
+              ></div>
+            </div>
           </div>
 
           {/* Social Proof Badge (First Slide Only) */}
