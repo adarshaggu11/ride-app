@@ -16,7 +16,8 @@ import {
   Phone,
   Navigation,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
@@ -202,8 +203,12 @@ export const CarpoolScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-blue-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-green-600 fill-green-600" />
+          </div>
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
@@ -211,8 +216,8 @@ export const CarpoolScreen: React.FC = () => {
             <ChevronLeft className="w-6 h-6" />
           </button>
           <div className="flex-1 text-center">
-            <h1 className="text-2xl font-bold">Ride Sharing</h1>
-            <p className="text-green-100 text-sm">Save money, reduce emissions</p>
+            <h1 className="text-2xl font-black">Ride Sharing</h1>
+            <p className="text-green-100 text-sm font-semibold">Save money, reduce emissions 🌱</p>
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
