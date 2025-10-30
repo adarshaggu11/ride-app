@@ -45,10 +45,25 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(helmet());
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
-  credentials: true
-}));
+// CORS: allow typical dev/native app origins. For production, restrict via FRONTEND_URL.
+const corsOrigin = (origin, callback) => {
+  const allowReflect = process.env.CORS_REFLECT_ORIGIN === 'true';
+  if (allowReflect) return callback(null, true);
+
+  const allowed = new Set([
+    process.env.FRONTEND_URL || 'http://localhost:8080',
+    'capacitor://localhost',
+    'http://localhost',
+    'https://localhost'
+  ]);
+
+  if (!origin || allowed.has(origin)) return callback(null, true);
+  // Allow common LAN origins in dev (192.168.x.x)
+  if (/^https?:\/\/192\.168\./.test(origin)) return callback(null, true);
+  return callback(new Error(`Not allowed by CORS: ${origin}`));
+};
+
+app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(compression());
 app.use(morgan('dev'));
 app.use(express.json());
