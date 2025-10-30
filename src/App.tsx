@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { initializePushNotifications } from "./services/pushNotifications";
+import DevSafeBanner from "./components/DevSafeBanner";
+import { isBypassPermissionsEnabled, isNativePushDisabled } from "./utils/flags";
 import { requestNotificationPermission, getFCMToken, onForegroundMessage } from "./services/notificationService";
 import { Capacitor } from "@capacitor/core";
 import { safeGetItem, safeSetItem, safeGetJSON, safeSetJSON, safeRemoveItem } from "./utils/safeStorage";
@@ -65,11 +67,11 @@ const App = () => {
     console.log('🔄 Starting app initialization...');
     
     try {
-      const bypassPermissions = import.meta.env.VITE_BYPASS_PERMISSIONS === 'true';
+      const bypassPermissions = isBypassPermissionsEnabled();
       // Initialize push notifications first (async, doesn't block UI)
       // Allow disabling on native via env to isolate crashes: set VITE_DISABLE_NATIVE_PUSH=true
       try {
-        const disableNativePush = import.meta.env.VITE_DISABLE_NATIVE_PUSH === 'true';
+        const disableNativePush = isNativePushDisabled();
         if (!disableNativePush) {
           initializePushNotifications().catch(error => {
             console.warn('Push notifications initialization failed (non-critical):', error);
@@ -212,6 +214,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <DevSafeBanner />
         <BrowserRouter
           future={{
             v7_startTransition: true,
