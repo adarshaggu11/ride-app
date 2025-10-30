@@ -12,7 +12,8 @@ import {
   Trash2,
   Plus,
   Check,
-  X
+  X,
+  Zap
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
@@ -161,8 +162,12 @@ export const EmergencyScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-4 mb-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-red-600 fill-red-600" />
+          </div>
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
@@ -170,8 +175,8 @@ export const EmergencyScreen: React.FC = () => {
             <ChevronLeft className="w-6 h-6" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold">Emergency & Safety</h1>
-            <p className="text-red-100 text-sm">Your safety is our priority</p>
+            <h1 className="text-2xl font-black">Emergency & Safety</h1>
+            <p className="text-red-100 text-sm font-semibold">Your safety is our priority 🛡️</p>
           </div>
         </div>
 
