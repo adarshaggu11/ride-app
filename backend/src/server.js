@@ -15,6 +15,7 @@ import driverRoutes from './routes/drivers.js';
 import rideRoutes from './routes/rides.js';
 import paymentRoutes from './routes/payments.js';
 import adminRoutes from './routes/admin.js';
+import pushRoutes from './routes/push.js';
 
 // Socket handlers
 import { setupSocketHandlers } from './socket/index.js';
@@ -76,6 +77,7 @@ app.use('/api/drivers', driverRoutes);
 app.use('/api/rides', rideRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/push', pushRoutes);
 
 // Setup Socket.IO
 setupSocketHandlers(io);

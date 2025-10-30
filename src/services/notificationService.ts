@@ -3,6 +3,8 @@
 
 import { messaging, isFirebaseEnabled } from '../config/firebase';
 import { getToken, onMessage, Messaging } from 'firebase/messaging';
+import { config } from '@/config/production';
+import { safeGetJSON } from '@/utils/safeStorage';
 
 // Notification permission status
 let notificationPermission: NotificationPermission = 'default';
@@ -63,6 +65,25 @@ export const getFCMToken = async (): Promise<string | null> => {
 
     if (token) {
       console.log('✅ FCM Token:', token);
+      // Attempt to persist token to backend (non-blocking)
+      try {
+        const user = safeGetJSON<any>('user', null);
+        await fetch(`${config.API_BASE_URL}/push/token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token,
+            platform: 'web',
+            userId: user?._id || user?.id || undefined,
+            meta: {
+              ua: navigator.userAgent,
+              lang: navigator.language,
+            },
+          }),
+        });
+      } catch (e) {
+        console.warn('Failed to persist FCM token to backend (non-critical):', e);
+      }
       return token;
     } else {
       console.warn('⚠️ No FCM token available');
