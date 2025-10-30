@@ -1,7 +1,12 @@
 // Production Configuration
-// Set PRODUCTION_MODE = true before building for Play Store/App Store
+// Driven by environment variables; avoid hardcoding for releases.
 
-export const PRODUCTION_MODE = false; // Change to true for production builds
+// If VITE_PRODUCTION_MODE is explicitly set to 'true', prefer that.
+// Otherwise, fall back to Vite's production mode flag.
+export const PRODUCTION_MODE =
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_PRODUCTION_MODE === 'true') ||
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.PROD) ||
+  false;
 
 export const config = {
   // API Configuration
@@ -26,7 +31,7 @@ export const config = {
   APP_VERSION: '1.0.0',
   
   // Google Maps
-  GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  GOOGLE_MAPS_API_KEY: (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY,
   
   // Firebase
   FIREBASE_ENABLED: true,

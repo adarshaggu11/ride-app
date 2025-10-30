@@ -57,6 +57,7 @@ const MapComponent = ({
   const nearbyVehiclesKey = JSON.stringify(nearbyVehicles.map(v => ({ id: v.id, lat: v.lat, lng: v.lng, bearing: v.bearing, type: v.type })));
 
   // Initialize Google Maps ONCE
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     let mounted = true;
     
@@ -185,9 +186,10 @@ const MapComponent = ({
     return () => {
       mounted = false;
     };
-  }, []); // Empty dependency array - only run once!
+  }, []); // Intentionally only once on mount
 
   // Update map center
+  // Update map when center changes
   useEffect(() => {
     if (map && center) {
       map.setCenter(center);
@@ -195,6 +197,8 @@ const MapComponent = ({
   }, [map, center]);
 
   // Draw route between origin and destination
+  // Draw route between origin and destination when requested
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!map || !showRoute || !origin || !destination) return;
 
@@ -268,6 +272,8 @@ const MapComponent = ({
   }, [map, showRoute, origin, destination]);
 
   // Show driver marker with live tracking
+  // Handle driver marker
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!map || !showDriverMarker || !driverLocation) return;
 
@@ -297,6 +303,8 @@ const MapComponent = ({
   }, [map, showDriverMarker, driverLocation]);
 
   // Show user's current location with blue dot
+  // Show user's current location
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!map || !showUserLocation) return;
 
@@ -335,6 +343,7 @@ const MapComponent = ({
   }, [map, showUserLocation, center]);
 
   // Show nearby drivers (autos/bikes) - Legacy support with enhanced icons
+  // Render nearby legacy driver markers
   useEffect(() => {
     if (!map || nearbyDrivers.length === 0) {
       // Clear markers if no drivers
@@ -397,6 +406,7 @@ const MapComponent = ({
   }, [map, nearbyDriversKey]); // Use JSON key instead of array reference
 
   // Show nearby vehicles with real-time tracking and 3D markers
+  // Render/update tracked vehicles with smooth animation
   useEffect(() => {
     if (!map || !window.google?.maps) return;
 
@@ -482,6 +492,8 @@ const MapComponent = ({
   }, [map, nearbyVehiclesKey, vehicleType]); // Use JSON key instead of array reference
 
   // Cleanup all markers on component unmount
+  // Cleanup markers and layers on unmount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     return () => {
       // Clean up vehicle markers
@@ -505,7 +517,7 @@ const MapComponent = ({
         routePolyline.setMap(null);
       }
     };
-  }, []); // Empty deps - only run on unmount
+  }, []); // Only on unmount
 
   // Toggle traffic layer visibility
   const toggleTraffic = () => {

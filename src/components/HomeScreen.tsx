@@ -154,7 +154,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
     };
 
     initAutocomplete();
-  }, []);
+  }, [pickupAutocomplete, dropAutocomplete]);
 
   const handleFindAuto = () => {
     if (!pickup || !drop) {

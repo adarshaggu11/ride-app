@@ -39,6 +39,16 @@ let analytics: Analytics | undefined;
 
 if (isFirebaseConfigured()) {
   try {
+    // Warn if storage bucket domain looks unusual
+    if (firebaseConfig.storageBucket && !/\.appspot\.com$/i.test(firebaseConfig.storageBucket)) {
+      console.warn(
+        'Firebase storageBucket is not using the canonical appspot.com domain:',
+        firebaseConfig.storageBucket,
+        '\
+If this is unintentional, set VITE_FIREBASE_STORAGE_BUCKET to <project-id>.appspot.com to avoid storage issues.'
+      );
+    }
+
     // Initialize Firebase
     app = initializeApp(firebaseConfig);
     

@@ -1,6 +1,7 @@
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { scheduleLocalNotification } from './localNotificationService';
+import { safeSetItem, safeGetJSON } from "@/utils/safeStorage";
 
 /**
  * Initialize push notifications when app starts
@@ -32,7 +33,7 @@ export const initializePushNotifications = async () => {
     PushNotifications.addListener('registration', (token: Token) => {
       console.log('✅ Push registration success, token: ' + token.value);
       // Send this token to your backend server
-      saveFCMToken(token.value);
+      saveFCMToken(token.value); 
     });
 
     // Listen for registration errors
@@ -108,8 +109,8 @@ export const removeAllNotifications = async () => {
  */
 const saveFCMToken = async (token: string) => {
   try {
-    // Save to localStorage for now
-    localStorage.setItem('fcm_token', token);
+    // Save to localStorage (safely) for now
+    safeSetItem('fcm_token', token);
     
     // TODO: Send to your backend API
     // const response = await fetch('YOUR_API_URL/save-fcm-token', {
@@ -129,7 +130,7 @@ const saveFCMToken = async (token: string) => {
  */
 const storeNotification = (notification: PushNotificationSchema) => {
   try {
-    const notifications = JSON.parse(localStorage.getItem('app_notifications') || '[]');
+    const notifications = safeGetJSON<any[]>('app_notifications', []);
     
     notifications.unshift({
       id: notification.id,
@@ -145,7 +146,7 @@ const storeNotification = (notification: PushNotificationSchema) => {
       notifications.splice(50);
     }
 
-    localStorage.setItem('app_notifications', JSON.stringify(notifications));
+    safeSetItem('app_notifications', JSON.stringify(notifications));
   } catch (error) {
     console.error('Error storing notification:', error);
   }
@@ -185,7 +186,7 @@ const handleNotificationAction = (data: any) => {
  */
 export const getAppNotifications = () => {
   try {
-    return JSON.parse(localStorage.getItem('app_notifications') || '[]');
+    return safeGetJSON<any[]>('app_notifications', []);
   } catch (error) {
     console.error('Error getting app notifications:', error);
     return [];
@@ -201,7 +202,7 @@ export const markNotificationAsRead = (notificationId: string) => {
     const updated = notifications.map((n: any) =>
       n.id === notificationId ? { ...n, read: true } : n
     );
-    localStorage.setItem('app_notifications', JSON.stringify(updated));
+    safeSetItem('app_notifications', JSON.stringify(updated));
   } catch (error) {
     console.error('Error marking notification as read:', error);
   }

@@ -1,8 +1,8 @@
-// Firebase Cloud Messaging Service Worker
-// Handles background push notifications
+// Firebase Cloud Messaging Service Worker (Compat, aligned to SDK v12)
+// Handles background push notifications in the PWA
 
-importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging-compat.js');
 
 // Firebase configuration
 const firebaseConfig = {
@@ -15,8 +15,17 @@ const firebaseConfig = {
   databaseURL: "https://dropout586586-default-rtdb.firebaseio.com"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase safely (avoid duplicate-app error on hot updates)
+try {
+  if (firebase.apps && firebase.apps.length) {
+    firebase.app();
+  } else {
+    firebase.initializeApp(firebaseConfig);
+  }
+} catch (e) {
+  // In case of race conditions, fallback to existing app
+  try { firebase.app(); } catch (_) {}
+}
 
 // Initialize Firebase Messaging
 const messaging = firebase.messaging();
@@ -25,11 +34,11 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message:', payload);
 
-  const notificationTitle = payload.notification?.title || 'New Notification';
+  const notificationTitle = payload.notification?.title || 'Dropout';
   const notificationOptions = {
     body: payload.notification?.body || 'You have a new update',
-    icon: payload.notification?.icon || '/images/icon-192x192.png',
-    badge: '/images/icon-72x72.png',
+    icon: payload.notification?.icon || '/icon-192.png',
+    badge: '/icon-72.png',
     tag: payload.data?.tag || 'ride-notification',
     data: payload.data,
     requireInteraction: true,

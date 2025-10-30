@@ -52,9 +52,13 @@ export const getFCMToken = async (): Promise<string | null> => {
       return null;
     }
 
+    // Ensure our main PWA service worker is ready and use it for FCM
+    const registration = await navigator.serviceWorker.ready;
+
     // Get FCM token
     const token = await getToken(messaging as Messaging, {
-      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+      serviceWorkerRegistration: registration,
     });
 
     if (token) {
@@ -85,8 +89,8 @@ export const onForegroundMessage = (callback: (payload: any) => void): (() => vo
     if (notificationPermission === 'granted' && payload.notification) {
       new Notification(payload.notification.title || 'Notification', {
         body: payload.notification.body,
-        icon: payload.notification.icon || '/images/icon-192x192.png',
-        badge: '/images/icon-72x72.png',
+        icon: payload.notification.icon || '/favicon.ico',
+        // badge omitted to avoid missing asset; let browser default
         tag: payload.data?.tag || 'ride-notification',
         requireInteraction: true
       });
@@ -108,8 +112,7 @@ export const sendTestNotification = () => {
 
   new Notification('🚗 Test Notification', {
     body: 'Firebase push notifications are working!',
-    icon: '/images/icon-192x192.png',
-    badge: '/images/icon-72x72.png'
+    icon: '/favicon.ico'
   });
 };
 

@@ -2,6 +2,9 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ThemeProvider } from "next-themes";
+// Register PWA Service Worker and setup offline features on app start
+import "./services/offlineService";
 
 console.log('🚀 Dropout App Starting...', {
   platform: typeof window !== 'undefined' ? 'web' : 'unknown',
@@ -21,7 +24,9 @@ try {
   
   createRoot(rootElement).render(
     <ErrorBoundary>
-      <App />
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <App />
+      </ThemeProvider>
     </ErrorBoundary>
   );
   
