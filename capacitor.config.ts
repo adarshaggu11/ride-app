@@ -8,7 +8,8 @@ const config: CapacitorConfig = {
     androidScheme: 'https'
   },
   android: {
-    allowMixedContent: false,
+    // Allow mixed content so the WebView can call http:// backends without crashing/blanking when app scheme is https
+    allowMixedContent: true,
     buildOptions: {
       keystorePath: undefined,
       keystorePassword: undefined,
