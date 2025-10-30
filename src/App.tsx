@@ -66,6 +66,13 @@ const App = () => {
     console.log('🔄 Starting app initialization...');
     
     try {
+      // SKIP everything for testing - go straight to role selection
+      console.log('⚠️ TESTING MODE: Skipping onboarding and permissions');
+      
+      setIsLoading(false);
+      setShowRoleSelection(true);
+      return;
+      
       // Initialize push notifications first (async, doesn't block UI)
       try {
         initializePushNotifications().catch(error => {

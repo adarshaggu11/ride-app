@@ -147,6 +147,28 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes slide-out-left {
+    from { 
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to { 
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-out-right {
+    from { 
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to { 
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
   @keyframes scale-in {
     from { 
       transform: scale(0.8);
@@ -161,6 +183,21 @@ All colors MUST be HSL.
   @keyframes shimmer {
     0% { background-position: -1000px 0; }
     100% { background-position: 1000px 0; }
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes spin-reverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
   }
 
   .animate-float {
@@ -179,8 +216,28 @@ All colors MUST be HSL.
     animation: slide-in-left 0.5s ease-out;
   }
 
+  .animate-slide-out-left {
+    animation: slide-out-left 0.3s ease-in;
+  }
+
+  .animate-slide-out-right {
+    animation: slide-out-right 0.3s ease-in;
+  }
+
   .animate-scale-in {
     animation: scale-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+
+  .animate-spin-reverse {
+    animation: spin-reverse 15s linear infinite;
   }
 
   /* Glass Morphism */
