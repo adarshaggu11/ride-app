@@ -92,8 +92,8 @@ class PushNotificationService {
       
       await registration.showNotification(payload.title, {
         body: payload.body,
-        icon: payload.icon || '/icon-192.png',
-        badge: payload.badge || '/icon-192.png',
+        icon: payload.icon || '/favicon.ico',
+        badge: payload.badge || '/favicon.ico',
         tag: 'mana-auto-notification',
         requireInteraction: false,
         data: payload.data
@@ -145,7 +145,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: '🚗 Driver Assigned!',
       body: `${driverName} is on the way. ETA: ${eta}`,
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'driver_assigned', driverName, eta },
       actions: [
         { action: 'view', title: 'View Ride' },
@@ -161,7 +161,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: '🎯 Driver Arrived!',
       body: 'Your driver has arrived at the pickup location',
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'driver_arrived' },
       actions: [
         { action: 'view', title: 'View Details' }
@@ -176,7 +176,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: '✅ Ride Completed',
       body: `Total fare: ₹${fare}. Thank you for riding with us!`,
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'ride_completed', fare },
       actions: [
         { action: 'rate', title: 'Rate Ride' },
@@ -192,7 +192,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: '💳 Payment Successful',
       body: `₹${amount} paid successfully`,
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'payment_success', amount }
     });
   }
@@ -204,7 +204,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: `🎁 ${title}`,
       body: message,
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'promotion' },
       actions: [
         { action: 'view', title: 'View Offer' }
@@ -219,7 +219,7 @@ class PushNotificationService {
     await this.showLocalNotification({
       title: '🧪 Test Notification',
       body: 'Push notifications are working correctly!',
-      icon: '/icon-192.png',
+      icon: '/favicon.ico',
       data: { type: 'test' }
     });
   }

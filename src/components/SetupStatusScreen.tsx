@@ -14,6 +14,7 @@ import {
   Zap
 } from "lucide-react";
 import { pushNotificationService } from "@/services/pushNotificationService";
+import { firebaseConfig } from "@/config/firebase";
 import { useState, useEffect } from "react";
 
 const SetupStatusScreen = () => {
@@ -25,11 +26,15 @@ const SetupStatusScreen = () => {
     setNotificationStatus(status);
   }, []);
 
+  const mapsConfigured = Boolean(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+  const backendUrl = import.meta.env.VITE_API_BASE_URL || "";
+  const vapidConfigured = Boolean(import.meta.env.VITE_FIREBASE_VAPID_KEY);
+
   const services = [
     {
       name: "Google Maps API",
       icon: MapPin,
-      status: import.meta.env.VITE_GOOGLE_MAPS_API_KEY ? "configured" : "missing",
+      status: mapsConfigured ? "configured" : "missing",
       description: "Location services, routing, and place search",
       envKey: "VITE_GOOGLE_MAPS_API_KEY",
       setupUrl: "https://console.cloud.google.com/",
@@ -44,6 +49,15 @@ const SetupStatusScreen = () => {
       setupUrl: "https://console.firebase.google.com/",
       priority: "high",
       missingKeys: notificationStatus?.firebase?.missingKeys
+    },
+    {
+      name: "Web Push (VAPID)",
+      icon: Smartphone,
+      status: vapidConfigured ? "configured" : (notificationStatus?.permission === 'granted' ? 'partial' : 'missing'),
+      description: "Required for Firebase Web Push tokens",
+      envKey: "VITE_FIREBASE_VAPID_KEY",
+      setupUrl: "https://console.firebase.google.com/project/_/settings/cloudmessaging",
+      priority: "high"
     },
     {
       name: "SMS Gateway",
@@ -271,17 +285,35 @@ const SetupStatusScreen = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-600">Google Maps:</span>
-              <span className="font-medium text-green-600">✓ Ready</span>
+              {mapsConfigured ? (
+                <span className="font-medium text-green-600">✓ Ready</span>
+              ) : (
+                <span className="font-medium text-red-600">✗ Not Configured</span>
+              )}
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Backend API:</span>
-              <span className="font-medium text-yellow-600">⚠ Localhost</span>
+              {backendUrl.includes('localhost') || backendUrl.includes('127.0.0.1') ? (
+                <span className="font-medium text-yellow-600">⚠ Localhost</span>
+              ) : backendUrl ? (
+                <span className="font-medium text-green-600">✓ {backendUrl}</span>
+              ) : (
+                <span className="font-medium text-red-600">✗ Not Set</span>
+              )}
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Firebase:</span>
               <span className="font-medium text-red-600">
                 {notificationStatus?.firebase?.configured ? '✓ Ready' : '✗ Not Configured'}
               </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">VAPID (Web Push):</span>
+              {vapidConfigured ? (
+                <span className="font-medium text-green-600">✓ Set</span>
+              ) : (
+                <span className="font-medium text-red-600">✗ Missing</span>
+              )}
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Payments:</span>
