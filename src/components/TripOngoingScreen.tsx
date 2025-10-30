@@ -62,7 +62,6 @@ const TripOngoingScreen = () => {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-2xl font-bold">Trip Ongoing</h2>
-                <p className="text-lg font-semibold text-primary">ప్రయాణం కొనసాగుతోంది</p>
               </div>
               <Button
                 size="icon"

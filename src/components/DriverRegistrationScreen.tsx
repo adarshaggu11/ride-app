@@ -182,7 +182,6 @@ const DriverRegistrationScreen = ({ phone, onComplete }: DriverRegistrationScree
           <h1 className="text-xl font-bold">Driver Registration</h1>
           <div className="w-10" />
         </div>
-        <p className="text-center text-white/90">డ్రైవర్ రిజిస్ట్రేషన్</p>
 
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-2 mt-6">

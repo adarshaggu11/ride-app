@@ -145,7 +145,7 @@ const ConfirmRideScreen = () => {
             onClick={() => navigate(-1)}
             className="w-full text-center text-muted-foreground hover:text-foreground"
           >
-            Change Location | స్థానం మార్చండి
+            Change Location
           </button>
         </div>
       </Card>

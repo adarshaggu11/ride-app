@@ -264,7 +264,7 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
               <div className="flex-1 relative">
                 <Input
                   ref={dropInputRef}
-                  placeholder="Drop Location | డ్రాప్ స్థానం"
+                  placeholder="Drop Location"
                   value={drop}
                   onChange={(e) => setDrop(e.target.value)}
                   className="h-14 flex-1 border-2 border-border focus:border-destructive transition-all duration-300 rounded-xl shadow-sm font-medium pl-4 bg-white"

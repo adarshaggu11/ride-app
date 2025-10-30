@@ -462,7 +462,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 className="w-full h-12 text-lg font-semibold"
                 disabled={loading || otp.length !== 6}
               >
-                {loading ? "Verifying..." : "Verify OTP | ధృవీకరించండి"}
+                {loading ? "Verifying..." : "Verify OTP"}
               </Button>
 
               <button
@@ -474,7 +474,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 }}
                 className="w-full text-sm text-muted-foreground hover:text-primary"
               >
-                Change Number | నంబర్ మార్చండి
+                Change Number
               </button>
             </div>
           )}

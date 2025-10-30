@@ -101,7 +101,6 @@ const DriverAssignedScreen = () => {
             </div>
             <p className="text-muted-foreground">Driver reaching in</p>
             <p className="text-3xl font-bold text-primary">{Math.ceil(eta)} minutes</p>
-            <p className="text-sm text-muted-foreground">డ్రైవర్ {Math.ceil(eta)} నిమిషాల్లో చేరుకుంటున్నారు</p>
           </div>
 
           <Card className="p-4 bg-muted/50">
@@ -158,7 +157,7 @@ const DriverAssignedScreen = () => {
               className="w-full h-14 text-lg font-semibold"
               size="lg"
             >
-              Driver Arrived | డ్రైవర్ చేరుకున్నారు
+              Driver Arrived - Start Trip
             </Button>
             
             <Button

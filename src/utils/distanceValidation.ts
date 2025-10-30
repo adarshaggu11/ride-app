@@ -194,16 +194,24 @@ export function formatDistance(distance: number): string {
  * @returns Estimated duration in minutes
  */
 export function estimateRideDuration(distance: number, type: RideType): number {
-  // Average speeds in km/h
+  // Realistic average speeds in Indian city traffic (km/h)
   const speeds: Record<RideType, number> = {
-    bike: 35,   // Faster in traffic
-    auto: 30,   // Moderate speed
-    car: 40,    // Faster on highways
+    bike: 25,   // Can navigate through traffic (reduced from 35)
+    auto: 20,   // Slower in congested areas (reduced from 30)
+    car: 22,    // Affected by traffic (reduced from 40)
   };
 
   const speed = speeds[type];
-  const hours = distance / speed;
-  return Math.round(hours * 60); // Convert to minutes
+  
+  // Add buffer time for stops, signals (10% extra time)
+  const baseHours = distance / speed;
+  const bufferedHours = baseHours * 1.1;
+  
+  // Convert to minutes and round up to nearest minute
+  const minutes = Math.ceil(bufferedHours * 60);
+  
+  // Minimum 5 minutes even for very short rides
+  return Math.max(5, minutes);
 }
 
 /**
