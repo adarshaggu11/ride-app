@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Bell, Camera, Phone } from 'lucide-react';
+import { MapPin, Bell, Camera, Phone, Zap, Shield, CheckCircle, ArrowRight } from 'lucide-react';
 import { requestLocationPermission } from '../services/locationService';
 import { requestCameraPermission } from '../services/cameraService';
 import { requestLocalNotificationPermission } from '../services/localNotificationService';
@@ -148,116 +148,178 @@ export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
     .every(p => p.granted);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <div className="px-6 pt-12 pb-6">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Dropout</h1>
-          <span className="text-sm text-gray-500">
-            {currentStep + 1}/{permissions.length}
-          </span>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-500 to-black flex flex-col relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 -right-20 w-96 h-96 rounded-full blur-3xl opacity-20 bg-yellow-400 animate-pulse" style={{ animationDuration: '4s' }}></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-15 bg-orange-500 animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
+      </div>
+
+      {/* Premium Header */}
+      <div className="px-6 pt-8 pb-6 relative z-10 animate-slide-down">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-xl flex items-center justify-center relative">
+              <Zap 
+                className="w-6 h-6" 
+                style={{
+                  fill: 'url(#permZapGradient)',
+                  strokeWidth: 0,
+                }}
+              />
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="permZapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FCD34D" />
+                    <stop offset="100%" stopColor="#EA580C" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-xl font-black text-white tracking-tight">Dropout</h1>
+              <p className="text-white/80 text-xs font-semibold">Permissions</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
+            <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></div>
+            <span className="text-sm font-bold text-white">
+              {currentStep + 1}/{permissions.length}
+            </span>
+          </div>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+        {/* Premium Progress Bar */}
+        <div className="relative w-full h-2 bg-white/20 backdrop-blur-sm rounded-full overflow-hidden shadow-inner">
           <div
-            className="h-full bg-yellow-500 transition-all duration-300"
-            style={{ width: `${((currentStep + 1) / permissions.length) * 100}%` }}
-          />
+            className="h-full rounded-full transition-all duration-500 ease-out"
+            style={{ 
+              width: `${((currentStep + 1) / permissions.length) * 100}%`,
+              background: 'linear-gradient(90deg, #FCD34D, #EA580C)',
+              boxShadow: '0 0 20px rgba(252, 211, 77, 0.6)'
+            }}
+          >
+            {/* Shimmer Effect */}
+            <div 
+              className="absolute inset-0 opacity-50"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s linear infinite'
+              }}
+            ></div>
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 px-6 flex flex-col items-center justify-center">
+      {/* Premium Content */}
+      <div className="flex-1 px-6 flex flex-col items-center justify-center relative z-10">
         <div className="w-full max-w-md">
-          {/* Icon */}
-          <div className="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-8">
-            <Icon className="w-12 h-12 text-yellow-500" />
+          {/* Animated Icon Container */}
+          <div className="relative mx-auto mb-8 w-32 h-32 animate-scale-in">
+            {/* Rotating Ring */}
+            <div className="absolute inset-0 rounded-full border-2 border-dashed border-white/30 animate-spin-slow"></div>
+            <div className="absolute inset-3 rounded-full border-2 border-dotted border-white/20 animate-spin-reverse"></div>
+            
+            {/* Icon Background */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/95 to-gray-100/95 backdrop-blur-sm shadow-2xl flex items-center justify-center">
+              <Icon className="w-14 h-14 text-yellow-600" strokeWidth={2} />
+            </div>
+
+            {/* Pulse Effect */}
+            <div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
           </div>
 
           {/* Title */}
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-3">
+          <h2 className="text-3xl font-black text-white text-center mb-4 tracking-tight animate-slide-up" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.3)', animationDelay: '0.1s' }}>
             {currentPermission.title}
           </h2>
 
           {/* Required Badge */}
           {currentPermission.required && (
-            <div className="flex justify-center mb-4">
-              <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
-                Required
-              </span>
+            <div className="flex justify-center mb-5 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full shadow-lg">
+                <Shield className="w-4 h-4 text-white" />
+                <span className="text-xs font-black text-white">Required Permission</span>
+              </div>
             </div>
           )}
 
-          {/* Description */}
-          <p className="text-gray-600 text-center mb-8 leading-relaxed">
-            {currentPermission.description}
-          </p>
+          {/* Description Card */}
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl mb-6 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <p className="text-gray-700 text-center leading-relaxed font-medium">
+              {currentPermission.description}
+            </p>
+          </div>
 
           {/* Status */}
           {currentPermission.granted && (
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-lg">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Permission Granted
+            <div className="text-center mb-6 animate-bounce-slow">
+              <div className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl shadow-xl">
+                <CheckCircle className="w-6 h-6" fill="currentColor" />
+                <span className="font-black">Permission Granted ✓</span>
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="px-6 pb-8 space-y-3">
+      {/* Premium Actions */}
+      <div className="px-6 pb-8 space-y-4 relative z-10">
         {!currentPermission.granted && (
           <button
             onClick={() => handleGrantPermission(currentPermission.id)}
-            className="w-full bg-yellow-500 text-gray-900 font-semibold py-4 rounded-lg hover:bg-yellow-600 transition-colors"
+            className="w-full py-5 rounded-2xl font-black text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+              color: 'white'
+            }}
           >
-            Allow {currentPermission.title}
+            <span className="flex items-center justify-center gap-2">
+              <Shield className="w-5 h-5" />
+              Allow {currentPermission.title}
+            </span>
           </button>
         )}
 
         {!currentPermission.required && (
           <button
             onClick={handleSkip}
-            className="w-full bg-white text-gray-700 font-medium py-4 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+            className="w-full py-4 rounded-2xl font-semibold border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300"
           >
-            Skip
+            Skip for Now
           </button>
         )}
 
         {currentStep === permissions.length - 1 && requiredGranted && (
           <button
             onClick={handleContinue}
-            className="w-full bg-yellow-500 text-gray-900 font-semibold py-4 rounded-lg hover:bg-yellow-600 transition-colors"
+            className="w-full py-5 rounded-2xl font-black text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+              color: 'white'
+            }}
           >
-            Continue to App
+            <span className="flex items-center justify-center gap-2">
+              Continue to App
+              <ArrowRight className="w-5 h-5" />
+            </span>
           </button>
         )}
       </div>
 
       {/* Permission List Preview */}
-      <div className="px-6 pb-6">
+      <div className="px-6 pb-8 relative z-10">
         <div className="flex justify-center gap-2">
           {permissions.map((permission, index) => (
             <div
               key={permission.id}
-              className={`w-2 h-2 rounded-full transition-colors ${
+              className={`transition-all duration-300 rounded-full ${
                 index < currentStep
-                  ? 'bg-green-500'
+                  ? 'w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 shadow-lg'
                   : index === currentStep
-                  ? 'bg-yellow-500'
-                  : 'bg-gray-300'
+                  ? 'w-8 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 shadow-lg'
+                  : 'w-3 h-3 bg-white/30'
               }`}
             />
           ))}
