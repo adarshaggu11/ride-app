@@ -1,7 +1,7 @@
 ﻿import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, Wallet, Check, AlertCircle } from "lucide-react";
+import { ChevronLeft, Wallet, Check, AlertCircle, Zap, ArrowLeft, IndianRupee, Shield } from "lucide-react";
 
 interface PaymentMethod {
   id: string;
@@ -25,82 +25,93 @@ export default function PaymentMethodsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="bg-primary text-primary-foreground p-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
+      <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 shadow-2xl">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-primary/80" onClick={() => navigate(-1)}>
-            <ChevronLeft className="h-6 w-6" />
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 rounded-xl" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-xl font-semibold">Payment Method</h1>
+          <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+            <Wallet className="w-5 h-5" />
+          </div>
+          <h1 className="text-xl font-black">Payment Method</h1>
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
-        <Card className="p-4 bg-blue-50 border-blue-200">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+      <div className="p-6 space-y-4">
+        <Card className="p-5 bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-300 shadow-lg">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-blue-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+              <AlertCircle className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
             <div>
-              <h3 className="font-semibold text-blue-900">Cash Payment Only</h3>
-              <p className="text-sm text-blue-700 mt-1">
+              <h3 className="font-black text-blue-900 mb-2">Cash Payment Only</h3>
+              <p className="text-sm text-blue-700 font-semibold leading-relaxed">
                 This app only accepts cash payments. Pay your driver directly after the ride is completed.
               </p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-4 border-primary border-2">
+        <Card className="p-5 border-4 border-yellow-400 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-50">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/10">
-              <Wallet className="w-6 h-6 text-primary" />
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-500 shadow-xl">
+              <IndianRupee className="w-8 h-8 text-white" strokeWidth={2.5} />
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold">{paymentMethod.name}</h3>
-              <p className="text-sm text-muted-foreground">{paymentMethod.details}</p>
+              <h3 className="font-black text-lg text-gray-900">{paymentMethod.name}</h3>
+              <p className="text-sm text-gray-700 font-semibold">{paymentMethod.details}</p>
             </div>
-            <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-              <Check className="w-4 h-4 text-primary-foreground" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
+              <Check className="w-5 h-5 text-white" strokeWidth={3} />
             </div>
           </div>
         </Card>
 
-        <Card className="p-4">
-          <h3 className="font-semibold mb-3">How Cash Payment Works</h3>
+        <Card className="p-5 border-2 border-gray-100 shadow-lg">
+          <h3 className="font-black text-gray-900 mb-4 flex items-center gap-2">
+            <Zap className="w-5 h-5 text-yellow-600" />
+            How Cash Payment Works
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center text-base font-black flex-shrink-0 shadow-lg">1</div>
+              <div className="flex-1 pt-2">
+                <p className="text-sm font-bold text-gray-900">Complete your ride as usual</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center text-base font-black flex-shrink-0 shadow-lg">2</div>
+              <div className="flex-1 pt-2">
+                <p className="text-sm font-bold text-gray-900">Check the fare on the app</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center text-base font-black flex-shrink-0 shadow-lg">3</div>
+              <div className="flex-1 pt-2">
+                <p className="text-sm font-bold text-gray-900">Pay the driver in cash</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-5 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 shadow-lg">
+          <h3 className="font-black text-gray-900 mb-4 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-green-600" />
+            Benefits of Cash Payment
+          </h3>
           <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
-              <div>
-                <p className="text-sm">Complete your ride as usual</p>
-              </div>
+            <div className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
+              <p className="text-sm font-bold text-gray-900">No transaction fees</p>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
-              <div>
-                <p className="text-sm">Check the fare on the app</p>
-              </div>
+            <div className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
+              <p className="text-sm font-bold text-gray-900">Instant payment to driver</p>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
-              <div>
-                <p className="text-sm">Pay the driver in cash</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="font-semibold mb-3">Benefits of Cash Payment</h3>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-600" />
-              <p className="text-sm">No transaction fees</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-600" />
-              <p className="text-sm">Instant payment to driver</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-600" />
-              <p className="text-sm">Direct support to your driver</p>
+            <div className="flex items-center gap-3">
+              <Check className="w-5 h-5 text-green-600" strokeWidth={3} />
+              <p className="text-sm font-bold text-gray-900">Direct support to your driver</p>
             </div>
           </div>
         </Card>
