@@ -10,7 +10,10 @@ import {
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  HelpCircle
+  HelpCircle,
+  Zap,
+  ArrowLeft,
+  Shield
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { callSupport } from "@/services/phoneService";
@@ -80,123 +83,126 @@ const HelpSupportScreen = () => {
     {
       icon: Phone,
       title: "Call Support",
-      titleTe: "సపోర్ట్‌కు కాల్ చేయండి",
       details: "+91 1800-123-4567",
       action: handleCallSupport
     },
     {
       icon: Mail,
       title: "Email Us",
-      titleTe: "మాకు ఇమెయిల్ చేయండి",
       details: "support@dropout.app",
       action: () => window.open("mailto:support@dropout.app")
     },
     {
       icon: MessageCircle,
       title: "Live Chat",
-      titleTe: "లైవ్ చాట్",
       details: "Chat with us 24/7",
       action: () => alert("Live chat coming soon!")
     }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary text-white p-6">
-        <div className="flex items-center justify-between mb-2">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
+      {/* Premium Header */}
+      <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 shadow-2xl">
+        <div className="flex items-center gap-3 mb-2">
           <Button
             variant="ghost"
             size="icon"
-            className="text-white"
+            className="text-white hover:bg-white/20 rounded-xl"
             onClick={() => navigate(-1)}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ArrowLeft className="w-6 h-6" />
           </Button>
-          <h1 className="text-xl font-bold">Help & Support</h1>
-          <div className="w-10" />
+          <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+            <HelpCircle className="w-5 h-5" />
+          </div>
+          <h1 className="text-xl font-black">Help & Support</h1>
         </div>
-        <p className="text-center text-white/90">సహాయం & మద్దతు</p>
+        <p className="text-center text-white/90 font-semibold">We're here to help 24/7</p>
       </div>
 
       <div className="px-6 py-6 space-y-6">
-        {/* Contact Options */}
+        {/* Premium Contact Options */}
         <div className="space-y-3">
-          <h2 className="font-semibold text-lg">Contact Us</h2>
+          <h2 className="font-black text-lg text-gray-900">Contact Us</h2>
           {contactOptions.map((option, index) => (
             <Card 
               key={index}
-              className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+              className="p-5 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border-2 border-gray-100"
               onClick={option.action}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <option.icon className="w-6 h-6 text-primary" />
+                <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <option.icon className="w-7 h-7 text-white" strokeWidth={2.5} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold">{option.title}</p>
-                  <p className="text-sm text-muted-foreground">{option.titleTe}</p>
-                  <p className="text-xs text-primary mt-1">{option.details}</p>
+                  <p className="font-black text-gray-900">{option.title}</p>
+                  <p className="text-xs text-gray-600 font-bold mt-1">{option.details}</p>
                 </div>
-                <ExternalLink className="w-5 h-5 text-muted-foreground" />
+                <ExternalLink className="w-5 h-5 text-gray-400" />
               </div>
             </Card>
           ))}
         </div>
 
-        {/* FAQs */}
+        {/* Premium FAQs */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-3">
-            <HelpCircle className="w-5 h-5 text-primary" />
-            <h2 className="font-semibold text-lg">Frequently Asked Questions</h2>
+            <HelpCircle className="w-5 h-5 text-yellow-600" />
+            <h2 className="font-black text-lg text-gray-900">Frequently Asked Questions</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">తరచుగా అడిగే ప్రశ్నలు</p>
           
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4">
-                <AccordionTrigger className="hover:no-underline">
+              <AccordionItem key={index} value={`item-${index}`} className="border-2 border-gray-100 rounded-2xl px-5 shadow-md hover:shadow-lg transition-shadow">
+                <AccordionTrigger className="hover:no-underline py-4">
                   <div className="text-left">
-                    <p className="font-semibold">{faq.question}</p>
+                    <p className="font-black text-gray-900">{faq.question}</p>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pt-2 pb-4">
-                  <p className="text-sm">{faq.answer}</p>
+                  <p className="text-sm text-gray-700 font-semibold leading-relaxed">{faq.answer}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
 
-        {/* Quick Links */}
-        <Card className="p-4 space-y-3">
-          <h3 className="font-semibold">Quick Links</h3>
-          <div className="space-y-2">
+        {/* Premium Quick Links */}
+        <Card className="p-5 space-y-4 border-2 border-gray-100 shadow-lg">
+          <h3 className="font-black text-gray-900 flex items-center gap-2">
+            <Zap className="w-5 h-5 text-yellow-600" />
+            Quick Links
+          </h3>
+          <div className="space-y-3">
             <button 
-              className="w-full text-left text-sm text-primary hover:underline"
+              className="w-full text-left text-sm font-bold text-yellow-600 hover:text-orange-600 transition-colors p-3 bg-yellow-50 hover:bg-orange-50 rounded-xl"
               onClick={() => navigate("/terms")}
             >
-              Terms & Conditions
+              Terms & Conditions →
             </button>
             <button 
-              className="w-full text-left text-sm text-primary hover:underline"
+              className="w-full text-left text-sm font-bold text-yellow-600 hover:text-orange-600 transition-colors p-3 bg-yellow-50 hover:bg-orange-50 rounded-xl"
               onClick={() => navigate("/privacy")}
             >
-              Privacy Policy
+              Privacy Policy →
             </button>
             <button 
-              className="w-full text-left text-sm text-primary hover:underline"
+              className="w-full text-left text-sm font-bold text-yellow-600 hover:text-orange-600 transition-colors p-3 bg-yellow-50 hover:bg-orange-50 rounded-xl"
               onClick={() => navigate("/about")}
             >
-              About Dropout
+              About Dropout →
             </button>
           </div>
         </Card>
 
-        {/* Support Hours */}
-        <Card className="p-4 bg-primary/5 border-primary/20">
-          <p className="text-sm text-center font-semibold">24/7 Support Available</p>
-          <p className="text-xs text-center text-muted-foreground mt-2">
+        {/* Premium Support Hours */}
+        <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 shadow-lg">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Shield className="w-6 h-6 text-green-600" />
+            <p className="text-base text-center font-black text-green-800">24/7 Support Available</p>
+          </div>
+          <p className="text-sm text-center text-green-700 font-semibold">
             We're here to help you anytime, anywhere!
           </p>
         </Card>
