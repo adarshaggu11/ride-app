@@ -15,7 +15,8 @@ import {
   Star,
   TrendingUp,
   MessageCircle,
-  Mail
+  Mail,
+  Zap
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -84,8 +85,12 @@ const ReferralScreen = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white pb-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-4 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-white/30">
+            <Zap className="w-6 h-6 text-white fill-white" />
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -95,10 +100,12 @@ const ReferralScreen = () => {
             <ChevronLeft className="w-6 h-6" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-bold">Refer & Earn</h1>
-            <p className="text-sm text-white/80">Invite friends, earn rewards!</p>
+            <h1 className="text-xl font-black">Refer & Earn</h1>
+            <p className="text-sm text-white/90">Invite friends, earn rewards! 🎁</p>
           </div>
-          <Gift className="w-6 h-6" />
+          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+            <Gift className="w-5 h-5" />
+          </div>
         </div>
       </div>
 
