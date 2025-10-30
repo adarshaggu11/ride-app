@@ -113,46 +113,74 @@ try {
   importScripts('https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js');
   importScripts('https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging-compat.js');
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAsCmA1UfUa5qqFzoj24urGQhBO5PwXJ4A",
-    authDomain: "dropout586586.firebaseapp.com",
-    projectId: "dropout586586",
-    storageBucket: "dropout586586.firebasestorage.app",
-    messagingSenderId: "577511318089",
-    appId: "1:577511318089:android:5325e380d38a1512a05598",
-    databaseURL: "https://dropout586586-default-rtdb.firebaseio.com"
-  };
-
-  // Initialize Firebase safely (avoid duplicate-app error)
-  try {
-    if (firebase.apps && firebase.apps.length) {
-      firebase.app();
-    } else {
-      firebase.initializeApp(firebaseConfig);
-    }
-  } catch (e) {
-    try { firebase.app(); } catch (_) {}
-  }
-
-  const messaging = firebase.messaging();
-
-  messaging.onBackgroundMessage((payload) => {
-    const title = payload.notification?.title || 'Dropout';
-    const options = {
-      body: payload.notification?.body || 'You have a new update',
-      icon: payload.notification?.icon || '/favicon.ico',
-      // badge omitted to avoid missing asset; browser default applies
-      tag: payload.data?.tag || 'ride-notification',
-      data: payload.data,
-      requireInteraction: true,
-      actions: [
-        { action: 'open', title: 'Open App' },
-        { action: 'close', title: 'Dismiss' }
-      ]
+  // Attempt to load config from /firebase-config.json if provided
+  const initMessaging = async () => {
+    let cfg = {
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      databaseURL: ""
     };
 
-    return self.registration.showNotification(title, options);
-  });
+    try {
+      const resp = await fetch('/firebase-config.json', { cache: 'no-cache' });
+      if (resp.ok) {
+        const json = await resp.json();
+        cfg = Object.assign(cfg, json || {});
+      }
+    } catch (_) {
+      // ignore, will fallback below if fields are empty
+    }
+
+    // Fallback to default known project if values are missing
+    if (!cfg.apiKey || !cfg.projectId) {
+      cfg = {
+        apiKey: "AIzaSyAsCmA1UfUa5qqFzoj24urGQhBO5PwXJ4A",
+        authDomain: "dropout586586.firebaseapp.com",
+        projectId: "dropout586586",
+        storageBucket: "dropout586586.firebasestorage.app",
+        messagingSenderId: "577511318089",
+        appId: "1:577511318089:android:5325e380d38a1512a05598",
+        databaseURL: "https://dropout586586-default-rtdb.firebaseio.com"
+      };
+    }
+
+    // Initialize Firebase safely (avoid duplicate-app error)
+    try {
+      if (firebase.apps && firebase.apps.length) {
+        firebase.app();
+      } else {
+        firebase.initializeApp(cfg);
+      }
+    } catch (e) {
+      try { firebase.app(); } catch (_) {}
+    }
+
+    const messaging = firebase.messaging();
+
+    messaging.onBackgroundMessage((payload) => {
+      const title = payload.notification?.title || 'Dropout';
+      const options = {
+        body: payload.notification?.body || 'You have a new update',
+        icon: payload.notification?.icon || '/favicon.ico',
+        // badge omitted to avoid missing asset; browser default applies
+        tag: payload.data?.tag || 'ride-notification',
+        data: payload.data,
+        requireInteraction: true,
+        actions: [
+          { action: 'open', title: 'Open App' },
+          { action: 'close', title: 'Dismiss' }
+        ]
+      };
+
+      return self.registration.showNotification(title, options);
+    });
+  };
+
+  initMessaging();
 
   // Notification click handler (works for both generic and FCM notifications)
   self.addEventListener('notificationclick', (event) => {
