@@ -66,10 +66,16 @@ const App = () => {
     
     try {
       // Initialize push notifications first (async, doesn't block UI)
+      // Allow disabling on native via env to isolate crashes: set VITE_DISABLE_NATIVE_PUSH=true
       try {
-        initializePushNotifications().catch(error => {
-          console.warn('Push notifications initialization failed (non-critical):', error);
-        });
+        const disableNativePush = import.meta.env.VITE_DISABLE_NATIVE_PUSH === 'true';
+        if (!disableNativePush) {
+          initializePushNotifications().catch(error => {
+            console.warn('Push notifications initialization failed (non-critical):', error);
+          });
+        } else {
+          console.warn('Native push initialization disabled by VITE_DISABLE_NATIVE_PUSH');
+        }
       } catch (pushError) {
         console.warn('Push notifications setup failed (non-critical):', pushError);
       }
