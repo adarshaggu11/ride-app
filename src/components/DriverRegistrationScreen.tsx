@@ -13,7 +13,8 @@ import {
   CheckCircle2,
   ChevronLeft,
   Upload,
-  Bike
+  Bike,
+  Zap
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -169,17 +170,21 @@ const DriverRegistrationScreen = ({ phone, onComplete }: DriverRegistrationScree
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-primary text-white p-6">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-orange-600 fill-orange-600" />
+          </div>
           <Button
             variant="ghost"
             size="icon"
-            className="text-white"
+            className="text-white hover:bg-white/20"
             onClick={() => step > 1 ? setStep(step - 1) : navigate(-1)}
           >
             <ChevronLeft className="w-6 h-6" />
           </Button>
-          <h1 className="text-xl font-bold">Driver Registration</h1>
+          <h1 className="text-xl font-black">Driver Registration</h1>
           <div className="w-10" />
         </div>
 
