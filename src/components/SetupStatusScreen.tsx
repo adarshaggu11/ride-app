@@ -14,12 +14,13 @@ import {
   Zap
 } from "lucide-react";
 import { pushNotificationService } from "@/services/pushNotificationService";
-import { firebaseConfig } from "@/config/firebase";
 import { useState, useEffect } from "react";
 
 const SetupStatusScreen = () => {
   const navigate = useNavigate();
-  const [notificationStatus, setNotificationStatus] = useState<any>(null);
+  type FirebaseStatus = { configured: boolean; message: string; missingKeys?: string[] };
+  type SetupStatus = { browserSupport: boolean; permission: NotificationPermission; firebase: FirebaseStatus } | null;
+  const [notificationStatus, setNotificationStatus] = useState<SetupStatus>(null);
 
   useEffect(() => {
     const status = pushNotificationService.getStatus();
