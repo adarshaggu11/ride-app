@@ -1,9 +1,9 @@
 {
-  "apiKey": "",
-  "authDomain": "",
-  "projectId": "",
-  "storageBucket": "",
-  "messagingSenderId": "",
+  "apiKey": "AIzaSyAsCmA1UfUa5qqFzoj24urGQhBO5PwXJ4A",
+  "authDomain": "dropout586586.firebaseapp.com",
+  "projectId": "dropout586586",
+  "storageBucket": "dropout586586.firebasestorage.app",
+  "messagingSenderId": "577511318089",
   "appId": "",
-  "databaseURL": ""
+  "databaseURL": "https://dropout586586-default-rtdb.firebaseio.com"
 }
