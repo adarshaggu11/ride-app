@@ -10,7 +10,6 @@ import SplashScreen from "./components/SplashScreen";
 import OnboardingScreens from "./components/OnboardingScreens";
 import AuthScreen from "./components/AuthScreen";
 import { PermissionScreen } from "./components/PermissionScreen";
-import { RoleSelection } from "./components/RoleSelection";
 import LocationPermission from "./components/LocationPermission";
 import HomeScreen from "./components/HomeScreen";
 import ConfirmRideScreen from "./components/ConfirmRideScreen";
