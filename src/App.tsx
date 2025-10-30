@@ -52,7 +52,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showPermissions, setShowPermissions] = useState(false);
-  const [showRoleSelection, setShowRoleSelection] = useState(false);
+  // Removed showRoleSelection - no longer needed
   const [user, setUser] = useState<User | null>(null);
   const [userRole, setUserRole] = useState<'customer' | 'driver'>('customer');
 
@@ -134,22 +134,12 @@ const App = () => {
 
   const handlePermissionsComplete = () => {
     setShowPermissions(false);
-    
-    const userData = safeGetItem("user");
-    if (!userData) {
-      setShowRoleSelection(true);
-    } else {
-      const parsedUser = safeGetJSON<User>("user", null as any);
-      if (parsedUser) {
-        setUser(parsedUser);
-        setUserRole(parsedUser.role || 'customer');
-      }
-    }
+    // Skip RoleSelection - user can choose role directly in AuthScreen
   };
 
   const handleRoleSelect = (role: 'customer' | 'driver') => {
     setUserRole(role);
-    setShowRoleSelection(false);
+    // RoleSelection screen removed - role is now selected in AuthScreen
   };
 
   const handleLogin = (userData: User) => {
@@ -175,9 +165,7 @@ const App = () => {
     return <PermissionScreen onComplete={handlePermissionsComplete} />;
   }
 
-  if (showRoleSelection) {
-    return <RoleSelection onRoleSelect={handleRoleSelect} />;
-  }
+  // RoleSelection screen removed - users choose role directly in AuthScreen tabs
 
   return (
     <QueryClientProvider client={queryClient}>
