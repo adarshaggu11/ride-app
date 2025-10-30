@@ -300,17 +300,17 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
 
           {/* Quick Stats - Modern Cards */}
           <div className="grid grid-cols-3 gap-3 pt-2">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-blue-600">0</p>
-              <p className="text-xs text-blue-800 font-medium">Total Rides</p>
+            <div className="bg-gradient-to-br from-yellow-50 to-orange-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
+              <p className="text-2xl font-extrabold text-orange-600">0</p>
+              <p className="text-xs text-orange-800 font-medium">Total Rides</p>
             </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-green-600">₹0</p>
-              <p className="text-xs text-green-800 font-medium">Saved</p>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
+              <p className="text-2xl font-extrabold text-amber-600">₹0</p>
+              <p className="text-xs text-amber-800 font-medium">Saved</p>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-purple-600">0</p>
-              <p className="text-xs text-purple-800 font-medium">Points</p>
+            <div className="bg-gradient-to-br from-orange-50 to-amber-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
+              <p className="text-2xl font-extrabold text-yellow-600">0</p>
+              <p className="text-xs text-yellow-800 font-medium">Points</p>
             </div>
           </div>
         </div>

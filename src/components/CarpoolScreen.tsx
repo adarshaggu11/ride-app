@@ -200,7 +200,7 @@ export const CarpoolScreen: React.FC = () => {
   const totalCO2Saved = availableRides.reduce((sum, ride) => sum + ride.co2Saved, 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-blue-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
@@ -318,7 +318,7 @@ export const CarpoolScreen: React.FC = () => {
                   {/* Driver Info */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-lg relative">
+                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-lg relative">
                         {ride.driver.avatar}
                         {ride.driver.verified && (
                           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
@@ -401,7 +401,7 @@ export const CarpoolScreen: React.FC = () => {
                   </div>
 
                   {/* Capacity & Environmental Impact */}
-                  <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-3">
+                  <div className="flex items-center justify-between mb-4 bg-gradient-to-r from-yellow-50 to-teal-50 rounded-xl p-3">
                     <div className="flex items-center gap-2">
                       <Users className="w-5 h-5 text-slate-600" />
                       <span className="text-sm font-semibold">
@@ -483,7 +483,7 @@ export const CarpoolScreen: React.FC = () => {
           <div className="space-y-4 animate-fade-in">
             <div className="bg-white rounded-2xl p-6">
               <div className="text-center mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <UserCheck className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Offer a Ride</h3>
@@ -499,7 +499,7 @@ export const CarpoolScreen: React.FC = () => {
                   { icon: Users, title: 'Make Friends', desc: 'Meet interesting people on your route' }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-center gap-4 bg-slate-50 rounded-xl p-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-teal-500 rounded-xl flex items-center justify-center flex-shrink-0">
                       <benefit.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>

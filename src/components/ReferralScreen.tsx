@@ -82,9 +82,9 @@ const ReferralScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-6">
+    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-white pb-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -104,7 +104,7 @@ const ReferralScreen = () => {
 
       {/* Hero Banner */}
       <div className="p-4">
-        <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-6 shadow-xl">
+        <Card className="bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-6 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-2xl font-bold mb-1">₹100 + ₹50</h2>
@@ -208,7 +208,7 @@ const ReferralScreen = () => {
           {referrals.map((referral) => (
             <Card key={referral.id} className="p-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
                   {referral.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -269,7 +269,7 @@ const ReferralScreen = () => {
 
       {/* How it Works */}
       <div className="px-4">
-        <Card className="p-5 bg-gradient-to-br from-blue-50 to-purple-50">
+        <Card className="p-5 bg-gradient-to-br from-yellow-50 to-orange-50">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Star className="w-5 h-5 text-primary" />
             How It Works

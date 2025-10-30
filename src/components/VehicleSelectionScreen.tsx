@@ -82,7 +82,7 @@ const VehicleSelectionScreen = () => {
       duration: `${estimateRideDuration(rideDistance, 'bike')} min`,
       capacity: "1 person",
       description: "Quick & Affordable",
-      color: "from-blue-500 to-blue-600"
+      color: "from-yellow-400 to-orange-500"
     },
     {
       id: "auto",
@@ -104,7 +104,7 @@ const VehicleSelectionScreen = () => {
       duration: `${estimateRideDuration(rideDistance, 'car')} min`,
       capacity: "4 persons",
       description: "Comfortable",
-      color: "from-purple-500 to-purple-600"
+      color: "from-amber-500 to-orange-600"
     }
   ];
 

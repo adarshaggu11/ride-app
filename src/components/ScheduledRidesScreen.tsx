@@ -182,9 +182,9 @@ export const ScheduledRidesScreen: React.FC = () => {
   const pastRides = rides.filter(r => r.status === 'completed' || r.status === 'cancelled');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigate(-1)}
@@ -238,7 +238,7 @@ export const ScheduledRidesScreen: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in">
             <div className="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up">
               {/* Form Header */}
-              <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-t-3xl">
+              <div className="sticky top-0 bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-6 rounded-t-3xl">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold">Schedule New Ride</h2>
                   <button
@@ -400,7 +400,7 @@ export const ScheduledRidesScreen: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   onClick={handleBookRide}
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all"
+                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all"
                 >
                   <Check className="w-5 h-5 inline mr-2" />
                   Schedule Ride
@@ -421,7 +421,7 @@ export const ScheduledRidesScreen: React.FC = () => {
                   <p className="text-slate-600 mb-6">Book your first scheduled ride and plan ahead!</p>
                   <button
                     onClick={() => setShowBookingForm(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-xl transition-all"
+                    className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-xl transition-all"
                   >
                     <Plus className="w-5 h-5 inline mr-2" />
                     Schedule a Ride
@@ -439,7 +439,7 @@ export const ScheduledRidesScreen: React.FC = () => {
                       {/* Ride Header */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center">
+                          <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
                             <VehicleIcon className="w-6 h-6 text-white" />
                           </div>
                           <div>
@@ -570,7 +570,7 @@ export const ScheduledRidesScreen: React.FC = () => {
       {!showBookingForm && (
         <button
           onClick={() => setShowBookingForm(true)}
-          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-110 transition-all flex items-center justify-center z-40"
+          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-full shadow-2xl hover:shadow-orange-500/50 hover:scale-110 transition-all flex items-center justify-center z-40"
         >
           <Plus className="w-8 h-8" />
         </button>

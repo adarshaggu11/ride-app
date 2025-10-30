@@ -141,7 +141,7 @@ export const DriverDashboardScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-indigo-600 to-orange-600 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigate(-1)}
@@ -258,7 +258,7 @@ export const DriverDashboardScreen: React.FC = () => {
                   <p className="text-sm text-blue-700">Acceptance Rate</p>
                 </div>
                 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
+                <div className="bg-gradient-to-br from-yellow-50 to-orange-100 rounded-xl p-4">
                   <Car className="w-8 h-8 text-purple-600 mb-2" />
                   <p className="text-3xl font-bold text-purple-600">{stats.totalRides}</p>
                   <p className="text-sm text-purple-700">Total Rides</p>
@@ -330,7 +330,7 @@ export const DriverDashboardScreen: React.FC = () => {
                 <p className="text-slate-600 mb-4">Go online to start receiving ride requests</p>
                 <button
                   onClick={handleToggleOnline}
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+                  className="bg-gradient-to-r from-indigo-600 to-orange-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
                 >
                   Go Online Now
                 </button>
@@ -536,7 +536,7 @@ export const DriverDashboardScreen: React.FC = () => {
               </h2>
               
               <div className="space-y-4">
-                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4">
+                <div className="bg-gradient-to-r from-yellow-50 to-indigo-50 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold">Complete 50 rides</span>
                     <span className="text-sm font-bold text-purple-600">36/50</span>
