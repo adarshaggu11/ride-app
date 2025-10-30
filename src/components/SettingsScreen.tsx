@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Bell, Globe, Moon, MapPin, Shield, CreditCard, Volume2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Bell, Globe, Moon, MapPin, Shield, CreditCard, Volume2, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -81,8 +81,12 @@ const SettingsScreen = () => {
   return (
     <div className="min-h-screen bg-background pb-6">
       {/* Header */}
-      <div className="bg-primary text-white p-4 sticky top-0 z-10">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-white/30">
+            <Zap className="w-6 h-6 text-white fill-white" />
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -92,8 +96,8 @@ const SettingsScreen = () => {
             <ChevronLeft className="w-6 h-6" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-bold">Settings</h1>
-            <p className="text-sm text-white/80">Manage your preferences</p>
+            <h1 className="text-xl font-black">Settings</h1>
+            <p className="text-sm text-white/90">Manage your preferences</p>
           </div>
         </div>
       </div>
@@ -102,24 +106,24 @@ const SettingsScreen = () => {
       <div className="p-4 space-y-6">
         {settingsSections.map((section, index) => (
           <div key={index}>
-            <h2 className="text-sm font-semibold text-muted-foreground mb-3 px-2">
+            <h2 className="text-sm font-black text-muted-foreground mb-3 px-2 tracking-wide uppercase">
               {section.title}
             </h2>
-            <Card className="divide-y">
+            <Card className="divide-y shadow-lg overflow-hidden">
               {section.items.map((item, itemIndex) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={itemIndex}
-                    className={`p-4 ${item.type === "link" ? "cursor-pointer hover:bg-muted/50" : ""}`}
+                    className={`p-4 transition-all ${item.type === "link" ? "cursor-pointer hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50" : ""}`}
                     onClick={() => item.type === "link" && item.route && navigate(item.route)}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Icon className="w-5 h-5 text-primary" />
+                      <div className="w-12 h-12 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-2xl flex items-center justify-center shadow-md">
+                        <Icon className="w-6 h-6 text-orange-600" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold">{item.label}</p>
+                        <p className="font-bold">{item.label}</p>
                         <p className="text-sm text-muted-foreground">{item.description}</p>
                       </div>
                       {item.type === "toggle" && item.onChange && (
@@ -129,7 +133,7 @@ const SettingsScreen = () => {
                         />
                       )}
                       {item.type === "link" && (
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="w-5 h-5 text-orange-500" />
                       )}
                     </div>
                   </div>
@@ -140,13 +144,19 @@ const SettingsScreen = () => {
         ))}
 
         {/* App Info */}
-        <Card className="p-4">
-          <div className="text-center space-y-2">
-            <h3 className="font-semibold">Dropout</h3>
-            <p className="text-sm text-muted-foreground">Version 1.0.0</p>
+        <Card className="p-6 bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-orange-200 shadow-lg">
+          <div className="text-center space-y-3">
+            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center mx-auto shadow-xl">
+              <Zap className="w-8 h-8 text-white fill-white" />
+            </div>
+            <h3 className="font-black text-xl bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">Dropout</h3>
+            <p className="text-sm text-muted-foreground font-semibold">Version 1.0.0</p>
             <p className="text-xs text-muted-foreground">
               © 2025 Dropout. All rights reserved.
             </p>
+            <div className="pt-2">
+              <span className="text-xs font-semibold text-orange-600">Made in India 🇮🇳</span>
+            </div>
           </div>
         </Card>
       </div>
