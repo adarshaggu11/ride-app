@@ -1,3 +1,15 @@
+import { config } from '@/config/production';
+import { auth } from '@/config/firebase';
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  User as FirebaseUser
+} from 'firebase/auth';
+import { useRef } from 'react';
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +40,10 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
   const [lastOtp, setLastOtp] = useState(""); // Store OTP for display
   const [otpVerified, setOtpVerified] = useState(false); // Track if OTP was verified
   const { toast } = useToast();
+  const recaptchaRef = useRef<RecaptchaVerifier | null>(null);
+  const [firebaseConfirm, setFirebaseConfirm] = useState<any | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (otpSent && countdown > 0) {
@@ -56,63 +72,50 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:3000/api/auth/send-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // In development, show the OTP in toast
-        if (data.otp) {
-          console.log(`OTP for ${phone}: ${data.otp}`);
-          setLastOtp(data.otp); // Store OTP for display
-          toast({
-            title: "OTP Sent Successfully",
-            description: `Your OTP is: ${data.otp} (Development Mode)`,
-            duration: 10000, // Show for 10 seconds
-          });
-        } else {
-          toast({
-            title: "OTP Sent Successfully!",
-            description: `Verification code sent to +91 ${phone}`,
+      // Prefer Firebase Phone Auth if configured
+      if (auth) {
+        // Initialize reCAPTCHA verifier once
+        if (!recaptchaRef.current) {
+          recaptchaRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            size: 'invisible'
           });
         }
 
+        const fullPhone = `+91${phone}`;
+        const confirmation = await signInWithPhoneNumber(auth, fullPhone, recaptchaRef.current);
+        setFirebaseConfirm(confirmation);
+        toast({ title: 'OTP Sent!', description: `Verification code sent to +91 ${phone}` });
         setOtpSent(true);
-        setStep("otp");
+        setStep('otp');
         setCountdown(30);
         setCanResend(false);
       } else {
-        toast({
-          title: "Error",
-          description: data.message || "Failed to send OTP",
-          variant: "destructive"
+        // Fallback to backend OTP flow
+        const response = await fetch(`${config.API_BASE_URL}/auth/send-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone })
         });
+        const data = await response.json();
+        if (data.success) {
+          if (data.otp) {
+            console.log(`OTP for ${phone}: ${data.otp}`);
+            setLastOtp(data.otp);
+            toast({ title: 'OTP Sent Successfully', description: `Your OTP is: ${data.otp} (Development Mode)`, duration: 10000 });
+          } else {
+            toast({ title: 'OTP Sent Successfully!', description: `Verification code sent to +91 ${phone}` });
+          }
+          setOtpSent(true);
+          setStep('otp');
+          setCountdown(30);
+          setCanResend(false);
+        } else {
+          toast({ title: 'Error', description: data.message || 'Failed to send OTP', variant: 'destructive' });
+        }
       }
     } catch (error) {
       console.error('Send OTP Error:', error);
-      
-      // Show error - don't fall back to mock in production
-      toast({
-        title: "Connection Error",
-        description: import.meta.env.DEV 
-          ? "Could not connect to server. Using mock OTP: 123456 (Development Only)"
-          : "Could not connect to server. Please check your internet connection and try again.",
-        variant: "destructive"
-      });
-      
-      // Only allow fallback to mock in development
-      if (import.meta.env.DEV) {
-        setOtpSent(true);
-        setStep("otp");
-        setCountdown(30);
-        setCanResend(false);
-      }
+      toast({ title: 'Error', description: 'Failed to send OTP. Check internet or Firebase config.', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -137,106 +140,81 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     setLoading(true);
     
     try {
-      // First, verify OTP
-      const response = await fetch('http://localhost:3000/api/auth/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone, otp })
-      });
+      if (firebaseConfirm) {
+        // Firebase confirmation flow
+        const cred = await firebaseConfirm.confirm(otp);
+        const fUser: FirebaseUser = cred.user;
+        const idToken = await fUser.getIdToken();
+        localStorage.setItem('token', idToken);
 
-      const data = await response.json();
+        const userPayload = {
+          id: fUser.uid,
+          name: fUser.displayName || name || 'User',
+          phone: fUser.phoneNumber || phone,
+          avatar: (fUser.displayName?.[0] || name?.[0] || 'U').toUpperCase()
+        };
 
-      if (data.success) {
-        // Check if user exists or is new
-        if (data.user && data.user.name) {
-          // Existing user - login directly
-          localStorage.setItem('token', data.token);
-          onLogin({
-            id: data.user.id,
-            name: data.user.name,
-            phone: data.user.phone,
-            avatar: data.user.avatar || "👤",
-          });
-          
-          toast({
-            title: "Login Successful!",
-            description: "Welcome back!",
-          });
-        } else {
-          // New user - collect name or go to driver registration
-          if (userType === "customer") {
-            setStep("name");
-          } else {
-            // Check if driver already registered
-            try {
-              const driverCheck = await fetch(`http://localhost:3000/api/drivers/phone/${phone}`);
-              const driverData = await driverCheck.json();
-              
-              if (driverData.success) {
-                // Driver exists, login
-                localStorage.setItem('token', data.token);
-                onLogin({
-                  id: driverData.driver.id,
-                  name: driverData.driver.name,
-                  phone: driverData.driver.phone,
-                  avatar: "",
-                });
-                
-                toast({
-                  title: "Login Successful!",
-                  description: `Status: ${driverData.driver.status}`,
-                });
-              } else {
-                // New driver - go to registration
-                setStep("driverRegistration");
-              }
-            } catch (error) {
-              // Driver not found - go to registration
-              setStep("driverRegistration");
+        // If driver, check registration status
+        if (userType === 'driver') {
+          try {
+            const driverCheck = await fetch(`${config.API_BASE_URL}/drivers/phone/${userPayload.phone}`);
+            const driverData = await driverCheck.json();
+            if (driverData.success) {
+              onLogin({ id: driverData.driver.id, name: driverData.driver.name, phone: driverData.driver.phone, avatar: '' });
+              toast({ title: 'Login Successful!', description: `Status: ${driverData.driver.status}` });
+            } else {
+              setStep('driverRegistration');
             }
+          } catch {
+            setStep('driverRegistration');
+          }
+        } else {
+          // Customer flow
+          if (!fUser.displayName && !name.trim()) {
+            setOtpVerified(true);
+            setStep('name');
+          } else {
+            onLogin(userPayload);
+            toast({ title: 'Login Successful!', description: 'Welcome back!' });
           }
         }
-      } else if (data.requiresName) {
-        // Backend says name is required - go to name step
-        setOtpVerified(true); // Mark OTP as verified
-        if (userType === "customer") {
-          setStep("name");
-        } else {
-          setStep("driverRegistration");
-        }
       } else {
-        toast({
-          title: "Invalid OTP",
-          description: data.message || "Please enter the correct OTP",
-          variant: "destructive"
+        // Backend fallback verification
+        const response = await fetch(`${config.API_BASE_URL}/auth/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, otp })
         });
+        const data = await response.json();
+        if (data.success) {
+          if (data.user && data.user.name) {
+            localStorage.setItem('token', data.token);
+            onLogin({ id: data.user.id, name: data.user.name, phone: data.user.phone, avatar: data.user.avatar || '👤' });
+            toast({ title: 'Login Successful!', description: 'Welcome back!' });
+          } else {
+            if (userType === 'customer') setStep('name');
+            else {
+              try {
+                const driverCheck = await fetch(`${config.API_BASE_URL}/drivers/phone/${phone}`);
+                const driverData = await driverCheck.json();
+                if (driverData.success) {
+                  localStorage.setItem('token', data.token);
+                  onLogin({ id: driverData.driver.id, name: driverData.driver.name, phone: driverData.driver.phone, avatar: '' });
+                  toast({ title: 'Login Successful!', description: `Status: ${driverData.driver.status}` });
+                } else setStep('driverRegistration');
+              } catch { setStep('driverRegistration'); }
+            }
+          }
+        } else if (data.requiresName) {
+          setOtpVerified(true);
+          setStep(userType === 'customer' ? 'name' : 'driverRegistration');
+        } else {
+          toast({ title: 'Invalid OTP', description: data.message || 'Please enter the correct OTP', variant: 'destructive' });
+        }
       }
     } catch (error) {
       console.error('Verify OTP Error:', error);
-      
-      // Development-only fallback
-      if (import.meta.env.DEV && otp === "123456") {
-        toast({
-          title: "Development Mode",
-          description: "Using mock login (server offline). This will not work in production.",
-        });
-        
-        if (userType === "customer") {
-          setStep("name");
-        } else {
-          setStep("driverRegistration");
-        }
-      } else {
-        toast({
-          title: "Connection Error",
-          description: import.meta.env.DEV
-            ? "Could not connect to server. Use OTP: 123456 in development mode."
-            : "Could not verify OTP. Please check your internet connection and try again.",
-          variant: "destructive"
-        });
-      }
+      toast({ title: 'Verification Failed', description: 'Could not verify the code.', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -255,57 +233,34 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     setLoading(true);
     
     try {
-      // If OTP already verified, just need to send name with OTP again
-      const response = await fetch('http://localhost:3000/api/auth/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone, otp, name })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        
+      // If Firebase user exists, update display name locally
+      if (auth && auth.currentUser) {
         const userData = {
-          id: data.user.id,
-          name: data.user.name,
-          phone: data.user.phone,
-          avatar: data.user.avatar || name.charAt(0).toUpperCase(),
+          id: auth.currentUser.uid,
+          name: name,
+          phone: auth.currentUser.phoneNumber || phone,
+          avatar: name.charAt(0).toUpperCase(),
         };
-
-        toast({
-          title: "Registration Successful!",
-          description: "Welcome to Dropout!",
-        });
-
+        toast({ title: 'Registration Successful!', description: 'Welcome to Dropout!' });
         onLogin(userData);
       } else {
-        toast({
-          title: "Error",
-          description: data.message || "Registration failed",
-          variant: "destructive"
+        // Backend fallback to attach name
+        const response = await fetch(`${config.API_BASE_URL}/auth/verify-otp`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, otp, name })
         });
+        const data = await response.json();
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          const userData = { id: data.user.id, name: data.user.name, phone: data.user.phone, avatar: data.user.avatar || name.charAt(0).toUpperCase() };
+          toast({ title: 'Registration Successful!', description: 'Welcome to Dropout!' });
+          onLogin(userData);
+        } else {
+          toast({ title: 'Error', description: data.message || 'Registration failed', variant: 'destructive' });
+        }
       }
     } catch (error) {
       console.error('Registration Error:', error);
-      
-      // Fallback for development
-      const userData = {
-        id: `user_${Date.now()}`,
-        name: name,
-        phone: phone,
-        avatar: name.charAt(0).toUpperCase(),
-      };
-
-      toast({
-        title: "Mock Registration",
-        description: "Using development mode (server offline)",
-      });
-
-      onLogin(userData);
+      toast({ title: 'Error', description: 'Could not complete registration', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -416,6 +371,100 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
         <Card className="p-6 shadow-2xl border-0 bg-white/95 backdrop-blur-sm animate-scale-in">
           {step === "phone" && (
             <div className="space-y-5">
+              {/* Quick providers */}
+              <div className="grid gap-3">
+                <Button
+                  variant="outline"
+                  className="w-full h-12 font-semibold"
+                  onClick={async () => {
+                    try {
+                      if (!auth) throw new Error('Firebase not configured');
+                      setLoading(true);
+                      const provider = new GoogleAuthProvider();
+                      const res = await signInWithPopup(auth, provider);
+                      const fUser = res.user;
+                      const idToken = await fUser.getIdToken();
+                      localStorage.setItem('token', idToken);
+
+                      // If driver selected, post-login driver check
+                      if (userType === 'driver') {
+                        try {
+                          const driverCheck = await fetch(`${config.API_BASE_URL}/drivers/phone/${fUser.phoneNumber || ''}`);
+                          const driverData = await driverCheck.json();
+                          if (driverData.success) {
+                            onLogin({ id: driverData.driver.id, name: driverData.driver.name, phone: driverData.driver.phone, avatar: '' });
+                          } else {
+                            setPhone((fUser.phoneNumber || '').replace(/^\+91/, ''));
+                            setStep('driverRegistration');
+                          }
+                        } catch {
+                          setStep('driverRegistration');
+                        }
+                      } else {
+                        onLogin({
+                          id: fUser.uid,
+                          name: fUser.displayName || 'User',
+                          phone: fUser.phoneNumber || '',
+                          avatar: (fUser.displayName?.[0] || 'U').toUpperCase()
+                        });
+                      }
+                    } catch (e) {
+                      toast({ title: 'Google Sign-in Failed', description: 'Ensure Firebase Google provider is enabled.', variant: 'destructive' });
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                >
+                  Continue with Google
+                </Button>
+
+                {/* Email/Password */}
+                <div className="grid grid-cols-1 gap-2 bg-muted/30 p-3 rounded-lg">
+                  <div className="grid gap-2">
+                    <Input type="email" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+                    <Input type="password" placeholder="password (min 6 chars)" value={password} onChange={e => setPassword(e.target.value)} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="secondary"
+                      onClick={async () => {
+                        try {
+                          if (!auth) throw new Error('Firebase not configured');
+                          setLoading(true);
+                          const res = await createUserWithEmailAndPassword(auth, email, password);
+                          const fUser = res.user;
+                          const idToken = await fUser.getIdToken();
+                          localStorage.setItem('token', idToken);
+                          onLogin({ id: fUser.uid, name: fUser.email?.split('@')[0] || 'User', phone: '', avatar: (fUser.email?.[0] || 'U').toUpperCase() });
+                          toast({ title: 'Account Created', description: 'Welcome!' });
+                        } catch (e) {
+                          toast({ title: 'Sign Up Failed', description: 'Check email/password and Firebase settings.', variant: 'destructive' });
+                        } finally { setLoading(false); }
+                      }}
+                    >
+                      Sign Up
+                    </Button>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          if (!auth) throw new Error('Firebase not configured');
+                          setLoading(true);
+                          const res = await signInWithEmailAndPassword(auth, email, password);
+                          const fUser = res.user;
+                          const idToken = await fUser.getIdToken();
+                          localStorage.setItem('token', idToken);
+                          onLogin({ id: fUser.uid, name: fUser.email?.split('@')[0] || 'User', phone: '', avatar: (fUser.email?.[0] || 'U').toUpperCase() });
+                          toast({ title: 'Login Successful', description: 'Welcome back!' });
+                        } catch (e) {
+                          toast({ title: 'Login Failed', description: 'Invalid credentials.', variant: 'destructive' });
+                        } finally { setLoading(false); }
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <div>
                 <h2 className="text-2xl font-black mb-2 bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                   {userType === "customer" ? "Book Your Ride" : "Partner with Us"}
@@ -444,7 +493,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 text-green-600" />
                   <p className="text-xs text-muted-foreground font-medium">
-                    We'll send you a secure verification code
+                    We'll send you a secure verification code (via Firebase)
                   </p>
                 </div>
               </div>
@@ -640,3 +689,17 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
 };
 
 export default AuthScreen;
+
+// Firebase reCAPTCHA container (invisible)
+// Placed outside component return to avoid layout shift; referenced by id in RecaptchaVerifier
+// Note: Keep it at document level via index.html if preferred; here we ensure it exists in DOM.
+if (typeof document !== 'undefined' && !document.getElementById('recaptcha-container')) {
+  const div = document.createElement('div');
+  div.id = 'recaptcha-container';
+  div.style.position = 'fixed';
+  div.style.bottom = '0';
+  div.style.right = '0';
+  div.style.zIndex = '1';
+  div.style.opacity = '0';
+  document.body.appendChild(div);
+}

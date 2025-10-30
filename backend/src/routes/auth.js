@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { sendSMS } from '../services/smsService.js';
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post('/send-otp', async (req, res) => {
       });
     }
 
-    const otp = generateOTP();
+  const otp = generateOTP();
     
     // Store OTP with 5 minute expiry
     otpStore.set(phone, {
@@ -34,12 +35,27 @@ router.post('/send-otp', async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000
     });
 
-    // TODO: Send OTP via SMS gateway
-    console.log(`📱 OTP for ${phone}: ${otp}`);
+    // Attempt to send OTP via Twilio if configured; fall back to console in development
+    let delivery = 'console';
+    try {
+      const hasTwilio = !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER);
+      if (hasTwilio) {
+        // Format number to E.164 (assume India if 10 digits)
+        const e164 = phone.startsWith('+') ? phone : (phone.length === 10 ? `+91${phone}` : `+${phone}`);
+        await sendSMS({ to: e164, body: `Your Dropout OTP is ${otp}. It expires in 5 minutes.` });
+        delivery = 'sms';
+      } else {
+        console.log(`📱 OTP for ${phone}: ${otp}`);
+      }
+    } catch (smsErr) {
+      console.warn('SMS send failed, continuing with console only:', smsErr?.message || smsErr);
+      console.log(`📱 OTP for ${phone}: ${otp}`);
+    }
 
     res.json({
       success: true,
       message: 'OTP sent successfully',
+      delivery,
       // In development, return OTP for testing
       ...(process.env.NODE_ENV === 'development' && { otp })
     });

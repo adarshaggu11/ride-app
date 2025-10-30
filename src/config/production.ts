@@ -15,7 +15,10 @@ const readLocal = (key: string): string | null => {
     if (typeof window !== 'undefined' && window.localStorage) {
       return window.localStorage.getItem(key);
     }
-  } catch (_) {}
+  } catch {
+    // Swallow access errors (e.g., privacy mode or disabled storage)
+    return null;
+  }
   return null;
 };
 

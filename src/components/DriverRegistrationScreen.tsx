@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { config } from '@/config/production';
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,7 +95,7 @@ const DriverRegistrationScreen = ({ phone, onComplete }: DriverRegistrationScree
   const handleSubmit = async () => {
     try {
       // Convert files to base64 if needed (or use FormData for file upload)
-      const response = await fetch('http://localhost:3000/api/drivers/register', {
+      const response = await fetch(`${config.API_BASE_URL}/drivers/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
