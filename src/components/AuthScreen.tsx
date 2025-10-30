@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Car, ArrowRight } from "lucide-react";
+import { User, Car, ArrowRight, Zap, Shield, Clock } from "lucide-react";
 import DriverRegistrationScreen from "./DriverRegistrationScreen";
 
 interface AuthScreenProps {
@@ -332,24 +332,80 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-accent to-yellow-400 flex flex-col px-6 py-8">
-      <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto bg-white rounded-2xl shadow-lg flex items-center justify-center mb-4">
-            <span className="text-4xl font-bold text-primary">D</span>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-500 to-black flex flex-col px-6 py-8 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 -right-20 w-96 h-96 rounded-full blur-3xl opacity-20 bg-yellow-400 animate-pulse" style={{ animationDuration: '4s' }}></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-15 bg-orange-500 animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
+      </div>
+
+      <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full relative z-10">
+        {/* Premium Logo Header */}
+        <div className="text-center mb-8 animate-slide-down">
+          <div className="relative inline-block mb-4">
+            {/* Logo Container with Animated Ring */}
+            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-white to-gray-100 rounded-3xl shadow-2xl flex items-center justify-center relative">
+              {/* Rotating Ring */}
+              <div className="absolute inset-0 w-full h-full">
+                <div className="w-full h-full rounded-3xl border-2 border-dashed border-yellow-400/30 animate-spin-slow"></div>
+              </div>
+              
+              {/* Zap Icon */}
+              <Zap 
+                className="w-12 h-12 relative z-10" 
+                style={{
+                  fill: 'url(#authZapGradient)',
+                  strokeWidth: 0,
+                }}
+              />
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="authZapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FCD34D" />
+                    <stop offset="100%" stopColor="#EA580C" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Pulse Effect */}
+              <div className="absolute inset-0 w-24 h-24 rounded-3xl bg-yellow-400/10 animate-ping"></div>
+            </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Dropout</h1>
-          <p className="text-muted-foreground">Your Ride, Your Way</p>
+
+          <h1 className="text-4xl font-black text-white mb-2 tracking-tight" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+            Dropout
+          </h1>
+          <p className="text-white/90 text-lg font-semibold">Your Ride, Your Way</p>
+
+          {/* Feature Badges */}
+          <div className="flex items-center justify-center gap-3 mt-4">
+            {[
+              { icon: Shield, label: 'Secure' },
+              { icon: Zap, label: 'Fast' },
+              { icon: Clock, label: '24/7' }
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm">
+                <Icon className="w-3.5 h-3.5 text-white" />
+                <span className="text-xs font-semibold text-white">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {step === "phone" && (
           <Tabs value={userType} onValueChange={(v) => setUserType(v as UserType)} className="mb-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="customer" className="flex items-center gap-2">
+            <TabsList className="grid w-full grid-cols-2 bg-white/20 backdrop-blur-md border border-white/30">
+              <TabsTrigger 
+                value="customer" 
+                className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-black"
+              >
                 <User className="w-4 h-4" />
                 Customer
               </TabsTrigger>
-              <TabsTrigger value="driver" className="flex items-center gap-2">
+              <TabsTrigger 
+                value="driver" 
+                className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-black"
+              >
                 <Car className="w-4 h-4" />
                 Driver
               </TabsTrigger>
@@ -357,22 +413,22 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
           </Tabs>
         )}
 
-        <Card className="p-6 shadow-lg">
+        <Card className="p-6 shadow-2xl border-0 bg-white/95 backdrop-blur-sm animate-scale-in">
           {step === "phone" && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold mb-2">
+                <h2 className="text-2xl font-black mb-2 bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                   {userType === "customer" ? "Book Your Ride" : "Partner with Us"}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground font-medium">
                   Enter your mobile number to continue
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Mobile Number</Label>
-                <div className="flex gap-2">
-                  <div className="w-16 h-12 bg-muted rounded-md flex items-center justify-center font-semibold">
+              <div className="space-y-3">
+                <Label htmlFor="phone" className="text-base font-semibold">Mobile Number</Label>
+                <div className="flex gap-3">
+                  <div className="w-16 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center font-bold text-white text-lg shadow-lg">
                     +91
                   </div>
                   <Input
@@ -381,62 +437,84 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                     placeholder="9876543210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    className="h-12 flex-1"
+                    className="h-14 flex-1 text-lg font-semibold border-2 focus:border-yellow-500"
                     maxLength={10}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  We'll send you a verification code
-                </p>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-green-600" />
+                  <p className="text-xs text-muted-foreground font-medium">
+                    We'll send you a secure verification code
+                  </p>
+                </div>
               </div>
 
               <Button
                 onClick={handleSendOTP}
-                className="w-full h-12 text-lg font-semibold"
+                className="w-full h-14 text-lg font-black shadow-xl hover:shadow-2xl transition-all duration-300 border-0"
+                style={{
+                  background: 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+                  color: 'white'
+                }}
                 disabled={loading || phone.length !== 10}
               >
-                {loading ? "Sending OTP..." : "Send OTP"}
-                <ArrowRight className="w-5 h-5 ml-2" />
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Sending OTP...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Send OTP
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
+                )}
               </Button>
             </div>
           )}
 
           {step === "otp" && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold mb-2">Enter OTP</h2>
-                <p className="text-sm text-muted-foreground">
-                  Code sent to +91 {phone}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  +91 {phone} కి కోడ్ పంపబడింది
+                <h2 className="text-2xl font-black mb-2 bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  Enter OTP
+                </h2>
+                <p className="text-sm text-muted-foreground font-medium">
+                  Code sent to <span className="font-bold text-foreground">+91 {phone}</span>
                 </p>
                 {lastOtp && (
-                  <div className="mt-3 p-4 bg-green-50 dark:bg-green-950 rounded-lg border-2 border-green-500">
-                    <p className="text-sm font-bold text-green-700 dark:text-green-300 text-center">
-                      🔐 Your OTP: <span className="text-2xl tracking-widest">{lastOtp}</span>
+                  <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-xl border-2 border-green-400 shadow-lg animate-slide-down">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Shield className="w-5 h-5 text-green-600" />
+                      <p className="text-sm font-bold text-green-700 dark:text-green-300">
+                        Your OTP Code
+                      </p>
+                    </div>
+                    <p className="text-3xl font-black text-green-700 dark:text-green-300 text-center tracking-widest py-2">
+                      {lastOtp}
                     </p>
-                    <p className="text-xs text-green-600 dark:text-green-400 text-center mt-1">
-                      Copy and paste this code above
+                    <p className="text-xs text-green-600 dark:text-green-400 text-center mt-2 font-semibold">
+                      ✓ Copy and paste this code above
                     </p>
                   </div>
                 )}
-                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold">
-                    Development Mode: Check the notification above or the backend terminal
+                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-xl border border-blue-300 dark:border-blue-700">
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-2">
+                    <Zap className="w-4 h-4" />
+                    Development Mode: Check notification or backend terminal
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="otp">6-Digit OTP</Label>
+              <div className="space-y-3">
+                <Label htmlFor="otp" className="text-base font-semibold">6-Digit OTP</Label>
                 <Input
                   id="otp"
                   type="tel"
-                  placeholder="Enter 6-digit code"
+                  placeholder="● ● ● ● ● ●"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  className="h-12 text-center text-2xl tracking-widest"
+                  className="h-14 text-center text-3xl tracking-widest font-black border-2 focus:border-yellow-500"
                   maxLength={6}
                   autoFocus
                 />
@@ -446,23 +524,37 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 {canResend ? (
                   <button
                     onClick={handleResendOTP}
-                    className="text-sm text-primary hover:underline font-semibold"
+                    className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-orange-600 hover:underline"
                   >
-                    Resend OTP
+                    ↻ Resend OTP
                   </button>
                 ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Resend OTP in {countdown}s
+                  <p className="text-sm text-muted-foreground font-medium">
+                    Resend OTP in <span className="font-bold text-foreground">{countdown}s</span>
                   </p>
                 )}
               </div>
 
               <Button
                 onClick={handleVerifyOTP}
-                className="w-full h-12 text-lg font-semibold"
+                className="w-full h-14 text-lg font-black shadow-xl hover:shadow-2xl transition-all duration-300 border-0"
+                style={{
+                  background: 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+                  color: 'white'
+                }}
                 disabled={loading || otp.length !== 6}
               >
-                {loading ? "Verifying..." : "Verify OTP"}
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Verifying...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Shield className="w-5 h-5" />
+                    Verify OTP
+                  </span>
+                )}
               </Button>
 
               <button
@@ -470,54 +562,78 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                   setStep("phone");
                   setOtp("");
                   setOtpSent(false);
-                  setLastOtp(""); // Clear stored OTP
+                  setLastOtp("");
                 }}
-                className="w-full text-sm text-muted-foreground hover:text-primary"
+                className="w-full text-sm font-semibold text-muted-foreground hover:text-yellow-600 transition-colors"
               >
-                Change Number
+                ← Change Number
               </button>
             </div>
           )}
 
           {step === "name" && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold mb-2">Welcome!</h2>
-                <p className="text-sm text-muted-foreground">
-                  Please tell us your name | దయచేసి మీ పేరు చెప్పండి
+                <h2 className="text-2xl font-black mb-2 bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  Welcome! 🎉
+                </h2>
+                <p className="text-sm text-muted-foreground font-medium">
+                  Please tell us your name to complete registration
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name | పూర్తి పేరు</Label>
+              <div className="space-y-3">
+                <Label htmlFor="name" className="text-base font-semibold">Full Name</Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder="Enter your full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="h-12"
+                  className="h-14 text-lg font-semibold border-2 focus:border-yellow-500"
                   autoFocus
                 />
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-blue-600" />
+                  <p className="text-xs text-muted-foreground font-medium">
+                    This will be displayed on your profile
+                  </p>
+                </div>
               </div>
 
               <Button
                 onClick={handleCompleteRegistration}
-                className="w-full h-12 text-lg font-semibold"
+                className="w-full h-14 text-lg font-black shadow-xl hover:shadow-2xl transition-all duration-300 border-0"
+                style={{
+                  background: 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+                  color: 'white'
+                }}
                 disabled={!name.trim()}
               >
-                Continue | కొనసాగండి
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Completing...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Continue
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
+                )}
               </Button>
             </div>
           )}
         </Card>
 
-        <p className="text-xs text-center text-muted-foreground mt-6">
-          By continuing, you agree to our Terms & Privacy Policy
-        </p>
-        <p className="text-xs text-center text-muted-foreground">
-          కొనసాగడం ద్వారా, మీరు మా నిబంధనలు & గోప్యతా విధానానికి అంగీకరిస్తున్నారు
-        </p>
+        <div className="mt-6 space-y-2">
+          <p className="text-xs text-center text-white/80 font-medium">
+            🔒 Secure & Encrypted Connection
+          </p>
+          <p className="text-xs text-center text-white/70">
+            By continuing, you agree to our <span className="font-semibold underline">Terms</span> & <span className="font-semibold underline">Privacy Policy</span>
+          </p>
+        </div>
       </div>
     </div>
   );
