@@ -10,7 +10,8 @@ import {
   Cloud,
   CreditCard,
   MessageSquare,
-  Smartphone
+  Smartphone,
+  Zap
 } from "lucide-react";
 import { pushNotificationService } from "@/services/pushNotificationService";
 import { useState, useEffect } from "react";
@@ -128,16 +129,21 @@ const SetupStatusScreen = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-10">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-b sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between p-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-orange-600 fill-orange-600" />
+          </div>
           <Button
             variant="ghost"
             size="icon"
+            className="text-white hover:bg-white/20"
             onClick={() => navigate(-1)}
           >
             <ChevronLeft className="w-6 h-6" />
           </Button>
-          <h1 className="text-xl font-bold">Setup Status</h1>
+          <h1 className="text-xl font-black">Setup Status</h1>
           <div className="w-10" />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { ChevronLeft, FileText, AlertCircle } from "lucide-react";
+import { ChevronLeft, FileText, AlertCircle, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -72,8 +72,12 @@ const TermsScreen = () => {
   return (
     <div className="min-h-screen bg-background pb-6">
       {/* Header */}
-      <div className="bg-primary text-white p-4 sticky top-0 z-10">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center gap-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-orange-600 fill-orange-600" />
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -83,10 +87,10 @@ const TermsScreen = () => {
             <ChevronLeft className="w-6 h-6" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-bold">Terms & Conditions</h1>
-            <p className="text-sm text-white/80">Last updated: October 28, 2025</p>
+            <h1 className="text-xl font-black">Terms & Conditions</h1>
+            <p className="text-sm text-white/90">Last updated: October 28, 2025</p>
           </div>
-          <FileText className="w-6 h-6" />
+          <FileText className="w-5 h-5" />
         </div>
       </div>
 
