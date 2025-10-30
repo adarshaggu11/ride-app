@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Bell, Camera, Phone, Zap, Shield, CheckCircle, ArrowRight } from 'lucide-react';
 import { requestLocationPermission } from '../services/locationService';
 import { requestCameraPermission } from '../services/cameraService';
@@ -19,6 +19,14 @@ interface PermissionScreenProps {
 }
 
 export const PermissionScreen = ({ onComplete }: PermissionScreenProps) => {
+  const bypassPermissions = import.meta.env.VITE_BYPASS_PERMISSIONS === 'true';
+
+  // If bypass flag is enabled, immediately complete and skip UI
+  useEffect(() => {
+    if (bypassPermissions) {
+      onComplete();
+    }
+  }, [bypassPermissions]);
   // Load saved permission state from localStorage
   const loadSavedPermissions = (): Permission[] => {
     return safeGetJSON<Permission[]>('permission_state', [

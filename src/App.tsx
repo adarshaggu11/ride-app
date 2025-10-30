@@ -65,6 +65,7 @@ const App = () => {
     console.log('🔄 Starting app initialization...');
     
     try {
+      const bypassPermissions = import.meta.env.VITE_BYPASS_PERMISSIONS === 'true';
       // Initialize push notifications first (async, doesn't block UI)
       // Allow disabling on native via env to isolate crashes: set VITE_DISABLE_NATIVE_PUSH=true
       try {
@@ -125,10 +126,15 @@ const App = () => {
       }
 
       if (!permissionsRequested) {
-        console.log('➡️  Showing permissions screen');
-        setShowPermissions(true);
-        setIsLoading(false);
-        return;
+        if (bypassPermissions) {
+          console.warn('Bypassing permissions flow due to VITE_BYPASS_PERMISSIONS');
+          safeSetItem('permissions_requested', 'true');
+        } else {
+          console.log('➡️  Showing permissions screen');
+          setShowPermissions(true);
+          setIsLoading(false);
+          return;
+        }
       }
 
       console.log('👤 Checking for user data...');

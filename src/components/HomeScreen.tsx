@@ -30,6 +30,12 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
 
   const getCurrentLocation = async () => {
     try {
+      const bypassPermissions = import.meta.env.VITE_BYPASS_PERMISSIONS === 'true';
+      if (bypassPermissions) {
+        // Skip geolocation calls entirely when bypassing permissions
+        setPickup('Location temporarily disabled');
+        return;
+      }
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
