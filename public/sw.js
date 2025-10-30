@@ -135,17 +135,11 @@ try {
       // ignore, will fallback below if fields are empty
     }
 
-    // Fallback to default known project if values are missing
-    if (!cfg.apiKey || !cfg.projectId) {
-      cfg = {
-        apiKey: "AIzaSyAsCmA1UfUa5qqFzoj24urGQhBO5PwXJ4A",
-        authDomain: "dropout586586.firebaseapp.com",
-        projectId: "dropout586586",
-        storageBucket: "dropout586586.firebasestorage.app",
-        messagingSenderId: "577511318089",
-        appId: "1:577511318089:android:5325e380d38a1512a05598",
-        databaseURL: "https://dropout586586-default-rtdb.firebaseio.com"
-      };
+    // Require explicit config; skip initialization if missing
+    if (!cfg.apiKey || !cfg.projectId || !cfg.messagingSenderId || !cfg.appId) {
+      // Do not initialize Firebase Messaging without proper web config.
+      // This avoids accidental mismatches with native configs.
+      return;
     }
 
     // Initialize Firebase safely (avoid duplicate-app error)
