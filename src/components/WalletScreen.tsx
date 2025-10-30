@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Wallet, TrendingUp, DollarSign, Gift, Star, Clock, MapPin, Plus } from "lucide-react";
+import { ArrowLeft, Wallet, TrendingUp, DollarSign, Gift, Star, Clock, MapPin, Plus, Zap, IndianRupee } from "lucide-react";
 
 interface Transaction {
   id: string;
@@ -46,124 +46,132 @@ const WalletScreen = () => {
   ];
 
   return (
-    <div className="h-screen bg-gradient-to-br from-background via-muted/30 to-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="glass shadow-lg p-4 flex items-center gap-3 flex-shrink-0 border-b z-20">
+    <div className="h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50 flex flex-col overflow-hidden">
+      {/* Premium Header */}
+      <div className="bg-white shadow-lg p-4 flex items-center gap-3 flex-shrink-0 border-b-2 border-gray-100 z-20">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => navigate(-1)}
-          className="rounded-full hover:bg-primary/10"
+          className="rounded-xl hover:bg-yellow-50"
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <div className="flex-1">
-          <h1 className="font-bold text-lg">Wallet & Earnings</h1>
-          <p className="text-xs text-muted-foreground">Manage your finances</p>
+        <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+          <Wallet className="w-5 h-5 text-white" strokeWidth={2.5} />
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-primary font-semibold"
-        >
-          History
-        </Button>
+        <div className="flex-1">
+          <h1 className="font-black text-base bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+            Wallet & Earnings
+          </h1>
+          <p className="text-xs text-muted-foreground font-semibold">Manage your finances</p>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
-          {/* Balance Cards */}
+          {/* Premium Balance Cards */}
           <div className="grid grid-cols-2 gap-3">
             {/* Total Balance */}
-            <Card className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-xl">
-              <div className="flex items-center gap-2 mb-2">
-                <Wallet className="w-4 h-4" />
-                <p className="text-xs font-medium opacity-90">Total Balance</p>
+            <Card className="p-5 bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <Wallet className="w-5 h-5" />
+                <p className="text-xs font-bold opacity-90">Total Balance</p>
               </div>
-              <p className="text-2xl font-bold">${balance.toFixed(2)}</p>
+              <div className="flex items-center gap-1 mb-3">
+                <IndianRupee className="w-6 h-6" />
+                <p className="text-3xl font-black">{(balance * 83).toFixed(0)}</p>
+              </div>
               <Button
                 size="sm"
                 variant="ghost"
-                className="mt-2 text-white hover:bg-white/20 h-7 text-xs"
+                className="text-white hover:bg-white/20 h-8 text-xs font-bold w-full shadow-lg"
               >
                 Withdraw
               </Button>
             </Card>
 
             {/* Today's Earnings */}
-            <Card className="p-4 bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-xl">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4" />
-                <p className="text-xs font-medium opacity-90">Today Earning</p>
+            <Card className="p-5 bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="w-5 h-5" />
+                <p className="text-xs font-bold opacity-90">Today Earning</p>
               </div>
-              <p className="text-2xl font-bold">${todayEarnings.toFixed(2)}</p>
-              <p className="text-xs opacity-75 mt-1">↑ 12% from yesterday</p>
+              <div className="flex items-center gap-1 mb-2">
+                <IndianRupee className="w-6 h-6" />
+                <p className="text-3xl font-black">{(todayEarnings * 83).toFixed(0)}</p>
+              </div>
+              <p className="text-xs opacity-90 font-semibold">↑ 12% from yesterday</p>
             </Card>
           </div>
 
-          {/* Quick Actions */}
+          {/* Premium Quick Actions */}
           <div className="grid grid-cols-2 gap-3">
-            <Card className="p-3 bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:shadow-md transition-shadow cursor-pointer">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-white" />
+            <Card className="p-4 bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <DollarSign className="w-6 h-6 text-white" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">Send</p>
-                  <p className="text-xs text-muted-foreground">Transfer money</p>
+                  <p className="font-black text-sm">Send</p>
+                  <p className="text-xs text-gray-600 font-semibold">Transfer money</p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-3 bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200 hover:shadow-md transition-shadow cursor-pointer">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center">
-                  <Plus className="w-5 h-5 text-white" />
+            <Card className="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border-2 border-teal-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Plus className="w-6 h-6 text-white" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">Add Complete</p>
-                  <p className="text-xs text-muted-foreground">Top up wallet</p>
+                  <p className="font-black text-sm">Add Money</p>
+                  <p className="text-xs text-gray-600 font-semibold">Top up wallet</p>
                 </div>
               </div>
             </Card>
           </div>
 
-          {/* Today's Activity */}
-          <Card className="p-4">
-            <h3 className="font-bold mb-3 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-primary" />
+          {/* Premium Today's Activity */}
+          <Card className="p-5 border-2 border-gray-100 shadow-lg">
+            <h3 className="font-black mb-4 flex items-center gap-2 text-gray-900">
+              <Clock className="w-5 h-5 text-yellow-600" />
               Today's Activity
             </h3>
             <div className="flex items-center justify-between text-sm mb-4">
               <div>
-                <p className="text-2xl font-bold text-primary">8</p>
-                <p className="text-xs text-muted-foreground">Rides completed</p>
+                <p className="text-4xl font-black bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">8</p>
+                <p className="text-xs text-gray-600 font-bold">Rides completed</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">4.9</p>
-                <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                  <p className="text-xs text-muted-foreground">Rating</p>
+                <p className="text-4xl font-black text-green-600">4.9</p>
+                <div className="flex items-center gap-1 justify-center">
+                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  <p className="text-xs text-gray-600 font-bold">Rating</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-blue-600">32km</p>
-                <p className="text-xs text-muted-foreground">Distance</p>
+                <p className="text-4xl font-black text-blue-600">32</p>
+                <p className="text-xs text-gray-600 font-bold">Kilometers</p>
               </div>
             </div>
-            <Button variant="outline" className="w-full" size="sm">
-              View All
+            <Button 
+              variant="outline" 
+              className="w-full h-11 font-bold border-2 hover:bg-yellow-50 hover:border-yellow-400" 
+              size="sm"
+            >
+              View All Activity
             </Button>
           </Card>
 
-          {/* Drivers Nearby (Like the image) */}
-          <Card className="p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
+          {/* Premium Drivers Nearby */}
+          <Card className="p-5 border-2 border-gray-100 shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-black flex items-center gap-2 text-gray-900">
+                <MapPin className="w-5 h-5 text-yellow-600" />
                 Drivers Nearby
               </h3>
-              <Button variant="link" size="sm" className="text-primary">
+              <Button variant="link" size="sm" className="text-yellow-600 font-bold">
                 View All
               </Button>
             </div>
@@ -171,17 +179,14 @@ const WalletScreen = () => {
               {driversNearby.slice(0, 5).map((driver) => (
                 <div
                   key={driver.id}
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors cursor-pointer"
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-yellow-200"
                 >
-                  {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-black text-sm flex-shrink-0 shadow-lg">
                     {driver.avatar}
                   </div>
-
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm">{driver.name}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <p className="font-black text-sm text-gray-900">{driver.name}</p>
+                    <div className="flex items-center gap-2 text-xs text-gray-600 font-semibold">
                       <span className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
                         {driver.distance}
@@ -192,15 +197,13 @@ const WalletScreen = () => {
                       </span>
                     </div>
                   </div>
-
-                  {/* Rating & Status */}
                   <div className="text-right">
                     <div className="flex items-center gap-1 mb-1">
-                      <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                      <span className="font-semibold text-sm">{driver.rating.toFixed(1)}</span>
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      <span className="font-black text-sm">{driver.rating.toFixed(1)}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      ${driver.earnings}
+                    <p className="text-xs text-gray-600 font-bold">
+                      ₹{(driver.earnings * 83).toFixed(0)}
                     </p>
                   </div>
                 </div>
@@ -208,37 +211,37 @@ const WalletScreen = () => {
             </div>
           </Card>
 
-          {/* Recent Transactions */}
-          <Card className="p-4">
-            <h3 className="font-bold mb-3 flex items-center gap-2">
-              <Gift className="w-4 h-4 text-primary" />
+          {/* Premium Recent Transactions */}
+          <Card className="p-5 border-2 border-gray-100 shadow-lg">
+            <h3 className="font-black mb-4 flex items-center gap-2 text-gray-900">
+              <Gift className="w-5 h-5 text-yellow-600" />
               Recent Transactions
             </h3>
             <div className="space-y-2">
               {transactions.map((transaction) => (
                 <div
                   key={transaction.id}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border-2 border-transparent hover:border-gray-200"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black shadow-lg ${
                       transaction.type === "credit"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
+                        ? "bg-gradient-to-br from-green-500 to-emerald-500 text-white"
+                        : "bg-gradient-to-br from-red-500 to-pink-500 text-white"
                     }`}>
-                      {transaction.type === "credit" ? "+" : "-"}
+                      <IndianRupee className="w-6 h-6" />
                     </div>
                     <div>
-                      <p className="font-semibold text-sm">{transaction.description}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="font-black text-sm text-gray-900">{transaction.description}</p>
+                      <p className="text-xs text-gray-600 font-semibold">
                         {transaction.date} • {transaction.time}
                       </p>
                     </div>
                   </div>
-                  <p className={`font-bold text-sm ${
+                  <p className={`font-black text-base ${
                     transaction.type === "credit" ? "text-green-600" : "text-red-600"
                   }`}>
-                    {transaction.type === "credit" ? "+" : "-"}${transaction.amount}
+                    {transaction.type === "credit" ? "+" : "-"}₹{(transaction.amount * 83).toFixed(0)}
                   </p>
                 </div>
               ))}
