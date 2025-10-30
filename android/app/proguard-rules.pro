@@ -63,8 +63,17 @@
     java.lang.Object readResolve();
 }
 
-# Keep MainActivity
--keep class com.ridesharing.app.MainActivity { *; }
+# Keep MainActivity (actual package)
+-keep class dropout.app.MainActivity { *; }
+
+# Keep Capacitor BridgeActivity subclass to avoid obfuscation issues
+-keep class com.getcapacitor.BridgeActivity { *; }
+-keep class com.getcapacitor.BridgeWebView { *; }
+
+# Ensure Firebase Messaging / GMS classes are kept
+-keep class com.google.firebase.** { *; }
+-keep interface com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
 
 # Keep enum classes
 -keepclassmembers enum * {

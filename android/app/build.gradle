@@ -18,8 +18,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            // Keep minify disabled temporarily to diagnose release crash. Re-enable after rules are stable.
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // TODO: Configure signing for release builds
             // signingConfig signingConfigs.release

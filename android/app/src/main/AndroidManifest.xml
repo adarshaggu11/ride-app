@@ -36,14 +36,9 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
 
-        <!-- Firebase Cloud Messaging -->
-        <service
-            android:name="com.google.firebase.messaging.FirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <!-- Firebase Cloud Messaging: Do not declare the base service directly.
+             The library provides required components via manifest merging. If you need
+             custom handlers, create a subclass of FirebaseMessagingService and register it. -->
         
         <!-- Firebase notification channel -->
         <meta-data
