@@ -11,7 +11,10 @@ import {
   Clock,
   Car,
   Filter,
-  Search
+  Search,
+  Zap,
+  Star,
+  ArrowLeft
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -113,50 +116,54 @@ const RideHistoryScreen = () => {
 
   const RideCard = ({ ride }: { ride: Ride }) => (
     <Card 
-      className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+      className="p-5 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border-2 border-gray-100"
       onClick={() => navigate(`/ride-details/${ride.id}`)}
     >
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="font-bold text-lg">₹{ride.fare}</p>
-          <p className="text-xs text-muted-foreground">{ride.date} • {ride.time}</p>
+          <div className="flex items-center gap-1 mb-1">
+            <IndianRupee className="w-5 h-5 text-yellow-600" />
+            <p className="font-black text-2xl text-gray-900">{ride.fare}</p>
+          </div>
+          <p className="text-xs text-gray-600 font-semibold">{ride.date} • {ride.time}</p>
         </div>
-        <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+        <div className={`px-3 py-1.5 rounded-xl text-xs font-black shadow-md ${
           ride.status === "completed" 
-            ? "bg-primary/10 text-primary" 
-            : "bg-destructive/10 text-destructive"
+            ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white" 
+            : "bg-gradient-to-r from-red-500 to-pink-500 text-white"
         }`}>
           {ride.status === "completed" ? "Completed" : "Cancelled"}
         </div>
       </div>
 
-      <div className="space-y-2 mb-3">
+      <div className="space-y-3 mb-4">
         <div className="flex items-start gap-3">
-          <div className="w-3 h-3 bg-primary rounded-full mt-1.5"></div>
+          <div className="w-4 h-4 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full mt-1 ring-4 ring-green-400/30"></div>
           <div className="flex-1">
-            <p className="text-sm font-medium">{ride.pickup}</p>
+            <p className="text-sm font-bold text-gray-900">{ride.pickup}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <div className="w-3 h-3 bg-destructive rounded-full mt-1.5"></div>
+          <div className="w-4 h-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-full mt-1 ring-4 ring-orange-400/30"></div>
           <div className="flex-1">
-            <p className="text-sm font-medium">{ride.drop}</p>
+            <p className="text-sm font-bold text-gray-900">{ride.drop}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t">
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <span>{ride.distance}</span>
+      <div className="flex items-center justify-between pt-3 border-t-2 border-gray-100">
+        <div className="flex items-center gap-3 text-xs text-gray-600 font-semibold">
+          <span className="flex items-center gap-1">
+            <MapPin className="w-3 h-3" />
+            {ride.distance}
+          </span>
           <span>•</span>
           <span>{ride.driver}</span>
-          <span>•</span>
-          <span>{ride.vehicle}</span>
         </div>
         {ride.rating && (
           <div className="flex items-center gap-1">
             {[...Array(ride.rating)].map((_, i) => (
-              <span key={i} className="text-secondary text-sm">★</span>
+              <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
             ))}
           </div>
         )}
@@ -165,84 +172,90 @@ const RideHistoryScreen = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary text-white p-6 sticky top-0 z-10">
-        <div className="flex items-center justify-between mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
+      {/* Premium Header */}
+      <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 sticky top-0 z-10 shadow-2xl">
+        <div className="flex items-center gap-3 mb-4">
           <Button
             variant="ghost"
             size="icon"
-            className="text-white"
+            className="text-white hover:bg-white/20 rounded-xl"
             onClick={() => navigate(-1)}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ArrowLeft className="w-6 h-6" />
           </Button>
-          <h1 className="text-xl font-bold">Ride History</h1>
+          <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+            <Clock className="w-5 h-5" />
+          </div>
+          <h1 className="text-xl font-black flex-1">Ride History</h1>
           <Button
             variant="ghost"
             size="icon"
-            className="text-white"
+            className="text-white hover:bg-white/20 rounded-xl"
           >
             <Filter className="w-5 h-5" />
           </Button>
         </div>
 
-        {/* Search */}
+        {/* Premium Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
             placeholder="Search rides..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60"
+            className="pl-12 h-12 bg-white border-0 text-gray-900 placeholder:text-gray-500 font-semibold rounded-2xl shadow-lg"
           />
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="px-6 py-4 bg-muted/30">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center">
-            <p className="text-2xl font-bold text-primary">{rides.length}</p>
-            <p className="text-xs text-muted-foreground">Total Rides</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-primary">
-              ₹{rides.reduce((sum, r) => sum + r.fare, 0)}
-            </p>
-            <p className="text-xs text-muted-foreground">Total Spent</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-primary">
+      {/* Premium Stats */}
+      <div className="px-6 py-6">
+        <div className="grid grid-cols-3 gap-3">
+          <Card className="p-4 text-center bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 shadow-lg">
+            <p className="text-3xl font-black text-blue-700">{rides.length}</p>
+            <p className="text-xs font-bold text-blue-800">Total Rides</p>
+          </Card>
+          <Card className="p-4 text-center bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 shadow-lg">
+            <div className="flex items-center justify-center gap-1">
+              <IndianRupee className="w-4 h-4 text-purple-700" />
+              <p className="text-3xl font-black text-purple-700">{rides.reduce((sum, r) => sum + r.fare, 0)}</p>
+            </div>
+            <p className="text-xs font-bold text-purple-800">Total Spent</p>
+          </Card>
+          <Card className="p-4 text-center bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-200 shadow-lg">
+            <p className="text-3xl font-black text-yellow-700">
               {completedRides.length > 0 
                 ? (completedRides.reduce((sum, r) => sum + (r.rating || 0), 0) / completedRides.length).toFixed(1)
                 : "0.0"
               }
             </p>
-            <p className="text-xs text-muted-foreground">Avg Rating</p>
-          </div>
+            <p className="text-xs font-bold text-yellow-800">Avg Rating</p>
+          </Card>
         </div>
       </div>
 
-      {/* Tabs */}
-      <Tabs defaultValue="all" className="px-6 py-4">
-        <TabsList className="w-full grid grid-cols-3 mb-4">
-          <TabsTrigger value="all">
+      {/* Premium Tabs */}
+      <Tabs defaultValue="all" className="px-6 pb-6">
+        <TabsList className="w-full grid grid-cols-3 mb-6 h-12 bg-white shadow-lg">
+          <TabsTrigger value="all" className="font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-400 data-[state=active]:to-orange-500 data-[state=active]:text-white">
             All ({rides.length})
           </TabsTrigger>
-          <TabsTrigger value="completed">
+          <TabsTrigger value="completed" className="font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white">
             Completed ({completedRides.length})
           </TabsTrigger>
-          <TabsTrigger value="cancelled">
+          <TabsTrigger value="cancelled" className="font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-pink-500 data-[state=active]:text-white">
             Cancelled ({cancelledRides.length})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-3 mt-0">
           {filteredRides.length === 0 ? (
-            <div className="text-center py-12">
-              <Car className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No rides found</p>
+            <div className="text-center py-16">
+              <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
+                <Car className="w-10 h-10 text-white" />
+              </div>
+              <p className="text-gray-600 font-bold">No rides found</p>
             </div>
           ) : (
             filteredRides.map(ride => <RideCard key={ride.id} ride={ride} />)
@@ -255,8 +268,8 @@ const RideHistoryScreen = () => {
 
         <TabsContent value="cancelled" className="space-y-3 mt-0">
           {cancelledRides.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No cancelled rides</p>
+            <div className="text-center py-16">
+              <p className="text-gray-600 font-bold">No cancelled rides</p>
             </div>
           ) : (
             cancelledRides.map(ride => <RideCard key={ride.id} ride={ride} />)
