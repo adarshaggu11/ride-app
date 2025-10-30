@@ -141,8 +141,12 @@ export const DriverDashboardScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-orange-600 text-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between mb-4">
+          {/* Logo */}
+          <div className="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+            <Zap className="w-6 h-6 text-orange-600 fill-orange-600" />
+          </div>
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
@@ -150,8 +154,8 @@ export const DriverDashboardScreen: React.FC = () => {
             <ChevronLeft className="w-6 h-6" />
           </button>
           <div className="flex-1 text-center">
-            <h1 className="text-2xl font-bold">Driver Dashboard</h1>
-            <p className="text-indigo-100 text-sm">Manage your rides & earnings</p>
+            <h1 className="text-2xl font-black">Driver Dashboard</h1>
+            <p className="text-white/90 text-sm font-semibold">Manage your rides & earnings 💰</p>
           </div>
           <button className="p-2 hover:bg-white/10 rounded-xl transition-colors">
             <Settings className="w-6 h-6" />
