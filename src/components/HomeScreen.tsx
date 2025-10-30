@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Navigation, Menu, User, Bell } from "lucide-react";
+import { MapPin, Navigation, Menu, User, Bell, Zap, TrendingUp, Award, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import MapComponent from "./MapComponent";
 import { vehicleTrackingService, Vehicle } from "@/services/vehicleTrackingService";
@@ -171,31 +171,33 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
   };
 
   return (
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* Modern Header with Glass Effect */}
-      <header className="glass shadow-lg p-4 flex items-center justify-between flex-shrink-0 relative z-20 border-b">
+    <div className="h-screen bg-gradient-to-b from-gray-50 to-white flex flex-col overflow-hidden">
+      {/* Premium Header with Logo */}
+      <header className="bg-white shadow-lg p-4 flex items-center justify-between flex-shrink-0 relative z-20 border-b">
+        {/* Logo & User Section */}
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => navigate("/profile")}
-            className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-secondary text-xl font-bold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ring-2 ring-primary/20"
-          >
-            {user.name.charAt(0).toUpperCase()}
-          </button>
+          <div className="w-11 h-11 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-yellow-400/30">
+            <Zap className="w-6 h-6 text-white" strokeWidth={2.5} />
+          </div>
           <div>
-            <p className="font-bold text-foreground">Hello, {user.name}</p>
-            <p className="text-xs text-muted-foreground">Where would you like to go?</p>
+            <p className="font-black text-lg bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+              Hey, {user.name.split(' ')[0]}!
+            </p>
+            <p className="text-xs text-muted-foreground font-semibold">Where to today?</p>
           </div>
         </div>
+
+        {/* Action Buttons */}
         <div className="flex items-center gap-2">
           <Button 
             variant="ghost" 
             size="icon"
             onClick={() => navigate("/notifications")}
-            className="hover:bg-primary/10 rounded-full relative"
+            className="hover:bg-yellow-50 rounded-full relative transition-colors"
           >
-            <Bell className="w-5 h-5" />
+            <Bell className="w-5 h-5 text-gray-700" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse shadow-lg">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -204,9 +206,11 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
             variant="ghost" 
             size="icon"
             onClick={() => navigate("/profile")}
-            className="hover:bg-primary/10 rounded-full"
+            className="hover:bg-yellow-50 rounded-full transition-colors"
           >
-            <User className="w-5 h-5" />
+            <div className="w-9 h-9 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
           </Button>
         </div>
       </header>
@@ -224,34 +228,35 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
           className="absolute inset-0 w-full h-full"
         />
         
-        {/* Current Location Button - Modern FAB */}
+        {/* Premium Current Location Button */}
         <button 
           onClick={getCurrentLocation}
-          className="absolute bottom-6 right-6 w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center hover:bg-gray-50 transform hover:scale-110 transition-all duration-300 z-10 ring-4 ring-white/50"
+          className="absolute bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 transform transition-all duration-300 z-10 ring-4 ring-white"
         >
-          <Navigation className="w-6 h-6 text-primary" />
+          <Navigation className="w-7 h-7 text-white" strokeWidth={2.5} />
         </button>
       </div>
 
-      {/* Bottom Card - Modern Elevated Design */}
-      <Card className="rounded-t-3xl shadow-2xl border-t flex-shrink-0 bg-gradient-to-b from-white to-gray-50/50">
+      {/* Premium Bottom Card */}
+      <Card className="rounded-t-3xl shadow-2xl border-t-2 border-gray-100 flex-shrink-0 bg-white">
         <div className="p-6 space-y-5">
-          {/* Location Inputs */}
+          {/* Location Inputs - No Telugu */}
           <div className="space-y-4">
+            {/* Pickup */}
             <div className="flex items-center gap-3 group">
-              <div className="w-4 h-4 bg-primary rounded-full shadow-lg ring-4 ring-primary/20 flex-shrink-0"></div>
+              <div className="w-4 h-4 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full shadow-lg ring-4 ring-green-400/30 flex-shrink-0"></div>
               <div className="flex-1 relative">
                 <Input
                   ref={pickupInputRef}
-                  placeholder="Pickup Location | పికప్ స్థానం"
+                  placeholder="Pickup Location"
                   value={pickup}
                   onChange={(e) => setPickup(e.target.value)}
-                  className="h-14 flex-1 border-2 border-border focus:border-primary transition-all duration-300 rounded-xl shadow-sm font-medium pl-4 bg-white"
+                  className="h-14 flex-1 border-2 border-gray-200 focus:border-yellow-500 transition-all duration-300 rounded-xl shadow-sm font-semibold pl-4 bg-white"
                 />
                 {pickup && (
                   <button 
                     onClick={() => setPickup("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 text-2xl font-bold"
                   >
                     ×
                   </button>
@@ -259,20 +264,21 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
               </div>
             </div>
             
+            {/* Drop */}
             <div className="flex items-center gap-3 group">
-              <div className="w-4 h-4 bg-destructive rounded-full shadow-lg ring-4 ring-destructive/20 flex-shrink-0"></div>
+              <div className="w-4 h-4 bg-gradient-to-br from-orange-500 to-red-500 rounded-full shadow-lg ring-4 ring-orange-400/30 flex-shrink-0"></div>
               <div className="flex-1 relative">
                 <Input
                   ref={dropInputRef}
                   placeholder="Drop Location"
                   value={drop}
                   onChange={(e) => setDrop(e.target.value)}
-                  className="h-14 flex-1 border-2 border-border focus:border-destructive transition-all duration-300 rounded-xl shadow-sm font-medium pl-4 bg-white"
+                  className="h-14 flex-1 border-2 border-gray-200 focus:border-orange-500 transition-all duration-300 rounded-xl shadow-sm font-semibold pl-4 bg-white"
                 />
                 {drop && (
                   <button 
                     onClick={() => setDrop("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 text-2xl font-bold"
                   >
                     ×
                   </button>
@@ -281,36 +287,43 @@ const HomeScreen = ({ user, onLogout }: HomeScreenProps) => {
             </div>
           </div>
 
-          {/* CTA Button - Premium Design */}
+          {/* Premium CTA Button */}
           <Button
             onClick={handleFindAuto}
             disabled={!pickup || !drop}
-            className="w-full h-16 text-lg font-bold bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-500 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-xl"
+            className="w-full h-16 text-lg font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 border-0"
+            style={{
+              background: !pickup || !drop ? '#E5E7EB' : 'linear-gradient(135deg, #FCD34D 0%, #EA580C 100%)',
+              color: !pickup || !drop ? '#9CA3AF' : 'white'
+            }}
             size="lg"
           >
             {!pickup || !drop ? (
               "Enter locations to continue"
             ) : (
-              <span className="flex items-center gap-2">
-                <MapPin className="w-5 h-5" />
-                Find Your Ride
+              <span className="flex items-center gap-3">
+                <Zap className="w-6 h-6" />
+                Find Your Ride Now
               </span>
             )}
           </Button>
 
-          {/* Quick Stats - Modern Cards */}
+          {/* Premium Stats Cards */}
           <div className="grid grid-cols-3 gap-3 pt-2">
-            <div className="bg-gradient-to-br from-yellow-50 to-orange-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-orange-600">0</p>
-              <p className="text-xs text-orange-800 font-medium">Total Rides</p>
+            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-4 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300 shadow-md border border-yellow-200">
+              <TrendingUp className="w-5 h-5 text-yellow-600 mx-auto mb-1" />
+              <p className="text-2xl font-black text-yellow-700">0</p>
+              <p className="text-[10px] text-yellow-800 font-bold">Total Rides</p>
             </div>
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-amber-600">₹0</p>
-              <p className="text-xs text-amber-800 font-medium">Saved</p>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300 shadow-md border border-amber-200">
+              <Wallet className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+              <p className="text-2xl font-black text-amber-700">₹0</p>
+              <p className="text-[10px] text-amber-800 font-bold">Saved</p>
             </div>
-            <div className="bg-gradient-to-br from-orange-50 to-amber-100 p-3 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 shadow-sm">
-              <p className="text-2xl font-extrabold text-yellow-600">0</p>
-              <p className="text-xs text-yellow-800 font-medium">Points</p>
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-2xl text-center transform hover:scale-105 transition-transform duration-300 shadow-md border border-orange-200">
+              <Award className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+              <p className="text-2xl font-black text-orange-700">0</p>
+              <p className="text-[10px] text-orange-800 font-bold">Points</p>
             </div>
           </div>
         </div>
