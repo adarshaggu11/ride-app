@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { initializePushNotifications } from "./services/pushNotifications";
+import { requestNotificationPermission, getFCMToken, onForegroundMessage } from "./services/notificationService";
+import { Capacitor } from "@capacitor/core";
 import { safeGetItem, safeSetItem, safeGetJSON, safeSetJSON, safeRemoveItem } from "./utils/safeStorage";
 import SplashScreen from "./components/SplashScreen";
 import OnboardingScreens from "./components/OnboardingScreens";
@@ -70,6 +72,33 @@ const App = () => {
         });
       } catch (pushError) {
         console.warn('Push notifications setup failed (non-critical):', pushError);
+      }
+
+      // Web push (Firebase Messaging) setup – only on web
+      try {
+        if (!Capacitor.isNativePlatform() && 'serviceWorker' in navigator && 'Notification' in window) {
+          if (!import.meta.env.VITE_FIREBASE_VAPID_KEY) {
+            console.warn('VITE_FIREBASE_VAPID_KEY is not set. Web push token retrieval will fail.');
+          }
+
+          const granted = await requestNotificationPermission();
+          if (granted) {
+            const token = await getFCMToken();
+            if (token) {
+              console.log('✅ Web push FCM token ready');
+              // TODO: send token to backend for user mapping
+            }
+
+            const unsubscribe = onForegroundMessage((payload) => {
+              console.log('📬 Foreground FCM message:', payload);
+            });
+
+            // Optional: store unsubscribe reference if needed later
+            (window as any).__fcmUnsub = unsubscribe;
+          }
+        }
+      } catch (webPushError) {
+        console.warn('Web push setup failed (non-critical):', webPushError);
       }
 
       console.log('⏳ Showing splash screen for 2 seconds...');
