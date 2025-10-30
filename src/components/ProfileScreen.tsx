@@ -22,7 +22,9 @@ import {
   Shield,
   Calendar,
   Users,
-  Car
+  Car,
+  Zap,
+  ArrowLeft
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -122,102 +124,122 @@ const ProfileScreen = ({ user, onLogout }: ProfileScreenProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary text-white p-6 pb-16">
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white"
-            onClick={() => navigate("/home")}
-          >
-            <ChevronRight className="w-6 h-6 rotate-180" />
-          </Button>
-          <h1 className="text-xl font-bold">Profile</h1>
-          <div className="w-10" />
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-50">
+      {/* Premium Header with Gradient */}
+      <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 pb-20 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-60 h-60 bg-white rounded-full blur-3xl"></div>
         </div>
 
-        <div className="text-center">
-          <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-white">
-            <AvatarFallback className="bg-white text-primary text-3xl font-bold">
-              {user.name.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <h2 className="text-2xl font-bold mb-1">{user.name}</h2>
-          <p className="text-white/90 flex items-center justify-center gap-2">
-            <Phone className="w-4 h-4" />
-            {user.phone}
-          </p>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20 rounded-xl"
+              onClick={() => navigate("/home")}
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </Button>
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5" />
+              <h1 className="text-xl font-black">My Profile</h1>
+            </div>
+            <div className="w-10" />
+          </div>
+
+          <div className="text-center">
+            <div className="relative inline-block mb-4">
+              <Avatar className="w-28 h-28 mx-auto border-4 border-white shadow-2xl ring-4 ring-yellow-300/50">
+                <AvatarFallback className="bg-gradient-to-br from-white to-yellow-100 text-yellow-700 text-4xl font-black">
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              {/* Verified Badge */}
+              <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-green-500 rounded-full border-4 border-white shadow-xl flex items-center justify-center">
+                <Shield className="w-4 h-4 text-white" strokeWidth={3} />
+              </div>
+            </div>
+            <h2 className="text-3xl font-black mb-2">{user.name}</h2>
+            <p className="text-white/90 flex items-center justify-center gap-2 font-semibold">
+              <Phone className="w-4 h-4" />
+              {user.phone}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="px-6 -mt-10 mb-6">
+      {/* Premium Stats Cards */}
+      <div className="px-6 -mt-14 mb-6 relative z-10">
         <div className="grid grid-cols-3 gap-3">
-          <Card className="p-4 text-center">
-            <History className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{stats.totalRides}</p>
-            <p className="text-xs text-muted-foreground">Rides</p>
+          <Card className="p-4 text-center bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 shadow-xl">
+            <History className="w-7 h-7 text-blue-600 mx-auto mb-2" />
+            <p className="text-3xl font-black text-blue-700">{stats.totalRides}</p>
+            <p className="text-xs font-bold text-blue-800">Rides</p>
           </Card>
-          <Card className="p-4 text-center">
-            <Star className="w-6 h-6 text-secondary mx-auto mb-2 fill-secondary" />
-            <p className="text-2xl font-bold">{stats.rating}</p>
-            <p className="text-xs text-muted-foreground">Rating</p>
+          <Card className="p-4 text-center bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-200 shadow-xl">
+            <Star className="w-7 h-7 text-yellow-600 mx-auto mb-2 fill-yellow-400" />
+            <p className="text-3xl font-black text-yellow-700">{stats.rating}</p>
+            <p className="text-xs font-bold text-yellow-800">Rating</p>
           </Card>
-          <Card className="p-4 text-center">
-            <Award className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{stats.rewardPoints}</p>
-            <p className="text-xs text-muted-foreground">Points</p>
+          <Card className="p-4 text-center bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 shadow-xl">
+            <Award className="w-7 h-7 text-purple-600 mx-auto mb-2" />
+            <p className="text-3xl font-black text-purple-700">{stats.rewardPoints}</p>
+            <p className="text-xs font-bold text-purple-800">Points</p>
           </Card>
         </div>
       </div>
 
-      {/* Menu Items */}
-      <div className="px-6 space-y-3">
+      {/* Premium Menu Items */}
+      <div className="px-6 space-y-3 pb-8">
         {menuItems.map((item, index) => (
           <Card
             key={index}
-            className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+            className="p-4 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border-2 border-gray-100"
             onClick={() => navigate(item.route)}
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <item.icon className="w-5 h-5 text-primary" />
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <item.icon className="w-6 h-6 text-white" strokeWidth={2.5} />
               </div>
               <div className="flex-1">
-                <p className="font-semibold">{item.label}</p>
+                <p className="font-black text-gray-900">{item.label}</p>
               </div>
               {item.badge && (
-                <span className="px-2 py-1 bg-green-600 text-white text-xs font-bold rounded">
+                <span className="px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-black rounded-lg shadow-md">
                   {item.badge}
                 </span>
               )}
-              <ChevronRight className="w-5 h-5 text-muted-foreground" />
+              <ChevronRight className="w-5 h-5 text-gray-400" />
             </div>
           </Card>
         ))}
 
-        {/* Logout Button */}
+        {/* Premium Logout Button */}
         <Card
-          className="p-4 cursor-pointer hover:bg-destructive/10 transition-colors border-destructive/20"
+          className="p-4 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-2 border-red-200 bg-gradient-to-br from-red-50 to-pink-50"
           onClick={handleLogout}
         >
             <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-destructive/10 rounded-full flex items-center justify-center">
-              <LogOut className="w-5 h-5 text-destructive" />
+            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <LogOut className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-destructive">Logout</p>
+              <p className="font-black text-red-700">Logout</p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Version Info */}
-      <p className="text-center text-xs text-muted-foreground mt-8 mb-6">
-        © 2025 Dropout • v1.0.0
-      </p>
+      {/* Premium Footer */}
+      <div className="text-center pb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-lg border border-gray-200">
+          <Zap className="w-4 h-4 text-yellow-600" />
+          <p className="text-xs font-bold text-gray-700">© 2025 Dropout • v1.0.0 • Made in India 🇮🇳</p>
+        </div>
+      </div>
     </div>
   );
 };
